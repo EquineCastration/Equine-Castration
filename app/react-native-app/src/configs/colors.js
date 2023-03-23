@@ -1,4 +1,11 @@
 export default {
-  primary: "#1e2887",
+  default: "#32396e",
+
+  primary: "#0f1547",
   secondary: "#35aae8",
+
+  lghtTxt: "#979bbf",
+
+  fiedDefaultBorder: "#cacde6",
+  fiedActiveBorder: "#a1a6d1",
 };

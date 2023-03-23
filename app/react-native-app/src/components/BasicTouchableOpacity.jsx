@@ -3,7 +3,7 @@ import { Ionicons } from "@expo/vector-icons";
 
 export const BasicTouchableOpacity = ({
   title,
-  targetScreen,
+  onPress,
   bgColor,
   color,
   icon,
@@ -16,6 +16,7 @@ export const BasicTouchableOpacity = ({
         backgroundColor: bgColor,
         width: btnWidth,
       }}
+      onPress={onPress}
     >
       <Ionicons name={icon} size={27} color={color} />
       <Text className="text-3xl font-medium" style={{ color: color }}>
