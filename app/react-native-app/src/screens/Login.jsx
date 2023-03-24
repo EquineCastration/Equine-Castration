@@ -12,10 +12,8 @@ export const Login = () => {
       <View className="flex w-full px-2 items-center">
         <BasicTouchableOpacity
           title="Please Enter"
-          bgColor={colors.secondary}
           btnWidth="75%"
           icon="arrow-forward-circle-outline"
-          color="white"
         />
       </View>
     </SafeAreaView>

@@ -1,17 +1,18 @@
 import { TouchableOpacity, Text } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
+import colors from "../configs/colors";
 
 export const BasicTouchableOpacity = ({
   title,
   onPress,
-  bgColor,
-  color,
+  bgColor = colors.secondary,
+  color = "white",
   icon,
   btnWidth = "100%",
 }) => {
   return (
     <TouchableOpacity
-      className="flex-row rounded-2xl space-x-2 items-center justify-center py-4"
+      className="my-5 flex-row rounded-2xl space-x-2 items-center justify-center py-3"
       style={{
         backgroundColor: bgColor,
         width: btnWidth,

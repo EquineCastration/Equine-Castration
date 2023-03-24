@@ -1,7 +1,11 @@
 import { SafeAreaView, ScrollView, Text, View } from "react-native";
+import { Formik } from "formik";
 
-import { Input } from "../components/Input";
+import { CheckBox } from "../components/CheckBox";
+import { InputField } from "../components/InputField";
+import { DatePickerField } from "../components/DatePickerField";
 import colors from "../configs/colors";
+import { BasicTouchableOpacity } from "../components/BasicTouchableOpacity";
 
 export const InitialConsutation = () => {
   return (
@@ -13,11 +17,47 @@ export const InitialConsutation = () => {
         <Text className="font-normal text-xl" style={{ color: colors.lghtTxt }}>
           Input the following information
         </Text>
-        <View className="my-5">
-          <Input label="Horse name:" />
-          <Input label="Client surname:" />
-          <Input label="Date of castration:" type="date" />
-        </View>
+
+        <Formik
+          initialValues={{
+            horseName: "",
+            clientSurname: "",
+            dateOfCastration: "",
+          }}
+          onSubmit={(values) => {
+            console.log(values);
+          }}
+        >
+          {({
+            handleChange,
+            handleBlur,
+            handleSubmit,
+            values,
+            setFieldValue,
+          }) => (
+            <View className="my-5">
+              <InputField
+                label="Horse name:"
+                onChangeText={handleChange("horseName")}
+                value={values.horseName}
+              />
+              <InputField
+                label="Client surname:"
+                onChangeText={handleChange("clientSurname")}
+                value={values.clientSurname}
+              />
+              <DatePickerField
+                name="dateOfCastration"
+                label="Date of castration:"
+                type="date"
+                value={values.dateOfCastration}
+                setFieldValue={setFieldValue}
+              />
+              <CheckBox label="Is horse less than 2 years old ?" />
+              <BasicTouchableOpacity title="Submit" onPress={handleSubmit} />
+            </View>
+          )}
+        </Formik>
       </ScrollView>
     </SafeAreaView>
   );
