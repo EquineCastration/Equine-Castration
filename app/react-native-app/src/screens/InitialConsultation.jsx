@@ -1,14 +1,11 @@
-import { SafeAreaView, View, Button } from "react-native";
+import { SafeAreaView, View, Button, ToastAndroid } from "react-native";
 import { Formik } from "formik";
-
 import { CheckBox } from "../components/CheckBox";
 import { InputField } from "../components/InputField";
 import { DatePickerField } from "../components/DatePickerField";
 import { InitialConsultationHeader } from "../components/InititalConsultation/InitialConsultationHeader";
 import { ProgressBar } from "../components/ProgressBar";
-
 import { InitialConsulationStore } from "../store/store";
-
 import * as SQLite from "expo-sqlite";
 import { useEffect } from "react";
 
@@ -24,14 +21,20 @@ const handleInitialConsultationSubmit = (navigation, data) => {
         data?.dateOfCastration,
         data?.isLessThanTwo,
       ],
-      () => {},
-      () => {
-        console.log("Error creating table");
-      }
+      (_, result) => {
+        result.rowsAffected > 0
+          ? ToastAndroid.show(
+              "Initial Consultation record created",
+              ToastAndroid.SHORT
+            ) // only works in Android
+          : ToastAndroid.show(
+              "Failed Creating Initial Consultation record",
+              ToastAndroid.SHORT
+            ); // only works in Android
+      },
+      (_, err) => console.log("Error creating table", err)
     );
   });
-
-  console.log("datat" + data);
 
   InitialConsulationStore.replace({
     horseName: "",
@@ -70,6 +73,7 @@ export const InitialConsultationStepOne = ({ navigation }) => {
   }, []);
 
   const data = InitialConsulationStore.useState();
+
   return (
     <Layout>
       <Formik
@@ -90,7 +94,7 @@ export const InitialConsultationStepOne = ({ navigation }) => {
       >
         {({ handleChange, handleSubmit, values, setFieldValue }) => (
           <View className="flex-1">
-            <View className="my-2 flex-1 justify-center">
+            <View className="my-2">
               <InputField
                 label="Horse name:"
                 onChangeText={handleChange("horseName")}
@@ -109,7 +113,7 @@ export const InitialConsultationStepOne = ({ navigation }) => {
                 setFieldValue={setFieldValue}
               />
             </View>
-            <View className="justify-end mb-12">
+            <View className="justify-end mb-12 flex-1">
               <Button
                 onPress={() => {
                   handleSubmit();
@@ -144,7 +148,7 @@ export const InitialConsultationStepTwo = ({ navigation }) => {
       >
         {({ handleSubmit, values, setFieldValue }) => (
           <View className="flex-1">
-            <View className="my-2 flex-1 justify-center">
+            <View className="my-2">
               <CheckBox
                 label="Is horse less than 2 years old ?"
                 value={values?.isLessThanTwo}
@@ -153,7 +157,7 @@ export const InitialConsultationStepTwo = ({ navigation }) => {
                 }
               />
             </View>
-            <View className="justify-end mb-12">
+            <View className="justify-end mb-12 flex-1">
               <Button onPress={handleSubmit} title="submit" />
               <ProgressBar progress="100%" />
             </View>
