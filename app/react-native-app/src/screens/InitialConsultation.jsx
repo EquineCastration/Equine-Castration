@@ -9,7 +9,52 @@ import { BasicTouchableOpacity } from "../components/BasicTouchableOpacity";
 
 import { InitialConsulationStore } from "../store/store";
 
+import * as SQLite from "expo-sqlite";
+import { useEffect } from "react";
+
+const db = SQLite.openDatabase("InititalConsultation.db");
+
+const addInitialConsultation = () => {
+  const data = InitialConsulationStore.currentState;
+
+  db.transaction((tx) => {
+    tx.executeSql(
+      "insert into InititalConsultation (horseName, clientSurname, dateOfCastration, isLessThanTwo) values (?, ?, ?, ?)",
+      [
+        data.horseName,
+        data.clientSurname,
+        data.dateOfCastration,
+        data.isLessThanTwo,
+      ],
+      () => {},
+      () => {
+        console.log("Error creating table");
+      }
+    );
+  });
+
+  db.transaction((tx) => {
+    tx.executeSql(
+      "SELECT * FROM InititalConsultation where id = 1",
+      [],
+      (tx, results) => {
+        console.log("Query completed");
+        console.log(results);
+      },
+      () => console.log("Error getting data")
+    );
+  });
+};
+
 export const InitialConsultationStepOne = ({ navigation }) => {
+  useEffect(() => {
+    db.readTransaction((tx) => {
+      tx.executeSql(
+        "create table if not exists InititalConsultation (id integer primary key not null, horseName text, clientSurname text, dateOfCastration text, isLessThanTwo integer);"
+      );
+    });
+  }, []);
+
   return (
     <SafeAreaView className="flex-1">
       <ScrollView className="pt-14 px-5">
@@ -30,13 +75,7 @@ export const InitialConsultationStepOne = ({ navigation }) => {
             });
           }}
         >
-          {({
-            handleChange,
-            handleBlur,
-            handleSubmit,
-            values,
-            setFieldValue,
-          }) => (
+          {({ handleChange, handleSubmit, values, setFieldValue }) => (
             <View className="my-2">
               <InputField
                 label="Horse name:"
@@ -85,15 +124,10 @@ export const InitialConsultationStepTwo = () => {
               s.isLessThanTwo = values.isLessThanTwo;
             });
             console.log(InitialConsulationStore.currentState);
+            addInitialConsultation();
           }}
         >
-          {({
-            handleChange,
-            handleBlur,
-            handleSubmit,
-            values,
-            setFieldValue,
-          }) => (
+          {({ handleSubmit, values, setFieldValue }) => (
             <View className="my-2">
               <CheckBox
                 label="Is horse less than 2 years old ?"

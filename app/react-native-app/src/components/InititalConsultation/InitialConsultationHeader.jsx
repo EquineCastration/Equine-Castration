@@ -6,7 +6,7 @@ export const InitialConsultationHeader = () => {
   return (
     <>
       <Text className="font-bold text-4xl" style={{ color: colors.primary }}>
-        Initial Consulation
+        Initial Consultation
       </Text>
       <Text className="font-normal text-xl" style={{ color: colors.lghtTxt }}>
         Input the following information
