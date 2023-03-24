@@ -1,10 +1,12 @@
 import { useState } from "react";
-import { View, Text, TextInput } from "react-native";
+import { View, Text, TextInput, TouchableOpacity } from "react-native";
 import DateTimePickerModal from "react-native-modal-datetime-picker";
+import moment from "moment";
 
 import colors from "../configs/colors";
 export const Input = ({
   label,
+  placeholder = label,
   labelColor = colors.default,
   inputBorderColor = colors.fiedDefaultBorder,
   inputActiveBorderColor = colors.fiedActiveBorder,
@@ -15,7 +17,7 @@ export const Input = ({
   ...props
 }) => {
   const [isFocused, setIsFocused] = useState(false);
-  const [selectedDate, setSelectedDate] = useState(new Date());
+  const [selectedDate, setSelectedDate] = useState();
   const [datePickerVisible, setDatePickerVisible] = useState(false);
 
   return (
@@ -25,6 +27,7 @@ export const Input = ({
       </Text>
       {type === "text" && (
         <TextInput
+          placeholder={placeholder}
           onFocus={() => setIsFocused(true)}
           onBlur={() => setIsFocused(false)}
           className="border-2 rounded-md p-2"
@@ -34,16 +37,20 @@ export const Input = ({
         />
       )}
       {type === "date" && (
-        <>
-          <Text
-            className="text-xl font-light mb-2"
-            onPress={() => setDatePickerVisible(true)}
-          >
-            {selectedDate
-              ? selectedDate.toLocaleDateString()
-              : "No date selected"}
-          </Text>
+        <TouchableOpacity onPress={() => setDatePickerVisible(true)}>
+          <TextInput
+            editable={false}
+            placeholder="Choose Your Date of Birth"
+            value={moment(selectedDate).format("DD/MM/YYYY")}
+            className="border-2 rounded-md p-2"
+            style={{
+              borderColor: isFocused
+                ? inputActiveBorderColor
+                : inputBorderColor,
+            }}
+          />
           <DateTimePickerModal
+            initialDate=""
             date={selectedDate}
             isVisible={datePickerVisible}
             mode="date"
@@ -53,7 +60,7 @@ export const Input = ({
             }}
             onCancel={() => setDatePickerVisible(false)}
           />
-        </>
+        </TouchableOpacity>
       )}
     </View>
   );
