@@ -7,7 +7,7 @@ export const BasicTouchableOpacity = ({
   onPress,
   bgColor = colors.secondary,
   color = "white",
-  icon,
+  icon, // only accepts ionicons
   btnWidth = "100%",
 }) => {
   return (
