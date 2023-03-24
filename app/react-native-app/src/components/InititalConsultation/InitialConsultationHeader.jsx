@@ -2,19 +2,20 @@ import { Text, View } from "react-native";
 import colors from "../../configs/colors";
 import { BasicTouchableOpacity } from "../BasicTouchableOpacity";
 
-export const InitialConsultationHeader = ({ backTarget }) => {
+export const InitialConsultationHeader = ({ backNavigation }) => {
   return (
     <>
-      {backTarget && (
+      {backNavigation && (
         <BasicTouchableOpacity
           btnWidth="10%"
           bgColor="transparent"
           color="black"
           icon="arrow-back"
+          onPress={backNavigation}
         />
       )}
 
-      <View className={`${!backTarget ? "mt-24" : ""}`}>
+      <View className={`${!backNavigation ? "mt-24" : ""}`}>
         <Text className="font-bold text-4xl" style={{ color: colors.primary }}>
           Initial Consultation
         </Text>

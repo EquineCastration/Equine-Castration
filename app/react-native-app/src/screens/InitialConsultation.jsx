@@ -10,21 +10,19 @@ import { BasicTouchableOpacity } from "../components/BasicTouchableOpacity";
 import { InitialConsulationStore } from "../store/store";
 
 import * as SQLite from "expo-sqlite";
-import { Children, useEffect } from "react";
+import { useEffect } from "react";
 
 const db = SQLite.openDatabase("InititalConsultation.db");
 
-const addInitialConsultation = () => {
-  const data = InitialConsulationStore.currentState;
-
+const handleInitialConsultationSubmit = (navigation, data) => {
   db.transaction((tx) => {
     tx.executeSql(
       "insert into InititalConsultation (horseName, clientSurname, dateOfCastration, isLessThanTwo) values (?, ?, ?, ?)",
       [
-        data.horseName,
-        data.clientSurname,
-        data.dateOfCastration,
-        data.isLessThanTwo,
+        data?.horseName,
+        data?.clientSurname,
+        data?.dateOfCastration,
+        data?.isLessThanTwo,
       ],
       () => {},
       () => {
@@ -33,24 +31,29 @@ const addInitialConsultation = () => {
     );
   });
 
-  db.transaction((tx) => {
-    tx.executeSql(
-      "SELECT * FROM InititalConsultation where id = 1",
-      [],
-      (tx, results) => {
-        console.log("Query completed");
-        console.log(results);
-      },
-      () => console.log("Error getting data")
-    );
+  console.log("datat" + data);
+
+  InitialConsulationStore.replace({
+    horseName: "",
+    clientSurname: "",
+    dateOfCastration: "",
+    isLessThanTwo: false,
+    progress: 0,
+  });
+  navigation.reset({
+    index: 0,
+    routes: [{ name: "Login" }],
   });
 };
 
-const Layout = ({ children, backTarget }) => {
+const Layout = ({ children, backNavigation }) => {
   return (
     <SafeAreaView className="flex-1">
       <ScrollView className="mt-8 px-5">
-        <InitialConsultationHeader className="mt-10" backTarget={backTarget} />
+        <InitialConsultationHeader
+          className="mt-10"
+          backNavigation={backNavigation}
+        />
         {children}
       </ScrollView>
     </SafeAreaView>
@@ -64,24 +67,18 @@ export const InitialConsultationStepOne = ({ navigation }) => {
         "create table if not exists InititalConsultation (id integer primary key not null, horseName text, clientSurname text, dateOfCastration text, isLessThanTwo integer);"
       );
     });
-
-    db.transaction((tx) => {
-      tx.executeSql(
-        "SELECT * FROM InititalConsultation where id = 1",
-        [],
-        (tx, results) => console.log(results.rows._array),
-        () => console.log("Error getting data")
-      );
-    });
   }, []);
+
+  const data = InitialConsulationStore.useState();
 
   return (
     <Layout>
       <Formik
+        enableReinitialize
         initialValues={{
-          horseName: "",
-          clientSurname: "",
-          dateOfCastration: "",
+          horseName: data?.horseName || "",
+          clientSurname: data?.clientSurname || "",
+          dateOfCastration: data?.dateOfCastration || "",
         }}
         onSubmit={(values) => {
           // adding values to global store
@@ -125,19 +122,20 @@ export const InitialConsultationStepOne = ({ navigation }) => {
   );
 };
 
-export const InitialConsultationStepTwo = () => {
+export const InitialConsultationStepTwo = ({ navigation }) => {
+  const data = InitialConsulationStore.useState();
+
   return (
-    <Layout backTarget="true">
+    <Layout backNavigation={() => navigation.goBack()}>
       <Formik
         initialValues={{
-          isLessThanTwo: false,
+          isLessThanTwo: data?.isLessThanTwo || false,
         }}
         onSubmit={(values) => {
           InitialConsulationStore.update((s) => {
             s.isLessThanTwo = values.isLessThanTwo;
           });
-          console.log(InitialConsulationStore.currentState);
-          addInitialConsultation();
+          handleInitialConsultationSubmit(navigation, data);
         }}
       >
         {({ handleSubmit, values, setFieldValue }) => (
