@@ -12,4 +12,6 @@ export default {
   lightGreen: "#50ba6c",
 
   lightOrange: "#bf9c49",
+
+  lightBg: "#e6e6e6",
 };

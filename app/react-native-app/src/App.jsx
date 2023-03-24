@@ -4,10 +4,10 @@ import { createNativeStackNavigator } from "@react-navigation/native-stack";
 
 import { Login } from "./screens/Login";
 import { RecordList } from "./screens/RecordList";
-import {
-  InitialConsultationStepOne,
-  InitialConsultationStepTwo,
-} from "./screens/InitialConsultation";
+import { InitialConsultationStepOne } from "./screens/InitialConsultation/InitialConsultationStepOne";
+import { InitialConsultationStepTwo } from "./screens/InitialConsultation/InitialConsultationStepTwo";
+import { InitialConsultationStepThree } from "./screens/InitialConsultation/InitialConsultationStepThree";
+
 const Stack = createNativeStackNavigator();
 
 export default function App() {
@@ -26,6 +26,10 @@ export default function App() {
           <Stack.Screen
             name="InitialConsultationStepTwo"
             component={InitialConsultationStepTwo}
+          />
+          <Stack.Screen
+            name="InitialConsultationStepThree"
+            component={InitialConsultationStepThree}
           />
         </Stack.Group>
       </Stack.Navigator>
