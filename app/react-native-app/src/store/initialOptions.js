@@ -7,6 +7,11 @@ export const initialsOptions = [
     icon: "arrow-forward-circle-outline", // only accepts ionicons
   },
   {
+    title: "List of Horses",
+    navigate: "RecordList", // screen name
+    icon: "arrow-forward-circle-outline", // only accepts ionicons
+  },
+  {
     title: "Follow up",
     bgColor: colors.lightGreen,
   },

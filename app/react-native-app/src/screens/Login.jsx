@@ -21,7 +21,7 @@ export const Login = ({ navigation }) => {
                 bgColor={option.bgColor}
                 onPress={
                   option.navigate &&
-                  (() => navigation.navigate("InitialConsultationStepOne"))
+                  (() => navigation.navigate(option.navigate))
                 }
               />
             );

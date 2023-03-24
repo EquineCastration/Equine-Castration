@@ -1,8 +1,8 @@
 import { Text, View } from "react-native";
-import colors from "../../configs/colors";
-import { BasicTouchableOpacity } from "../BasicTouchableOpacity";
+import colors from "../configs/colors";
+import { BasicTouchableOpacity } from "./BasicTouchableOpacity";
 
-export const InitialConsultationHeader = ({ backNavigation }) => {
+export const BasicHeader = ({ backNavigation, primaryTxt, secondaryTxt }) => {
   return (
     <>
       {backNavigation && (
@@ -17,10 +17,10 @@ export const InitialConsultationHeader = ({ backNavigation }) => {
 
       <View className={`${!backNavigation ? "mt-24" : ""}`}>
         <Text className="font-bold text-4xl" style={{ color: colors.primary }}>
-          Initial Consultation
+          {primaryTxt}
         </Text>
         <Text className="font-normal text-xl" style={{ color: colors.lghtTxt }}>
-          Input the following information
+          {secondaryTxt}
         </Text>
       </View>
     </>

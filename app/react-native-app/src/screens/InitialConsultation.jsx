@@ -3,13 +3,11 @@ import { Formik } from "formik";
 import { CheckBox } from "../components/CheckBox";
 import { InputField } from "../components/InputField";
 import { DatePickerField } from "../components/DatePickerField";
-import { InitialConsultationHeader } from "../components/InititalConsultation/InitialConsultationHeader";
+import { BasicHeader } from "../components/BasicHeader";
 import { ProgressBar } from "../components/ProgressBar";
 import { InitialConsulationStore } from "../store/store";
-import * as SQLite from "expo-sqlite";
+import { db } from "../store/db";
 import { useEffect } from "react";
-
-const db = SQLite.openDatabase("InititalConsultation.db");
 
 const handleInitialConsultationSubmit = (navigation, data) => {
   db.transaction((tx) => {
@@ -53,8 +51,9 @@ const Layout = ({ children, backNavigation }) => {
   return (
     <SafeAreaView className="flex-1">
       <View className="flex-1 mt-8 px-5">
-        <InitialConsultationHeader
-          className="mt-10"
+        <BasicHeader
+          primaryTxt="Initial Consultation"
+          secondaryTxt="Input the following information"
           backNavigation={backNavigation}
         />
         {children}
