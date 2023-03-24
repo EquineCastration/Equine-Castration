@@ -16,7 +16,10 @@ export const DatePickerField = ({
   const [isDatePickerVisible, setIsDatePickerVisible] = useState(false);
 
   return (
-    <TouchableOpacity onPress={() => setIsDatePickerVisible(true)}>
+    <TouchableOpacity
+      className="my-5"
+      onPress={() => setIsDatePickerVisible(true)}
+    >
       <Text className="my-2 text-xl" style={{ color: labelColor }}>
         {label}
       </Text>

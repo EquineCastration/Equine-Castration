@@ -1,9 +1,9 @@
 import { SafeAreaView, View, Text } from "react-native";
 import { BasicTouchableOpacity } from "../components/BasicTouchableOpacity";
 
-import colors from "../configs/colors";
+export const Login = ({ navigation }) => {
+  // should be loaded as screen to get navigation prop
 
-export const Login = () => {
   const welcomeTxt = "Welcome Vet";
   return (
     <SafeAreaView className="flex-1 items-center justify-center space-y-5">
@@ -14,6 +14,7 @@ export const Login = () => {
           title="Please Enter"
           btnWidth="75%"
           icon="arrow-forward-circle-outline"
+          onPress={() => navigation.navigate("InitialConsultationStepOne")}
         />
       </View>
     </SafeAreaView>
