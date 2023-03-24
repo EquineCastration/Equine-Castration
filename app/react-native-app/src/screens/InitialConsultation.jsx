@@ -5,7 +5,7 @@ import { CheckBox } from "../components/CheckBox";
 import { InputField } from "../components/InputField";
 import { DatePickerField } from "../components/DatePickerField";
 import { InitialConsultationHeader } from "../components/InititalConsultation/InitialConsultationHeader";
-import { BasicTouchableOpacity } from "../components/BasicTouchableOpacity";
+import { ProgressBar } from "../components/ProgressBar";
 
 import { InitialConsulationStore } from "../store/store";
 
@@ -70,7 +70,6 @@ export const InitialConsultationStepOne = ({ navigation }) => {
   }, []);
 
   const data = InitialConsulationStore.useState();
-
   return (
     <Layout>
       <Formik
@@ -118,6 +117,7 @@ export const InitialConsultationStepOne = ({ navigation }) => {
                 }}
                 title="Next"
               />
+              <ProgressBar progress="25%" />
             </View>
           </View>
         )}
@@ -155,6 +155,7 @@ export const InitialConsultationStepTwo = ({ navigation }) => {
             </View>
             <View className="justify-end mb-12">
               <Button onPress={handleSubmit} title="submit" />
+              <ProgressBar progress="100%" />
             </View>
           </View>
         )}
