@@ -8,4 +8,8 @@ export default {
 
   fiedDefaultBorder: "#cacde6",
   fiedActiveBorder: "#a1a6d1",
+
+  lightGreen: "#50ba6c",
+
+  lightOrange: "#bf9c49",
 };

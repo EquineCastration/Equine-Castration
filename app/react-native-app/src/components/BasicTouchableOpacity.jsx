@@ -20,7 +20,7 @@ export const BasicTouchableOpacity = ({
       onPress={onPress}
     >
       <Ionicons name={icon} size={27} color={color} />
-      <Text className="text-3xl font-medium" style={{ color: color }}>
+      <Text className="text-2xl font-medium" style={{ color: color }}>
         {title}
       </Text>
     </TouchableOpacity>
