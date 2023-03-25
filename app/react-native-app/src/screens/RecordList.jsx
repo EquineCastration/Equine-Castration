@@ -22,12 +22,11 @@ export const RecordList = ({ navigation }) => {
   }, []);
 
   return (
-    <SafeAreaView className="flex-1">
-      <View className="flex-1 mt-8 px-5">
+    <SafeAreaView className="flex-1 bg-white">
+      <View className="flex-1 px-5">
         <BasicHeader
           primaryTxt="List of horses"
           secondaryTxt="Horses in the record"
-          backNavigation={() => navigation.goBack()}
         />
         <FlatList
           className="mt-4"

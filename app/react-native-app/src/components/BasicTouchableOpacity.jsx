@@ -12,15 +12,15 @@ export const BasicTouchableOpacity = ({
 }) => {
   return (
     <TouchableOpacity
-      className="my-5 flex-row rounded-2xl space-x-2 items-center justify-center py-3"
+      className="my-2 flex-row space-x-2 items-center justify-center py-4"
       style={{
         backgroundColor: bgColor,
         width: btnWidth,
       }}
       onPress={onPress}
     >
-      <Ionicons name={icon} size={27} color={color} />
-      <Text className="text-2xl font-medium" style={{ color: color }}>
+      <Ionicons name={icon} size={24} color={color} />
+      <Text className="text-xl font-medium" style={{ color: color }}>
         {title}
       </Text>
     </TouchableOpacity>

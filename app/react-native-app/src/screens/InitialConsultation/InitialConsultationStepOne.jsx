@@ -5,21 +5,29 @@ import { DatePickerField } from "../../components/DatePickerField";
 import { ProgressBar } from "../../components/ProgressBar";
 import { InitialConsulationStore } from "../../store/store";
 import { db } from "../../store/db";
-import { SafeAreaView, View, Button } from "react-native";
+import { SafeAreaView, View, Button, ScrollView } from "react-native";
 import { BasicHeader } from "../../components/BasicHeader";
 
-export const Layout = ({ children, backNavigation }) => {
+export const Layout = ({ children }) => {
   return (
-    <SafeAreaView className="flex-1">
-      <View className="flex-1 mt-8 px-5">
+    <SafeAreaView className="flex-1 bg-white">
+      <ScrollView className="flex-1 px-5">
         <BasicHeader
           primaryTxt="Initial Consultation"
           secondaryTxt="Input the following information"
-          backNavigation={backNavigation}
         />
         {children}
-      </View>
+      </ScrollView>
     </SafeAreaView>
+  );
+};
+
+export const FixedStepButton = ({ onPress, title, progress }) => {
+  return (
+    <View className="my-6 justify-end">
+      <Button onPress={onPress} title={title} />
+      <ProgressBar progress={progress} />
+    </View>
   );
 };
 
@@ -73,16 +81,14 @@ export const InitialConsultationStepOne = ({ navigation }) => {
                 setFieldValue={setFieldValue}
               />
             </View>
-            <View className="justify-end mb-12 flex-1">
-              <Button
-                onPress={() => {
-                  handleSubmit();
-                  navigation.navigate("InitialConsultationStepTwo");
-                }}
-                title="Next"
-              />
-              <ProgressBar progress="25%" />
-            </View>
+            <FixedStepButton
+              onPress={() => {
+                handleSubmit();
+                navigation.navigate("InitialConsultationStepTwo");
+              }}
+              title="Next"
+              progress="25%"
+            />
           </View>
         )}
       </Formik>

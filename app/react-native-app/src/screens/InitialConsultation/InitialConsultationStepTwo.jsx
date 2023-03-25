@@ -1,12 +1,12 @@
-import { View, Button } from "react-native";
+import { View } from "react-native";
 import { Layout } from "./InitialConsultationStepOne";
 import { InitialConsulationStore } from "../../store/store";
 import { Formik } from "formik";
 import { CheckBox } from "../../components/CheckBox";
-import { ProgressBar } from "../../components/ProgressBar";
 import { Picker } from "@react-native-picker/picker";
 import { BasicPicker } from "../../components/BasicPicker";
 import { InputField } from "../../components/InputField";
+import { FixedStepButton } from "./InitialConsultationStepOne";
 
 const AgePickerItem = () => {
   const minAge = 3;
@@ -23,7 +23,7 @@ export const InitialConsultationStepTwo = ({ navigation }) => {
   const data = InitialConsulationStore.useState();
 
   return (
-    <Layout backNavigation={() => navigation.goBack()}>
+    <Layout>
       <Formik
         initialValues={{
           isLessThanTwo: data?.isLessThanTwo || false,
@@ -71,16 +71,14 @@ export const InitialConsultationStepTwo = ({ navigation }) => {
                 keyboardType="numeric"
               />
             </View>
-            <View className="justify-end mb-12 flex-1">
-              <Button
-                onPress={() => {
-                  handleSubmit();
-                  navigation.navigate("InitialConsultationStepThree");
-                }}
-                title="Next"
-              />
-              <ProgressBar progress="55%" />
-            </View>
+            <FixedStepButton
+              onPress={() => {
+                handleSubmit();
+                navigation.navigate("InitialConsultationStepThree");
+              }}
+              title="Next"
+              progress="55%"
+            />
           </View>
         )}
       </Formik>

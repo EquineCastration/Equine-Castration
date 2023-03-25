@@ -1,14 +1,12 @@
-import { View, Button, ToastAndroid, Text } from "react-native";
+import { View } from "react-native";
 import { Layout } from "./InitialConsultationStepOne";
 import { InitialConsulationStore } from "../../store/store";
 import { Formik } from "formik";
-import { CheckBox } from "../../components/CheckBox";
-import { ProgressBar } from "../../components/ProgressBar";
 import { Picker } from "@react-native-picker/picker";
 import { db } from "../../store/db";
-import { InputField } from "../../components/InputField";
-import colors from "../../configs/colors";
 import { BasicPicker } from "../../components/BasicPicker";
+import { FixedStepButton } from "./InitialConsultationStepOne";
+import Toast from "react-native-toast-message";
 
 const handleInitialConsultationSubmit = (navigation, data) => {
   db.transaction((tx) => {
@@ -26,14 +24,14 @@ const handleInitialConsultationSubmit = (navigation, data) => {
       ],
       (_, result) => {
         result.rowsAffected > 0
-          ? ToastAndroid.show(
-              "Initial Consultation record created",
-              ToastAndroid.SHORT
-            ) // only works in Android
-          : ToastAndroid.show(
-              "Failed Creating Initial Consultation record",
-              ToastAndroid.SHORT
-            ); // only works in Android
+          ? Toast.show({
+              type: "success",
+              text1: "Initial Consultation record created",
+            })
+          : Toast.show({
+              type: "error",
+              text1: "Initial Consultation record created",
+            });
       },
       (_, err) => console.log("Error creating table", err)
     );
@@ -79,7 +77,7 @@ export const InitialConsultationStepThree = ({ navigation }) => {
   const data = InitialConsulationStore.useState();
 
   return (
-    <Layout backNavigation={() => navigation.goBack()}>
+    <Layout>
       <Formik
         initialValues={{
           breed: data?.breed || "",
@@ -118,10 +116,11 @@ export const InitialConsultationStepThree = ({ navigation }) => {
                 ))}
               </BasicPicker>
             </View>
-            <View className="justify-end mb-12 flex-1">
-              <Button onPress={handleSubmit} title="submit" />
-              <ProgressBar progress="85%" />
-            </View>
+            <FixedStepButton
+              onPress={handleSubmit}
+              title="submit"
+              progress="95%"
+            />
           </View>
         )}
       </Formik>
