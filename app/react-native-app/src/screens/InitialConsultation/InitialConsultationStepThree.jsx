@@ -1,12 +1,12 @@
 import { View } from "react-native";
-import { Layout } from "./InitialConsultationStepOne";
-import { InitialConsulationStore } from "../../store/store";
 import { Formik } from "formik";
 import { Picker } from "@react-native-picker/picker";
-import { db } from "../../store/db";
-import { BasicPicker } from "../../components/BasicPicker";
-import { FixedStepButton } from "./InitialConsultationStepOne";
 import Toast from "react-native-toast-message";
+import { db } from "store/db";
+import { InitialConsulationStore } from "store/store";
+import { BasicPicker } from "components/BasicPicker";
+import { FixedStepButton } from "./InitialConsultationStepOne";
+import { Layout } from "./InitialConsultationStepOne";
 
 const handleInitialConsultationSubmit = (navigation, data) => {
   db.transaction((tx) => {

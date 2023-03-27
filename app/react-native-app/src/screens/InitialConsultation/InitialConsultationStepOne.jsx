@@ -1,12 +1,12 @@
 import { useEffect } from "react";
 import { Formik } from "formik";
-import { InputField } from "../../components/InputField";
-import { DatePickerField } from "../../components/DatePickerField";
-import { ProgressBar } from "../../components/ProgressBar";
-import { InitialConsulationStore } from "../../store/store";
-import { db } from "../../store/db";
+import { InputField } from "components/InputField";
+import { DatePickerField } from "components/DatePickerField";
+import { ProgressBar } from "components/ProgressBar";
+import { BasicHeader } from "components/BasicHeader";
+import { InitialConsulationStore } from "store/store";
+import { db } from "store/db";
 import { SafeAreaView, View, Button, ScrollView } from "react-native";
-import { BasicHeader } from "../../components/BasicHeader";
 
 export const Layout = ({ children }) => {
   return (

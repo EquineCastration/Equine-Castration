@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { SafeAreaView, FlatList, Text, View } from "react-native";
-import { db } from "../store/db";
-import { BasicHeader } from "../components/BasicHeader";
+import { db } from "store/db";
+import { BasicHeader } from "components/BasicHeader";
 
 export const RecordList = ({ navigation }) => {
   const [data, setData] = useState();

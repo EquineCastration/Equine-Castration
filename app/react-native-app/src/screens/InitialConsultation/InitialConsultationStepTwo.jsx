@@ -1,11 +1,11 @@
 import { View } from "react-native";
-import { Layout } from "./InitialConsultationStepOne";
-import { InitialConsulationStore } from "../../store/store";
 import { Formik } from "formik";
-import { CheckBox } from "../../components/CheckBox";
 import { Picker } from "@react-native-picker/picker";
-import { BasicPicker } from "../../components/BasicPicker";
-import { InputField } from "../../components/InputField";
+import { InitialConsulationStore } from "store/store";
+import { CheckBox } from "components/CheckBox";
+import { Layout } from "./InitialConsultationStepOne";
+import { BasicPicker } from "components/BasicPicker";
+import { InputField } from "components/InputField";
 import { FixedStepButton } from "./InitialConsultationStepOne";
 
 const AgePickerItem = () => {
