@@ -1,21 +1,10 @@
 import { View } from "react-native";
 import { Formik } from "formik";
 import { Picker } from "@react-native-picker/picker";
-import { queryBase } from "db/queries/base";
-import { InitialConsulationStore, ICStoreInitialState } from "store/store";
+import { InitialConsulationStore } from "store/store";
 import { BasicPicker } from "components/BasicPicker";
 import { FixedStepButton } from "./InitialConsultationStepOne";
 import { Layout } from "./InitialConsultationStepOne";
-
-const handleInitialConsultationSubmit = (navigation, data) => {
-  queryBase.insertData("InitialConsultation", data);
-
-  InitialConsulationStore.replace(ICStoreInitialState);
-  navigation.reset({
-    index: 0,
-    routes: [{ name: "Login" }],
-  });
-};
 
 const info = {
   breed: [
@@ -50,7 +39,7 @@ export const InitialConsultationStepThree = ({ navigation }) => {
             s.breed = values.breed;
             s.technique = values.technique;
           });
-          handleInitialConsultationSubmit(navigation, data);
+          navigation.navigate("InitialConsultationConfirmation");
         }}
       >
         {({ handleSubmit, values, setFieldValue }) => (
@@ -80,8 +69,8 @@ export const InitialConsultationStepThree = ({ navigation }) => {
             </View>
             <FixedStepButton
               onPress={handleSubmit}
-              title="submit"
-              progress="95%"
+              title="Confirm"
+              progress="85%"
             />
           </View>
         )}

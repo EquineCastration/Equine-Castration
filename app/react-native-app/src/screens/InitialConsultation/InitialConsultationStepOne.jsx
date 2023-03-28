@@ -9,13 +9,16 @@ import { SafeAreaView, View, Button, ScrollView } from "react-native";
 import { queryBase } from "db/queries/base";
 import { InputField } from "components/InputField";
 
-export const Layout = ({ children }) => {
+export const Layout = ({
+  children,
+  secondaryTxt = "Input the following information",
+}) => {
   return (
     <SafeAreaView className="flex-1 bg-white">
       <ScrollView className="flex-1 px-5">
         <BasicHeader
           primaryTxt="Initial Consultation"
-          secondaryTxt="Input the following information"
+          secondaryTxt={secondaryTxt}
         />
         {children}
       </ScrollView>

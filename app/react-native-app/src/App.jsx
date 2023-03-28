@@ -7,6 +7,7 @@ import { RecordList } from "screens/RecordList";
 import { InitialConsultationStepOne } from "screens/InitialConsultation/InitialConsultationStepOne";
 import { InitialConsultationStepTwo } from "screens/InitialConsultation/InitialConsultationStepTwo";
 import { InitialConsultationStepThree } from "screens/InitialConsultation/InitialConsultationStepThree";
+import { Confirmation } from "screens/InitialConsultation/Confirmation";
 import Toast from "react-native-toast-message";
 import { LinearGradient } from "expo-linear-gradient";
 import { Text } from "react-native";
@@ -62,6 +63,10 @@ export default function App() {
             <Stack.Screen
               name="InitialConsultationStepThree"
               component={InitialConsultationStepThree}
+            />
+            <Stack.Screen
+              name="InitialConsultationConfirmation"
+              component={Confirmation}
             />
           </Stack.Group>
         </Stack.Navigator>
