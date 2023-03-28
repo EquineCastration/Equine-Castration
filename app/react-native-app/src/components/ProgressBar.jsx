@@ -1,11 +1,19 @@
 import { View } from "react-native";
+import { colors } from "style/style";
 
-export const ProgressBar = ({ progress, color = "bg-secondary-900" }) => {
+export const ProgressBar = ({ progress, color = colors.secondary[900] }) => {
   return (
-    <View className="bg-gray-200 h-2 my-4">
+    <View
+      style={{
+        backgroundColor: colors.primary[200],
+        height: 5,
+        marginVertical: 15,
+      }}
+    >
       <View
-        className={`h-1 ${color}`}
         style={{
+          height: 5,
+          backgroundColor: color,
           width: progress,
         }}
       />

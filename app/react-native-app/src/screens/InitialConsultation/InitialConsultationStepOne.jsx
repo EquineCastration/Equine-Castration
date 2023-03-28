@@ -1,6 +1,5 @@
 import { useEffect } from "react";
 import { Formik } from "formik";
-
 import { DatePickerField } from "components/DatePickerField";
 import { ProgressBar } from "components/ProgressBar";
 import { BasicHeader } from "components/BasicHeader";
@@ -14,8 +13,18 @@ export const Layout = ({
   secondaryTxt = "Input the following information",
 }) => {
   return (
-    <SafeAreaView className="flex-1 bg-white">
-      <ScrollView className="flex-1 px-5">
+    <SafeAreaView
+      style={{
+        flex: 1,
+        backgroundColor: "white",
+      }}
+    >
+      <ScrollView
+        style={{
+          flex: 1,
+          paddingHorizontal: 20,
+        }}
+      >
         <BasicHeader
           primaryTxt="Initial Consultation"
           secondaryTxt={secondaryTxt}
@@ -28,7 +37,12 @@ export const Layout = ({
 
 export const FixedStepButton = ({ onPress, title, progress }) => {
   return (
-    <View className="my-6 justify-end">
+    <View
+      style={{
+        marginVertical: 12,
+        justifyContent: "flex-end",
+      }}
+    >
       <Button onPress={onPress} title={title} />
       <ProgressBar progress={progress} />
     </View>
@@ -62,8 +76,12 @@ export const InitialConsultationStepOne = ({ navigation }) => {
         }}
       >
         {({ handleChange, handleSubmit, values, setFieldValue }) => (
-          <View className="flex-1">
-            <View className="my-2">
+          <View
+            style={{
+              flex: 1,
+            }}
+          >
+            <View style={{ marginVertical: 5 }}>
               <InputField
                 label="Horse name:"
                 onChangeText={handleChange("horseName")}

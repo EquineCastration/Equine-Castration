@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { SafeAreaView, FlatList, Text, View } from "react-native";
 import { db } from "db/db";
 import { BasicHeader } from "components/BasicHeader";
+import { colors, font } from "style/style";
 
 export const RecordList = ({ navigation }) => {
   const [data, setData] = useState();
@@ -22,19 +23,44 @@ export const RecordList = ({ navigation }) => {
   }, []);
 
   return (
-    <SafeAreaView className="flex-1 bg-white">
-      <View className="flex-1 px-5">
+    <SafeAreaView
+      style={{
+        backgroundColor: "white",
+        flex: 1,
+      }}
+    >
+      <View
+        style={{
+          flex: 1,
+          paddingHorizontal: 20,
+        }}
+      >
         <BasicHeader
           primaryTxt="List of horses"
           secondaryTxt="Horses in the record"
         />
         <FlatList
-          className="mt-4"
+          style={{
+            marginTop: 10,
+          }}
           data={data}
           renderItem={({ item }) => (
-            <Text className="py-2 text-md border-b-2 border-gray-300">
-              {item.horseName}
-            </Text>
+            <View
+              style={{
+                borderBottomWidth: 1,
+                borderBottomColor: colors.primary[200],
+              }}
+            >
+              <Text
+                style={{
+                  color: colors.primary[700],
+                  paddingVertical: 10,
+                  fontSize: font.size["sm"],
+                }}
+              >
+                {item.horseName}
+              </Text>
+            </View>
           )}
         />
       </View>

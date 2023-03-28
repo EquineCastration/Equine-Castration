@@ -43,8 +43,12 @@ export const InitialConsultationStepThree = ({ navigation }) => {
         }}
       >
         {({ handleSubmit, values, setFieldValue }) => (
-          <View className="flex-1">
-            <View className="my-2">
+          <View
+            style={{
+              flex: 1,
+            }}
+          >
+            <View style={{ marginVertical: 5 }}>
               <BasicPicker
                 label="Breed"
                 fieldName="breed"

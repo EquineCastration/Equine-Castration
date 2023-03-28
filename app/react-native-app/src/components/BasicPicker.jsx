@@ -1,5 +1,6 @@
 import { Picker } from "@react-native-picker/picker";
 import { View, Text } from "react-native";
+import { font, colors } from "style/style";
 
 export const BasicPicker = ({
   label,
@@ -9,9 +10,25 @@ export const BasicPicker = ({
   setFieldValue,
 }) => {
   return (
-    <View className="my-5 space-y-3">
-      <Text className="text-xl text-primary-700">{label}</Text>
-      <View className="bg-primary-100">
+    <View
+      style={{
+        marginVertical: 15,
+      }}
+    >
+      <Text
+        style={{
+          fontSize: font.size["md"],
+          color: colors.primary[700],
+          marginVertical: 8,
+        }}
+      >
+        {label}
+      </Text>
+      <View
+        style={{
+          backgroundColor: colors.primary[100],
+        }}
+      >
         <Picker
           selectedValue={value}
           onValueChange={(fieldNameValue) =>

@@ -1,5 +1,6 @@
 import { BasicTouchableOpacity } from "components/BasicTouchableOpacity";
 import { SafeAreaView, View, Text } from "react-native";
+import { colors, font } from "style/style";
 
 export const Login = ({ navigation }) => {
   // should be loaded as screen to get navigation prop
@@ -18,19 +19,42 @@ export const Login = ({ navigation }) => {
     },
     {
       title: "Follow up",
-      bgColor: "bg-patra-900",
+      bgColor: colors.patra[900],
       icon: "expand-outline",
     },
     {
       title: "Review",
-      bgColor: "bg-kanaka-900",
+      bgColor: colors.kanaka[900],
       icon: "file-tray-full-outline",
     },
   ];
   return (
-    <SafeAreaView className="flex-1 items-center justify-center space-y-5 bg-white">
-      <Text className="text-5xl font-thin text-center">{welcomeTxt}</Text>
-      <View className="flex w-full px-2 items-center">
+    <SafeAreaView
+      style={{
+        flex: 1,
+        alignItems: "center",
+        justifyContent: "center",
+        backgroundColor: "white",
+      }}
+    >
+      <View
+        style={{
+          flex: 1,
+          width: "100%",
+          paddingVertical: 10,
+          alignItems: "center",
+          justifyContent: "center",
+        }}
+      >
+        <Text
+          style={{
+            fontSize: font.size["5xl"],
+            fontWeight: 300,
+            textAlign: "center",
+          }}
+        >
+          {welcomeTxt}
+        </Text>
         {initialsOptions &&
           initialsOptions.map((option, index) => {
             return (

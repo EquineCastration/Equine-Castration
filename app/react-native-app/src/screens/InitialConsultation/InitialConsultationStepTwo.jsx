@@ -39,8 +39,12 @@ export const InitialConsultationStepTwo = ({ navigation }) => {
         }}
       >
         {({ handleSubmit, values, setFieldValue }) => (
-          <View className="flex-1">
-            <View className="my-2">
+          <View
+            style={{
+              flex: 1,
+            }}
+          >
+            <View style={{ marginVertical: 5 }}>
               <CheckBox
                 label="Is horse less than 2 years old ?"
                 value={values?.isLessThanTwo}
