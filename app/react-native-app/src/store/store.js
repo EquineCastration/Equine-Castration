@@ -1,6 +1,6 @@
 import { Store } from "pullstate";
 
-export const InitialConsulationStore = new Store({
+export const ICStoreInitialState = {
   horseName: "",
   clientSurname: "",
   dateOfCastration: "",
@@ -10,4 +10,5 @@ export const InitialConsulationStore = new Store({
   breed: "",
   technique: "",
   progress: 0,
-});
+};
+export const InitialConsulationStore = new Store(ICStoreInitialState);

@@ -2,13 +2,12 @@ import { useState } from "react";
 import { TextInput, TouchableOpacity, Text } from "react-native";
 import DateTimePickerModal from "react-native-modal-datetime-picker";
 import moment from "moment";
-import colors from "../configs/colors";
 
 export const DatePickerField = ({
   label,
   placeholder = label,
-  labelColor = colors.default,
-  inputBorderColor = colors.fiedDefaultBorder,
+  labelColor = "text-primary-700",
+  inputBorderColor = "border-primary-200",
   value,
   setFieldValue,
   name,
@@ -20,16 +19,11 @@ export const DatePickerField = ({
       className="my-5"
       onPress={() => setIsDatePickerVisible(true)}
     >
-      <Text className="my-2 text-xl" style={{ color: labelColor }}>
-        {label}
-      </Text>
+      <Text className={`my-2 text-xl ${labelColor}`}>{label}</Text>
       <TextInput
         editable={false}
         placeholder={placeholder}
-        className="border-2 rounded-md p-2"
-        style={{
-          borderColor: inputBorderColor,
-        }}
+        className={`border-2 rounded-md p-2 ${inputBorderColor}`}
         value={value}
       />
       <DateTimePickerModal

@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { SafeAreaView, FlatList, Text, View } from "react-native";
-import { db } from "store/db";
+import { db } from "db/db";
 import { BasicHeader } from "components/BasicHeader";
 
 export const RecordList = ({ navigation }) => {
@@ -9,7 +9,7 @@ export const RecordList = ({ navigation }) => {
   useEffect(() => {
     db.transaction((tx) => {
       tx.executeSql(
-        "SELECT * FROM InititalConsultation",
+        "SELECT * FROM InitialConsultation",
         [],
         (_, result) => {
           setData(result.rows._array);

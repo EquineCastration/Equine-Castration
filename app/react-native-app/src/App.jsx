@@ -2,11 +2,11 @@ import { StatusBar } from "expo-status-bar";
 import { NavigationContainer } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 
-import { Login } from "./screens/Login";
-import { RecordList } from "./screens/RecordList";
-import { InitialConsultationStepOne } from "./screens/InitialConsultation/InitialConsultationStepOne";
-import { InitialConsultationStepTwo } from "./screens/InitialConsultation/InitialConsultationStepTwo";
-import { InitialConsultationStepThree } from "./screens/InitialConsultation/InitialConsultationStepThree";
+import { Login } from "screens/Login";
+import { RecordList } from "screens/RecordList";
+import { InitialConsultationStepOne } from "screens/InitialConsultation/InitialConsultationStepOne";
+import { InitialConsultationStepTwo } from "screens/InitialConsultation/InitialConsultationStepTwo";
+import { InitialConsultationStepThree } from "screens/InitialConsultation/InitialConsultationStepThree";
 import Toast from "react-native-toast-message";
 import { LinearGradient } from "expo-linear-gradient";
 

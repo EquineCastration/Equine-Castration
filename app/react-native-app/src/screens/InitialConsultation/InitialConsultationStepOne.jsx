@@ -1,12 +1,13 @@
 import { useEffect } from "react";
 import { Formik } from "formik";
-import { InputField } from "components/InputField";
+
 import { DatePickerField } from "components/DatePickerField";
 import { ProgressBar } from "components/ProgressBar";
 import { BasicHeader } from "components/BasicHeader";
-import { InitialConsulationStore } from "store/store";
-import { db } from "store/db";
+import { InitialConsulationStore, ICStoreInitialState } from "store/store";
 import { SafeAreaView, View, Button, ScrollView } from "react-native";
+import { queryBase } from "db/queries/base";
+import { InputField } from "components/InputField";
 
 export const Layout = ({ children }) => {
   return (
@@ -33,11 +34,8 @@ export const FixedStepButton = ({ onPress, title, progress }) => {
 
 export const InitialConsultationStepOne = ({ navigation }) => {
   useEffect(() => {
-    db.transaction((tx) => {
-      tx.executeSql(
-        "create table if not exists InititalConsultation (id integer primary key not null, horseName text, clientSurname text, dateOfCastration text, isLessThanTwo integer, ageAboveTwo integer, weight integer, breed text, technique text);"
-      );
-    });
+    // queryBase.deleteTable("InitialConsultation");
+    queryBase.createTable("InitialConsultation", ICStoreInitialState); // Create table if not exists
   }, []);
 
   const data = InitialConsulationStore.useState();

@@ -1,53 +1,16 @@
 import { View } from "react-native";
 import { Formik } from "formik";
 import { Picker } from "@react-native-picker/picker";
-import Toast from "react-native-toast-message";
-import { db } from "store/db";
-import { InitialConsulationStore } from "store/store";
+import { queryBase } from "db/queries/base";
+import { InitialConsulationStore, ICStoreInitialState } from "store/store";
 import { BasicPicker } from "components/BasicPicker";
 import { FixedStepButton } from "./InitialConsultationStepOne";
 import { Layout } from "./InitialConsultationStepOne";
 
 const handleInitialConsultationSubmit = (navigation, data) => {
-  db.transaction((tx) => {
-    tx.executeSql(
-      "insert into InititalConsultation (horseName, clientSurname, dateOfCastration, isLessThanTwo, ageAboveTwo, weight, breed, technique) values (?, ?, ?, ?, ?, ?, ?, ?)",
-      [
-        data?.horseName,
-        data?.clientSurname,
-        data?.dateOfCastration,
-        data?.isLessThanTwo,
-        data?.ageAboveTwo,
-        data?.weight,
-        data?.breed,
-        data?.technique,
-      ],
-      (_, result) => {
-        result.rowsAffected > 0
-          ? Toast.show({
-              type: "success",
-              text1: "Initial Consultation record created",
-            })
-          : Toast.show({
-              type: "error",
-              text1: "Initial Consultation record created",
-            });
-      },
-      (_, err) => console.log("Error creating table", err)
-    );
-  });
+  queryBase.insertData("InitialConsultation", data);
 
-  InitialConsulationStore.replace({
-    horseName: "",
-    clientSurname: "",
-    dateOfCastration: "",
-    isLessThanTwo: false,
-    ageAboveTwo: 0,
-    weight: 0,
-    breed: "",
-    technique: "",
-    progress: 0,
-  });
+  InitialConsulationStore.replace(ICStoreInitialState);
   navigation.reset({
     index: 0,
     routes: [{ name: "Login" }],
@@ -62,7 +25,6 @@ const info = {
     "Cob",
     "Pony",
     "Miniature breed",
-    "Donkey",
     "Donkey",
   ],
   technique: [

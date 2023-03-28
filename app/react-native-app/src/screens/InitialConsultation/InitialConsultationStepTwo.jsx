@@ -1,12 +1,12 @@
 import { View } from "react-native";
 import { Formik } from "formik";
 import { Picker } from "@react-native-picker/picker";
-import { InitialConsulationStore } from "store/store";
 import { CheckBox } from "components/CheckBox";
 import { Layout } from "./InitialConsultationStepOne";
 import { BasicPicker } from "components/BasicPicker";
 import { InputField } from "components/InputField";
 import { FixedStepButton } from "./InitialConsultationStepOne";
+import { InitialConsulationStore } from "store/store";
 
 const AgePickerItem = () => {
   const minAge = 3;
