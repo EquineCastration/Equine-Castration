@@ -9,6 +9,7 @@ import { InitialConsultationStepTwo } from "screens/InitialConsultation/InitialC
 import { InitialConsultationStepThree } from "screens/InitialConsultation/InitialConsultationStepThree";
 import Toast from "react-native-toast-message";
 import { LinearGradient } from "expo-linear-gradient";
+import { Text } from "react-native";
 
 const Stack = createNativeStackNavigator();
 
@@ -32,8 +33,12 @@ export default function App() {
                   colors={["#38B2AC", "#1A365D"]}
                   start={{ x: 0, y: 0 }}
                   end={{ x: 1, y: 1 }}
-                  style={{ flex: 1 }}
-                />
+                  className="flex-1 justify-end items-center"
+                >
+                  <Text className="text-primary-50 font-light text-3xl mb-4">
+                    Equine Castration
+                  </Text>
+                </LinearGradient>
               ),
               ...commontHeaderOptions,
             }}

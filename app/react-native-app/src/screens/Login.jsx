@@ -27,7 +27,6 @@ export const Login = ({ navigation }) => {
       icon: "file-tray-full-outline",
     },
   ];
-
   return (
     <SafeAreaView className="flex-1 items-center justify-center space-y-5 bg-white">
       <Text className="text-5xl font-thin text-center">{welcomeTxt}</Text>
