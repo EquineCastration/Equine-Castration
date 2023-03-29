@@ -2,8 +2,8 @@
 "Area: CI":
   - .azure/pipelines/**/*
   - .github/**/*
-"Area: Mobile Frontend":
-  - app/mobile-client-app/**/*
+"Area: Mobile Frontend (React Native)":
+  - app/react-native-app/**/*
 "Area: Backend API":
   - app/EquineCastration/**/*
 
