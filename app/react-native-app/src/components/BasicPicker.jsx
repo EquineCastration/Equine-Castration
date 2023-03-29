@@ -12,14 +12,14 @@ export const BasicPicker = ({
   return (
     <View
       style={{
-        marginVertical: 15,
+        marginVertical: 10,
       }}
     >
       <Text
         style={{
           fontSize: font.size["md"],
           color: colors.primary[700],
-          marginVertical: 8,
+          marginVertical: 2,
         }}
       >
         {label}
@@ -27,6 +27,7 @@ export const BasicPicker = ({
       <View
         style={{
           backgroundColor: colors.primary[100],
+          marginVertical: 10,
         }}
       >
         <Picker

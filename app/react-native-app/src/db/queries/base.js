@@ -71,7 +71,6 @@ export const queryBase = {
   },
 
   addMissingColumns: (table_name, columnsStore) => {
-    let res;
     db.transaction((tx) => {
       tx.executeSql(
         `pragma table_info('${table_name}');`,
@@ -92,13 +91,11 @@ export const queryBase = {
             const sql = `alter table ${table_name} add column ${columnDefinitions.join(
               ", "
             )}`;
-
-            tx.executeSql(sql);
+            -tx.executeSql(sql);
           }
         },
-        (_, error) => (res = { error: true, errMsg: error })
+        (_, error) => console.log("Error", error)
       );
     });
-    return res;
   },
 };

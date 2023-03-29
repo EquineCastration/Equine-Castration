@@ -3,10 +3,15 @@ import { Formik } from "formik";
 import { DatePickerField } from "components/DatePickerField";
 import { ProgressBar } from "components/ProgressBar";
 import { BasicHeader } from "components/BasicHeader";
-import { InitialConsulationStore, ICStoreInitialState } from "store/store";
-import { SafeAreaView, View, Button, ScrollView } from "react-native";
+import {
+  InitialConsultationStore,
+  ICStoreInitialState,
+  InitialConsultationForm,
+} from "store/store";
+import { SafeAreaView, View, ScrollView } from "react-native";
 import { queryBase } from "db/queries/base";
 import { InputField } from "components/InputField";
+import { BasicTouchableOpacity } from "components/BasicTouchableOpacity";
 
 export const Layout = ({
   children,
@@ -29,13 +34,15 @@ export const Layout = ({
           primaryTxt="Initial Consultation"
           secondaryTxt={secondaryTxt}
         />
-        {children}
+        <View style={{ marginVertical: 7, marginHorizontal: 5 }}>
+          {children}
+        </View>
       </ScrollView>
     </SafeAreaView>
   );
 };
 
-export const FixedStepButton = ({ onPress, title, progress }) => {
+export const FixedStepButton = ({ onPress, title = "Next", progress }) => {
   return (
     <View
       style={{
@@ -43,9 +50,21 @@ export const FixedStepButton = ({ onPress, title, progress }) => {
         justifyContent: "flex-end",
       }}
     >
-      <Button onPress={onPress} title={title} />
+      <BasicTouchableOpacity
+        onPress={onPress}
+        title={title}
+        paddingVertical={3}
+      />
       <ProgressBar progress={progress} />
     </View>
+  );
+};
+
+export const InitialValues = (keysArr, fields, store) => {
+  return Object.fromEntries(
+    Object.keys(fields)
+      .filter((key) => keysArr.includes(key))
+      .map((key) => [key, store[key]])
   );
 };
 
@@ -55,24 +74,29 @@ export const InitialConsultationStepOne = ({ navigation }) => {
     queryBase.createTable("InitialConsultation", ICStoreInitialState); // Create table if not exists
   }, []);
 
-  const data = InitialConsulationStore.useState();
+  const keysArr = ["horseName", "clientSurname", "dateOfCastration"];
+  const fields = InitialConsultationForm.fields;
+  const initialValues = InitialValues(
+    keysArr,
+    fields,
+    InitialConsultationStore.useState()
+  );
 
   return (
     <Layout>
       <Formik
-        enableReinitialize
-        initialValues={{
-          horseName: data?.horseName || "",
-          clientSurname: data?.clientSurname || "",
-          dateOfCastration: data?.dateOfCastration || "",
-        }}
+        initialValues={initialValues}
+        // adding values to global store
+        // each step/stage submission acts as temp submission
+        // only after the confirmation screen, data is added to the db
+        // this allow user to navigate back and forth between the screens/forms
         onSubmit={(values) => {
-          // adding values to global store
-          InitialConsulationStore.update((s) => {
+          InitialConsultationStore.update((s) => {
             s.horseName = values.horseName;
             s.clientSurname = values.clientSurname;
             s.dateOfCastration = values.dateOfCastration;
           });
+          navigation.navigate("InitialConsultationStepTwo");
         }}
       >
         {({ handleChange, handleSubmit, values, setFieldValue }) => (
@@ -81,33 +105,26 @@ export const InitialConsultationStepOne = ({ navigation }) => {
               flex: 1,
             }}
           >
-            <View style={{ marginVertical: 5 }}>
+            <View>
               <InputField
-                label="Horse name:"
+                label={fields.horseName.label}
                 onChangeText={handleChange("horseName")}
                 value={values?.horseName}
               />
               <InputField
-                label="Client surname:"
+                label={fields.clientSurname.label}
                 onChangeText={handleChange("clientSurname")}
                 value={values?.clientSurname}
               />
               <DatePickerField
                 name="dateOfCastration"
-                label="Date of castration:"
+                label={fields.dateOfCastration.label}
                 type="date"
                 value={values?.dateOfCastration}
                 setFieldValue={setFieldValue}
               />
             </View>
-            <FixedStepButton
-              onPress={() => {
-                handleSubmit();
-                navigation.navigate("InitialConsultationStepTwo");
-              }}
-              title="Next"
-              progress="25%"
-            />
+            <FixedStepButton onPress={handleSubmit} progress="25%" />
           </View>
         )}
       </Formik>

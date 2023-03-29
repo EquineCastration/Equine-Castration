@@ -11,7 +11,7 @@ export const CheckBox = ({
   return (
     <View
       style={{
-        marginVertical: 10,
+        marginVertical: 15,
         flexDirection: "row",
         alignItems: "center",
       }}

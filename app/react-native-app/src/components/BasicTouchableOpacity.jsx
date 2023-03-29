@@ -5,10 +5,11 @@ import { font, colors } from "style/style";
 export const BasicTouchableOpacity = ({
   title,
   onPress,
-  bgColor = colors.secondary[900],
+  bgColor = colors.primary[800],
   color = colors.primary[50],
   icon, // only accepts ionicons
   btnWidth = "100%",
+  paddingVertical = 8,
 }) => {
   return (
     <TouchableOpacity
@@ -18,7 +19,7 @@ export const BasicTouchableOpacity = ({
         flexDirection: "row",
         justifyContent: "center",
         alignItems: "center",
-        paddingVertical: 15,
+        paddingVertical: paddingVertical,
         backgroundColor: bgColor,
       }}
       onPress={onPress}

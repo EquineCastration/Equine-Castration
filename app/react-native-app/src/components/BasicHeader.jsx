@@ -8,7 +8,13 @@ export const BasicHeader = ({
   secondaryColor = colors.primary[500],
 }) => {
   return (
-    <View>
+    <View
+      style={{
+        borderBottomColor: colors.primary[200],
+        borderBottomWidth: 1,
+        paddingBottom: 8,
+      }}
+    >
       <Text
         style={{
           color: primaryColor,

@@ -5,8 +5,8 @@ import { CheckBox } from "components/CheckBox";
 import { Layout } from "./InitialConsultationStepOne";
 import { BasicPicker } from "components/BasicPicker";
 import { InputField } from "components/InputField";
-import { FixedStepButton } from "./InitialConsultationStepOne";
-import { InitialConsulationStore } from "store/store";
+import { FixedStepButton, InitialValues } from "./InitialConsultationStepOne";
+import { InitialConsultationStore, InitialConsultationForm } from "store/store";
 
 const AgePickerItem = () => {
   const minAge = 3;
@@ -20,22 +20,24 @@ const AgePickerItem = () => {
 };
 
 export const InitialConsultationStepTwo = ({ navigation }) => {
-  const data = InitialConsulationStore.useState();
-
+  const keysArr = ["isLessThanTwo", "ageAboveTwo", "weight"];
+  const fields = InitialConsultationForm.fields;
+  const initialValues = InitialValues(
+    keysArr,
+    fields,
+    InitialConsultationStore.useState()
+  );
   return (
     <Layout>
       <Formik
-        initialValues={{
-          isLessThanTwo: data?.isLessThanTwo || false,
-          ageAboveTwo: data?.ageAboveTwo || 0,
-          weight: data?.weight || 0,
-        }}
+        initialValues={initialValues}
         onSubmit={(values) => {
-          InitialConsulationStore.update((s) => {
+          InitialConsultationStore.update((s) => {
             s.isLessThanTwo = values.isLessThanTwo;
-            values.isLessThanTwo && (s.ageAboveTwo = values.ageAboveTwo);
+            !values.isLessThanTwo && (s.ageAboveTwo = values.ageAboveTwo);
             s.weight = values.weight;
           });
+          navigation.navigate("InitialConsultationStepThree");
         }}
       >
         {({ handleSubmit, values, setFieldValue }) => (
@@ -44,18 +46,18 @@ export const InitialConsultationStepTwo = ({ navigation }) => {
               flex: 1,
             }}
           >
-            <View style={{ marginVertical: 5 }}>
+            <View>
               <CheckBox
-                label="Is horse less than 2 years old ?"
+                label={fields.isLessThanTwo.label}
                 value={values?.isLessThanTwo}
                 onValueChange={(isLessThanTwo) => {
                   setFieldValue("isLessThanTwo", isLessThanTwo);
                   !isLessThanTwo && setFieldValue("ageAboveTwo", 0);
                 }}
               />
-              {values?.isLessThanTwo && (
+              {!values?.isLessThanTwo && (
                 <BasicPicker
-                  label="Age:"
+                  label={fields.ageAboveTwo.label}
                   fieldName="ageAboveTwo"
                   value={values?.ageAboveTwo}
                   setFieldValue={setFieldValue}
@@ -64,7 +66,7 @@ export const InitialConsultationStepTwo = ({ navigation }) => {
                 </BasicPicker>
               )}
               <InputField
-                label="Weight:"
+                label={fields.weight.label}
                 onChangeText={(value) =>
                   setFieldValue(
                     "weight",
@@ -75,14 +77,7 @@ export const InitialConsultationStepTwo = ({ navigation }) => {
                 keyboardType="numeric"
               />
             </View>
-            <FixedStepButton
-              onPress={() => {
-                handleSubmit();
-                navigation.navigate("InitialConsultationStepThree");
-              }}
-              title="Next"
-              progress="55%"
-            />
+            <FixedStepButton onPress={handleSubmit} progress="25%" />
           </View>
         )}
       </Formik>

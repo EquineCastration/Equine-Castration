@@ -7,8 +7,8 @@ import { FixedStepButton, InitialValues } from "./InitialConsultationStepOne";
 import { Layout } from "./InitialConsultationStepOne";
 import { InputField } from "components/InputField";
 
-export const InitialConsultationStepThree = ({ navigation }) => {
-  const keysArr = ["breed", "technique"];
+export const InitialConsultationStepFour = ({ navigation }) => {
+  const keysArr = ["skinClosure", "restraint"];
   const fields = InitialConsultationForm.fields;
   const initialValues = InitialValues(
     keysArr,
@@ -19,15 +19,17 @@ export const InitialConsultationStepThree = ({ navigation }) => {
   return (
     <Layout>
       <Formik
-        initialValues={{ ...initialValues, otherTechnique: "" }}
+        initialValues={{
+          ...initialValues,
+          otherSkinClosure: "",
+          restraintStanding: "",
+        }}
         onSubmit={(values) => {
           InitialConsultationStore.update((s) => {
-            s.breed = values.breed;
-            s.technique = values.technique.startsWith("Other technique")
-              ? "Other - " + values.otherTechnique // if other option is selected
-              : values.technique;
+            s.skinClosure = values.skinClosure;
+            s.restraint = values.restraint;
           });
-          navigation.navigate("InitialConsultationStepFour");
+          navigation.navigate("InitialConsultationConfirmation");
         }}
       >
         {({ handleSubmit, values, setFieldValue }) => (
@@ -38,35 +40,42 @@ export const InitialConsultationStepThree = ({ navigation }) => {
           >
             <View>
               <BasicPicker
-                label={fields.breed.label}
-                fieldName="breed"
-                value={values?.breed}
+                label={fields.skinClosure.label}
+                fieldName="skinClosure"
+                value={values?.skinClosure}
                 setFieldValue={setFieldValue}
               >
-                {fields.breed.options.map((item, index) => (
+                {fields.skinClosure.options.map((item, index) => (
                   <Picker.Item key={index} label={item} value={item} />
                 ))}
               </BasicPicker>
+
+              {values?.skinClosure.startsWith("Other") && (
+                <InputField
+                  label={values.skinClosure}
+                  value={values?.otherSkinClosure}
+                />
+              )}
 
               <BasicPicker
-                label={fields.technique.label}
-                fieldName="technique"
-                value={values?.technique}
+                label={fields.restraint.label}
+                fieldName="restraint"
+                value={values?.restraint}
                 setFieldValue={setFieldValue}
               >
-                {fields.technique.options.map((item, index) => (
-                  <Picker.Item key={index} label={item} value={item} />
+                {fields.restraint.options((item, index) => (
+                  <Picker.Item key={index} label={item.option} value={item} />
                 ))}
               </BasicPicker>
 
-              {values?.technique.startsWith("Other technique") && (
+              {values?.restraint === "Standing" && (
                 <InputField
-                  label={values.technique}
-                  value={values?.otherTechnique}
+                  label={values.skinClosure}
+                  value={values?.otherSkinClosure}
                 />
               )}
             </View>
-            <FixedStepButton onPress={handleSubmit} progress="45%" />
+            <FixedStepButton onPress={handleSubmit} progress="65%" />
           </View>
         )}
       </Formik>

@@ -1,4 +1,4 @@
-import { InitialConsulationStore, ICStoreInitialState } from "store/store";
+import { InitialConsultationStore, ICStoreInitialState } from "store/store";
 import { Layout } from "./InitialConsultationStepOne";
 import { Text, View } from "react-native";
 import { FixedStepButton } from "./InitialConsultationStepOne";
@@ -7,7 +7,7 @@ import { font } from "style/style";
 
 const handleInitialConsultationSubmit = (navigation, data) => {
   queryBase.insertData("InitialConsultation", data);
-  InitialConsulationStore.replace(ICStoreInitialState);
+  InitialConsultationStore.replace(ICStoreInitialState);
   navigation.reset({
     index: 0,
     routes: [{ name: "Login" }],
@@ -15,7 +15,7 @@ const handleInitialConsultationSubmit = (navigation, data) => {
 };
 
 export const Confirmation = ({ navigation }) => {
-  const data = InitialConsulationStore.useState();
+  const data = InitialConsultationStore.useState();
 
   return (
     <Layout secondaryTxt="Confirm the information">
