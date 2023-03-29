@@ -1,6 +1,9 @@
 import { Store } from "pullstate";
 
 export const InitialConsultationForm = {
+  // The followings are relevant elements for InitialConsultation Form
+  // These are being used in the form
+  // as field name, field label, field options and in formik initial values
   title: "Initial Consultation",
   fields: {
     horseName: {
@@ -87,10 +90,12 @@ export const InitialConsultationForm = {
 };
 
 // Grab initial state/default values
+// E.g. { horseName : "" , clientSurname : "" ....}
 const ICStoreInitialState = Object.fromEntries(
   Object.entries(InitialConsultationForm.fields).map(
     ([key, { defaultValue }]) => [key, defaultValue]
   )
 );
 
+// Create a globally available store
 export const InitialConsultationStore = new Store(ICStoreInitialState);
