@@ -1,6 +1,7 @@
 import { BasicTouchableOpacity } from "components/BasicTouchableOpacity";
 import { SafeAreaView, View, Text } from "react-native";
 import { colors, font } from "style/style";
+import { ResetInitialConsultationStore } from "store/store";
 
 export const Login = ({ navigation }) => {
   // should be loaded as screen to get navigation prop
@@ -66,7 +67,10 @@ export const Login = ({ navigation }) => {
                 bgColor={option.bgColor}
                 onPress={
                   option.navigate &&
-                  (() => navigation.navigate(option.navigate))
+                  (() => {
+                    navigation.navigate(option.navigate);
+                    ResetInitialConsultationStore(); // clear existing form data
+                  })
                 }
               />
             );

@@ -69,7 +69,7 @@ export const InitialConsultationForm = {
       defaultValue: "",
     },
     skinClosure: {
-      label: "Sking closure",
+      label: "Skin closure",
       options: ["Open", "Sutures", "Staples", "Sub-cut", "Other"],
       defaultValue: "",
     },
@@ -77,11 +77,11 @@ export const InitialConsultationForm = {
       label: "Restraint",
       options: [
         {
-          option: "Standing",
-          labels: ["Xylazine", "Detomidine", "Detomidine"],
+          option: "GA",
         },
         {
-          option: "GA",
+          option: "Standing",
+          labels: ["Xylazine", "Detomidine", "Romifidine"],
         },
       ],
       defaultValue: "",
@@ -99,3 +99,6 @@ const ICStoreInitialState = Object.fromEntries(
 
 // Create a globally available store
 export const InitialConsultationStore = new Store(ICStoreInitialState);
+
+export const ResetInitialConsultationStore = () =>
+  InitialConsultationStore.replace(ICStoreInitialState);

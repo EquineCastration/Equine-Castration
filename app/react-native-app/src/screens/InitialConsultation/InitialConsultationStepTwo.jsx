@@ -24,7 +24,6 @@ export const InitialConsultationStepTwo = ({ navigation }) => {
   const fields = InitialConsultationForm.fields;
   const initialValues = InitialValues(
     keysArr,
-    fields,
     InitialConsultationStore.useState()
   );
   return (
@@ -77,7 +76,7 @@ export const InitialConsultationStepTwo = ({ navigation }) => {
                 keyboardType="numeric"
               />
             </View>
-            <FixedStepButton onPress={handleSubmit} progress="25%" />
+            <FixedStepButton onPress={() => handleSubmit()} progress="25%" />
           </View>
         )}
       </Formik>

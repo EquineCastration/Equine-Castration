@@ -60,9 +60,9 @@ export const FixedStepButton = ({ onPress, title = "Next", progress }) => {
   );
 };
 
-export const InitialValues = (keysArr, fields, store) => {
+export const InitialValues = (keysArr, store) => {
   return Object.fromEntries(
-    Object.keys(fields)
+    Object.keys(store)
       .filter((key) => keysArr.includes(key))
       .map((key) => [key, store[key]])
   );
@@ -78,7 +78,6 @@ export const InitialConsultationStepOne = ({ navigation }) => {
   const fields = InitialConsultationForm.fields;
   const initialValues = InitialValues(
     keysArr,
-    fields,
     InitialConsultationStore.useState()
   );
 
@@ -124,7 +123,7 @@ export const InitialConsultationStepOne = ({ navigation }) => {
                 setFieldValue={setFieldValue}
               />
             </View>
-            <FixedStepButton onPress={handleSubmit} progress="25%" />
+            <FixedStepButton onPress={() => handleSubmit()} progress="15%" />
           </View>
         )}
       </Formik>

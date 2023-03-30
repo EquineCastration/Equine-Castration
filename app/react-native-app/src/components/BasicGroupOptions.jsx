@@ -9,15 +9,21 @@ export const BasicGroupOptions = ({
   fieldName,
   setFieldValue,
   options = ["Option 1", "Option 2"],
-
+  selectedIndex, // this allows correct option is selected
   borderColor = colors.primary[200],
   color = colors.primary[700],
   selectecBgColor = colors.secondary[700],
   selectedColor = colors.primary[50],
-
   paddingVertical = 2,
 }) => {
-  const [selected, setSelected] = useState(options[0]);
+  console.log(selectedIndex);
+  const [selected, setSelected] = useState(
+    // ensures only valid index is used
+    selectedIndex >= 0 && selectedIndex < options.length
+      ? options[selectedIndex]
+      : options[0]
+  );
+
   useEffect(() => {
     setFieldValue && setFieldValue(fieldName, selected);
   }, [selected]);

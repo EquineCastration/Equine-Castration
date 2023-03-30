@@ -14,7 +14,6 @@ export const InitialConsultationStepFour = ({ navigation }) => {
   const fields = InitialConsultationForm.fields;
   const initialValues = InitialValues(
     keysArr,
-    fields,
     InitialConsultationStore.useState()
   );
 
@@ -27,8 +26,6 @@ export const InitialConsultationStepFour = ({ navigation }) => {
             s.locationTesticleLeft = values.locationTesticleLeft;
             s.locationTesticleRight = values.locationTesticleRight;
             s.ligatureUsed = values.ligatureUsed;
-            s.skinClosure = values.skinClosure;
-            s.restraint = values.restraint;
           });
           navigation.navigate("InitialConsultationStepFive");
         }}
@@ -64,7 +61,7 @@ export const InitialConsultationStepFour = ({ navigation }) => {
                 options={fields.ligatureUsed.options}
               />
             </View>
-            <FixedStepButton onPress={handleSubmit} progress="65%" />
+            <FixedStepButton onPress={() => handleSubmit()} progress="65%" />
           </View>
         )}
       </Formik>

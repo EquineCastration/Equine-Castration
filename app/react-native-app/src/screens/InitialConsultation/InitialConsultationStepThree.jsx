@@ -12,7 +12,6 @@ export const InitialConsultationStepThree = ({ navigation }) => {
   const fields = InitialConsultationForm.fields;
   const initialValues = InitialValues(
     keysArr,
-    fields,
     InitialConsultationStore.useState()
   );
 
@@ -30,7 +29,7 @@ export const InitialConsultationStepThree = ({ navigation }) => {
           navigation.navigate("InitialConsultationStepFour");
         }}
       >
-        {({ handleSubmit, values, setFieldValue }) => (
+        {({ handleSubmit, values, setFieldValue, handleChange }) => (
           <View
             style={{
               flex: 1,
@@ -63,10 +62,11 @@ export const InitialConsultationStepThree = ({ navigation }) => {
                 <InputField
                   label={values.technique}
                   value={values?.otherTechnique}
+                  onChangeText={handleChange("otherTechnique")}
                 />
               )}
             </View>
-            <FixedStepButton onPress={handleSubmit} progress="45%" />
+            <FixedStepButton onPress={() => handleSubmit()} progress="45%" />
           </View>
         )}
       </Formik>

@@ -6,15 +6,29 @@ import { BasicPicker } from "components/BasicPicker";
 import { FixedStepButton, InitialValues } from "./InitialConsultationStepOne";
 import { Layout } from "./InitialConsultationStepOne";
 import { InputField } from "components/InputField";
+import { BasicGroupOptions } from "components/BasicGroupOptions";
 
-export const InitialConsultationStepFour = ({ navigation }) => {
+export const InitialConsultationStepFive = ({ navigation }) => {
   const keysArr = ["skinClosure", "restraint"];
   const fields = InitialConsultationForm.fields;
   const initialValues = InitialValues(
     keysArr,
-    fields,
     InitialConsultationStore.useState()
   );
+
+  const standingOptions =
+    (
+      fields.restraint.options.find(
+        // if no match (option 'standing') then return empty object
+        (restraint) => restraint.option === "Standing"
+      ) || {}
+    ).labels || []; // if match return array labels, else an empty array
+
+  const initialRestraintStanding =
+    // if restraint is 'standing' then return standing restraint value
+    initialValues.restraint.startsWith("Standing") &&
+    // compare ending with existing standing restraint options
+    standingOptions.find((value) => initialValues.restraint.endsWith(value));
 
   return (
     <Layout>
@@ -22,12 +36,16 @@ export const InitialConsultationStepFour = ({ navigation }) => {
         initialValues={{
           ...initialValues,
           otherSkinClosure: "",
-          restraintStanding: "",
+          restraintStanding: initialRestraintStanding || "",
         }}
         onSubmit={(values) => {
+          console.log(values);
           InitialConsultationStore.update((s) => {
             s.skinClosure = values.skinClosure;
-            s.restraint = values.restraint;
+            s.restraint =
+              values.restraint === "Standing" && values.restraintStanding
+                ? `${values.restraint} - ${values.restraintStanding}` // concat if standing option selected
+                : values.restraint;
           });
           navigation.navigate("InitialConsultationConfirmation");
         }}
@@ -57,25 +75,37 @@ export const InitialConsultationStepFour = ({ navigation }) => {
                 />
               )}
 
-              <BasicPicker
+              <BasicGroupOptions
                 label={fields.restraint.label}
                 fieldName="restraint"
                 value={values?.restraint}
+                options={fields.restraint.options.map(
+                  (restraint) => restraint.option
+                )}
                 setFieldValue={setFieldValue}
-              >
-                {fields.restraint.options((item, index) => (
-                  <Picker.Item key={index} label={item.option} value={item} />
-                ))}
-              </BasicPicker>
+                selectedIndex={
+                  values?.restraint &&
+                  fields.restraint.options.findIndex(
+                    (restraint) => values.restraint.startsWith(restraint.option) // helps in matching for concatenated value
+                  )
+                }
+              />
 
-              {values?.restraint === "Standing" && (
-                <InputField
-                  label={values.skinClosure}
-                  value={values?.otherSkinClosure}
+              {values?.restraint.startsWith("Standing") && (
+                <BasicGroupOptions
+                  label="Standing restraint"
+                  fieldName="restraintStanding"
+                  options={standingOptions}
+                  setFieldValue={setFieldValue}
+                  selectedIndex={
+                    standingOptions.findIndex(
+                      (option) => values.restraintStanding === option
+                    ) || 0
+                  }
                 />
               )}
             </View>
-            <FixedStepButton onPress={handleSubmit} progress="65%" />
+            <FixedStepButton onPress={() => handleSubmit()} progress="80%" />
           </View>
         )}
       </Formik>
