@@ -7,6 +7,7 @@ import { InitialConsultationStepTwo } from "screens/InitialConsultation/InitialC
 import { InitialConsultationStepThree } from "screens/InitialConsultation/InitialConsultationStepThree";
 import { InitialConsultationStepFour } from "screens/InitialConsultation/InitialConsultationStepFour";
 import { InitialConsultationStepFive } from "screens/InitialConsultation/InitialConsultationStepFive";
+import { InitialConsultationStepSix } from "screens/InitialConsultation/InitialConsultationStepSix";
 import { Confirmation } from "screens/InitialConsultation/Confirmation";
 import Toast from "react-native-toast-message";
 import { BgGradient } from "components/BgGradient";
@@ -74,6 +75,10 @@ export default function App() {
             <Stack.Screen
               name="InitialConsultationStepFive"
               component={InitialConsultationStepFive}
+            />
+            <Stack.Screen
+              name="InitialConsultationStepSix"
+              component={InitialConsultationStepSix}
             />
             <Stack.Screen
               name="InitialConsultationConfirmation"

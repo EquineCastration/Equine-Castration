@@ -86,6 +86,16 @@ export const InitialConsultationForm = {
       ],
       defaultValue: "",
     },
+    environment: {
+      label: "Environment",
+      options: ["Hot", "Wet", "Muddy", "Other"],
+      defaultValue: "",
+    },
+    location: {
+      label: "Location",
+      options: ["Stable", "Field", "School", "Theatre", "Other"],
+      defaultValue: "",
+    },
   },
 };
 

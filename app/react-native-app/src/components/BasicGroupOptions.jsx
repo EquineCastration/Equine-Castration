@@ -16,12 +16,11 @@ export const BasicGroupOptions = ({
   selectedColor = colors.primary[50],
   paddingVertical = 2,
 }) => {
-  console.log(selectedIndex);
   const [selected, setSelected] = useState(
     // ensures only valid index is used
     selectedIndex >= 0 && selectedIndex < options.length
       ? options[selectedIndex]
-      : options[0]
+      : options[0] // default select index 0
   );
 
   useEffect(() => {

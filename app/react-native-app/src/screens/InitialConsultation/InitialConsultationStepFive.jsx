@@ -39,7 +39,6 @@ export const InitialConsultationStepFive = ({ navigation }) => {
           restraintStanding: initialRestraintStanding || "",
         }}
         onSubmit={(values) => {
-          console.log(values);
           InitialConsultationStore.update((s) => {
             s.skinClosure = values.skinClosure;
             s.restraint =
@@ -47,7 +46,7 @@ export const InitialConsultationStepFive = ({ navigation }) => {
                 ? `${values.restraint} - ${values.restraintStanding}` // concat if standing option selected
                 : values.restraint;
           });
-          navigation.navigate("InitialConsultationConfirmation");
+          navigation.navigate("InitialConsultationStepSix");
         }}
       >
         {({ handleSubmit, values, setFieldValue }) => (
@@ -78,30 +77,24 @@ export const InitialConsultationStepFive = ({ navigation }) => {
               <BasicGroupOptions
                 label={fields.restraint.label}
                 fieldName="restraint"
-                value={values?.restraint}
                 options={fields.restraint.options.map(
                   (restraint) => restraint.option
                 )}
                 setFieldValue={setFieldValue}
-                selectedIndex={
-                  values?.restraint &&
-                  fields.restraint.options.findIndex(
-                    (restraint) => values.restraint.startsWith(restraint.option) // helps in matching for concatenated value
-                  )
-                }
+                selectedIndex={fields.restraint.options.findIndex(
+                  (o) => values.restraint.startsWith(o.option) // helps in matching for concatenated value
+                )}
               />
 
-              {values?.restraint.startsWith("Standing") && (
+              {values?.restraint?.startsWith("Standing") && (
                 <BasicGroupOptions
                   label="Standing restraint"
                   fieldName="restraintStanding"
                   options={standingOptions}
                   setFieldValue={setFieldValue}
-                  selectedIndex={
-                    standingOptions.findIndex(
-                      (option) => values.restraintStanding === option
-                    ) || 0
-                  }
+                  selectedIndex={standingOptions.findIndex(
+                    (option) => values.restraintStanding === option
+                  )}
                 />
               )}
             </View>

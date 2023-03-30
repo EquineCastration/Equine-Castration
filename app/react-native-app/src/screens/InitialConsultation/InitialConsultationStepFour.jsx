@@ -40,25 +40,31 @@ export const InitialConsultationStepFour = ({ navigation }) => {
               <BasicGroupOptions
                 label={fields.locationTesticleLeft.label}
                 fieldName="locationTesticleLeft"
-                value={values?.locationTesticleLeft}
                 setFieldValue={setFieldValue}
                 options={fields.locationTesticleLeft.options}
+                selectedIndex={fields.locationTesticleLeft.options.findIndex(
+                  (o) => values.locationTesticleLeft.startsWith(o)
+                )}
               />
 
               <BasicGroupOptions
                 label={fields.locationTesticleRight.label}
                 fieldName="locationTesticleRight"
-                value={values?.locationTesticleRight}
                 setFieldValue={setFieldValue}
                 options={fields.locationTesticleRight.options}
+                selectedIndex={fields.locationTesticleRight.options.findIndex(
+                  (o) => values.locationTesticleRight.startsWith(o)
+                )}
               />
 
               <BasicGroupOptions
                 label={fields.ligatureUsed.label}
                 fieldName="ligatureUsed"
-                value={values?.ligatureUsed}
                 setFieldValue={setFieldValue}
                 options={fields.ligatureUsed.options}
+                selectedIndex={fields.ligatureUsed.options.findIndex((o) =>
+                  values.ligatureUsed.startsWith(o)
+                )}
               />
             </View>
             <FixedStepButton onPress={() => handleSubmit()} progress="65%" />

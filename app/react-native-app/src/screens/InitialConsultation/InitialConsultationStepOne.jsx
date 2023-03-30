@@ -61,10 +61,17 @@ export const FixedStepButton = ({ onPress, title = "Next", progress }) => {
 };
 
 export const InitialValues = (keysArr, store) => {
+  // returns a new object containing selective key-value pairss
+  // 'keysArr' is an string array of keys to look for in the 'store' object
+
   return Object.fromEntries(
     Object.keys(store)
+      // filter the object keys
       .filter((key) => keysArr.includes(key))
-      .map((key) => [key, store[key]])
+      // iterate through filtered keys
+      // create an array of single key-value (two elements) pair object [{key1: value},{key2: value}]
+      // Object.fromEntries creates a new object using key and value of the array item
+      .map((key) => ({ [key]: store[key] })) // this works as well [key, store[key]]
   );
 };
 
@@ -74,8 +81,14 @@ export const InitialConsultationStepOne = ({ navigation }) => {
     queryBase.createTable("InitialConsultation", ICStoreInitialState); // Create table if not exists
   }, []);
 
-  const keysArr = ["horseName", "clientSurname", "dateOfCastration"];
+  const keysArr = ["horseName", "clientSurname", "dateOfCastration"]; // these keys matches the keys set in the store
   const fields = InitialConsultationForm.fields;
+
+  // Since we have already declared default value for relevant fields,
+  // we can pass that and
+  // relvant field names (this should match with store obj keys) as an array
+  // the following function then returns default values
+  // which can be used as initial values in formik fields
   const initialValues = InitialValues(
     keysArr,
     InitialConsultationStore.useState()
