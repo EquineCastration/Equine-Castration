@@ -1,3 +1,4 @@
+import { useField } from "formik";
 import { useState } from "react";
 import { View, Text, TextInput } from "react-native";
 import { colors, font } from "style/style";
@@ -13,6 +14,7 @@ export const InputField = ({
   pwd,
   ...props
 }) => {
+  const [field, meta] = useField(props);
   const [isFocused, setIsFocused] = useState(false);
 
   return (
@@ -31,19 +33,26 @@ export const InputField = ({
         {label}
       </Text>
 
-      <TextInput
-        placeholder={placeholder}
-        onFocus={() => setIsFocused(true)}
-        onBlur={() => setIsFocused(false)}
-        style={{
-          borderWidth: 1,
-          borderRadius: 2,
-          padding: 5,
-          borderColor: isFocused ? inputActiveBorderColor : inputBorderColor,
-          marginVertical: 10,
-        }}
-        {...props}
-      />
+      <View style={{ marginVertical: 10 }}>
+        <TextInput
+          placeholder={placeholder}
+          onFocus={() => setIsFocused(true)}
+          onBlur={() => setIsFocused(false)}
+          style={{
+            borderWidth: 1,
+            borderRadius: 2,
+            padding: 5,
+            borderColor: isFocused ? inputActiveBorderColor : inputBorderColor,
+          }}
+          onChangeText={field.onChange(field.name)}
+          value={field.value}
+          {...props}
+        />
+
+        {meta.touched && meta.error ? (
+          <Text style={{ marginTop: 5, color: "red" }}>{meta.error}</Text>
+        ) : null}
+      </View>
     </View>
   );
 };

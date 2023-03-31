@@ -12,6 +12,13 @@ import { queryBase } from "db/queries/base";
 import { InputField } from "components/InputField";
 import { BasicTouchableOpacity } from "components/BasicTouchableOpacity";
 import { DefaultLayout } from "layout/DefaultLayout";
+import { object, string } from "yup";
+
+export const validationSchema = () =>
+  object().shape({
+    horseName: string().required("Horse name required"),
+    clientSurname: string().required("Client surname required"),
+  });
 
 // Standard layout for the multi-step form
 export const Layout = ({
@@ -84,6 +91,7 @@ export const InitialConsultationStepOne = ({ navigation }) => {
     <Layout>
       <Formik
         initialValues={initialValues}
+        validationSchema={validationSchema}
         onSubmit={(values) => {
           // add values to global store
           // each step/stage submission acts as temp submission
@@ -97,22 +105,17 @@ export const InitialConsultationStepOne = ({ navigation }) => {
           navigation.navigate("InitialConsultationStepTwo");
         }}
       >
-        {({ handleChange, handleSubmit, values, setFieldValue }) => (
+        {({ handleSubmit, values, setFieldValue }) => (
           <View
             style={{
               flex: 1,
             }}
           >
             <View>
-              <InputField
-                label={fields.horseName.label}
-                onChangeText={handleChange("horseName")}
-                value={values?.horseName}
-              />
+              <InputField label={fields.horseName.label} name="horseName" />
               <InputField
                 label={fields.clientSurname.label}
-                onChangeText={handleChange("clientSurname")}
-                value={values?.clientSurname}
+                name="clientSurname"
               />
               <DatePickerField
                 name="dateOfCastration"
