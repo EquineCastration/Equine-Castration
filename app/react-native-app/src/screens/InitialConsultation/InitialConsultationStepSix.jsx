@@ -1,8 +1,11 @@
 import { View } from "react-native";
 import { Formik } from "formik";
 import { InitialConsultationStore, InitialConsultationForm } from "store/store";
-import { FixedStepButton, InitialValues } from "./InitialConsultationStepOne";
-import { Layout } from "./InitialConsultationStepOne";
+import {
+  Layout,
+  FixedStepButton,
+  InitialValues,
+} from "./InitialConsultationStepOne";
 import { InputField } from "components/InputField";
 import { BasicGroupOptions } from "components/BasicGroupOptions";
 import { useState } from "react";

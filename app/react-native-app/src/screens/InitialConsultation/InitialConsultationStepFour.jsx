@@ -1,8 +1,11 @@
 import { View } from "react-native";
 import { Formik } from "formik";
 import { InitialConsultationStore, InitialConsultationForm } from "store/store";
-import { FixedStepButton } from "./InitialConsultationStepOne";
-import { Layout, InitialValues } from "./InitialConsultationStepOne";
+import {
+  Layout,
+  InitialValues,
+  FixedStepButton,
+} from "./InitialConsultationStepOne";
 import { BasicGroupOptions } from "components/BasicGroupOptions";
 
 export const InitialConsultationStepFour = ({ navigation }) => {

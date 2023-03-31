@@ -2,44 +2,29 @@ import { useEffect } from "react";
 import { Formik } from "formik";
 import { DatePickerField } from "components/DatePickerField";
 import { ProgressBar } from "components/ProgressBar";
-import { BasicHeader } from "components/BasicHeader";
 import {
   InitialConsultationStore,
   ICStoreInitialState,
   InitialConsultationForm,
 } from "store/store";
-import { SafeAreaView, View, ScrollView } from "react-native";
+import { View, ScrollView } from "react-native";
 import { queryBase } from "db/queries/base";
 import { InputField } from "components/InputField";
 import { BasicTouchableOpacity } from "components/BasicTouchableOpacity";
+import { DefaultLayout } from "layout/DefaultLayout";
 
 // Standard layout for the multi-step form
 export const Layout = ({
   children,
   secondaryTxt = "Input the following information",
+  primaryTxt = "Initial Consultation",
 }) => {
   return (
-    <SafeAreaView
-      style={{
-        flex: 1,
-        backgroundColor: "white",
-      }}
-    >
-      <ScrollView
-        style={{
-          flex: 1,
-          paddingHorizontal: 20,
-        }}
-      >
-        <BasicHeader
-          primaryTxt="Initial Consultation"
-          secondaryTxt={secondaryTxt}
-        />
-        <View style={{ marginVertical: 7, marginHorizontal: 5 }}>
-          {children}
-        </View>
+    <DefaultLayout secondaryTxt={secondaryTxt} primaryTxt={primaryTxt}>
+      <ScrollView style={{ marginVertical: 7, marginHorizontal: 5 }}>
+        {children}
       </ScrollView>
-    </SafeAreaView>
+    </DefaultLayout>
   );
 };
 
@@ -71,9 +56,9 @@ export const InitialValues = (keysArr, store) => {
       // filter the object keys
       .filter((key) => keysArr.includes(key))
       // iterate through filtered keys
-      // create an array of single key-value (two elements) pair object [{key1: value},{key2: value}]
+      // create an array of two elements array with key and value [[key1, value],[key2, value]]
       // Object.fromEntries creates a new object using key and value of the array item
-      .map((key) => ({ [key]: store[key] })) // this works as well [key, store[key]]
+      .map((key) => [key, store[key]])
   );
 };
 

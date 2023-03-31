@@ -2,10 +2,13 @@ import { View } from "react-native";
 import { Formik } from "formik";
 import { Picker } from "@react-native-picker/picker";
 import { CheckBox } from "components/CheckBox";
-import { Layout } from "./InitialConsultationStepOne";
 import { BasicPicker } from "components/BasicPicker";
 import { InputField } from "components/InputField";
-import { FixedStepButton, InitialValues } from "./InitialConsultationStepOne";
+import {
+  FixedStepButton,
+  InitialValues,
+  Layout,
+} from "./InitialConsultationStepOne";
 import { InitialConsultationStore, InitialConsultationForm } from "store/store";
 
 const AgePickerItem = () => {
@@ -26,6 +29,7 @@ export const InitialConsultationStepTwo = ({ navigation }) => {
     keysArr,
     InitialConsultationStore.useState()
   );
+
   return (
     <Layout>
       <Formik

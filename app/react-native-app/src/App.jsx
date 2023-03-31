@@ -13,6 +13,7 @@ import Toast from "react-native-toast-message";
 import { BgGradient } from "components/BgGradient";
 import { Text } from "react-native";
 import { colors, font } from "style/style";
+import { CaseDetail } from "screens/CaseDetail";
 
 const Stack = createNativeStackNavigator();
 
@@ -52,6 +53,12 @@ export default function App() {
           <Stack.Screen
             name="CaseList"
             component={CaseList}
+            options={{ ...commontHeaderOptions }}
+          />
+
+          <Stack.Screen
+            name="CaseDetail"
+            component={CaseDetail}
             options={{ ...commontHeaderOptions }}
           />
 

@@ -6,6 +6,9 @@ export const InitialConsultationForm = {
   // as field name, field label, field options and in formik initial values
   title: "Initial Consultation",
   fields: {
+    id: {
+      label: "Case Id",
+    },
     horseName: {
       label: "Horse name",
       defaultValue: "",
@@ -102,9 +105,9 @@ export const InitialConsultationForm = {
 // Grab initial state/default values
 // E.g. { horseName : "" , clientSurname : "" ....}
 const ICStoreInitialState = Object.fromEntries(
-  Object.entries(InitialConsultationForm.fields).map(
-    ([key, { defaultValue }]) => [key, defaultValue]
-  )
+  Object.entries(InitialConsultationForm.fields)
+    .filter(([key]) => key !== "id") // ignore specific keys
+    .map(([key, { defaultValue }]) => [key, defaultValue])
 );
 
 // Create a globally available store

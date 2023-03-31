@@ -3,8 +3,11 @@ import { Formik } from "formik";
 import { Picker } from "@react-native-picker/picker";
 import { InitialConsultationStore, InitialConsultationForm } from "store/store";
 import { BasicPicker } from "components/BasicPicker";
-import { FixedStepButton, InitialValues } from "./InitialConsultationStepOne";
-import { Layout } from "./InitialConsultationStepOne";
+import {
+  Layout,
+  FixedStepButton,
+  InitialValues,
+} from "./InitialConsultationStepOne";
 import { InputField } from "components/InputField";
 import { BasicGroupOptions } from "components/BasicGroupOptions";
 
