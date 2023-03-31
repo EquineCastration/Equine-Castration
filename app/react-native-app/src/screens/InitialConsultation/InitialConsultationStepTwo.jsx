@@ -1,7 +1,7 @@
 import { View } from "react-native";
 import { Formik } from "formik";
 import { Picker } from "@react-native-picker/picker";
-import { CheckBox } from "components/CheckBox";
+import { CheckBoxField } from "components/CheckBoxField";
 import { BasicPicker } from "components/BasicPicker";
 import { InputField } from "components/InputField";
 import {
@@ -50,7 +50,7 @@ export const InitialConsultationStepTwo = ({ navigation }) => {
             }}
           >
             <View>
-              <CheckBox
+              <CheckBoxField
                 label={fields.isLessThanTwo.label}
                 value={values?.isLessThanTwo}
                 onValueChange={(isLessThanTwo) => {

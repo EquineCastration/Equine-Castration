@@ -9,7 +9,7 @@ import {
 import { InputField } from "components/InputField";
 import { BasicGroupOptions } from "components/BasicGroupOptions";
 import { useState } from "react";
-import { CheckBox } from "components/CheckBox";
+import { CheckBoxField } from "components/CheckBoxField";
 
 export const InitialConsultationStepSix = ({ navigation }) => {
   const keysArr = ["environment", "location"];
@@ -56,7 +56,7 @@ export const InitialConsultationStepSix = ({ navigation }) => {
           >
             <View>
               {fields.environment.options.map((option, index) => (
-                <CheckBox
+                <CheckBoxField
                   key={index}
                   label={option}
                   value={selectedEnvIndex[index]}

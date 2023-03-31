@@ -1,18 +1,22 @@
+import { View, ScrollView } from "react-native";
 import { useEffect } from "react";
+
 import { Formik } from "formik";
+import { object, string } from "yup";
+
+import { DefaultLayout } from "layout/DefaultLayout";
 import { DatePickerField } from "components/DatePickerField";
 import { ProgressBar } from "components/ProgressBar";
+import { InputField } from "components/InputField";
+import { BasicTouchableOpacity } from "components/BasicTouchableOpacity";
+import { CheckBoxField } from "components/CheckBoxField";
+
 import {
   InitialConsultationStore,
   ICStoreInitialState,
   InitialConsultationForm,
 } from "store/store";
-import { View, ScrollView } from "react-native";
 import { queryBase } from "db/queries/base";
-import { InputField } from "components/InputField";
-import { BasicTouchableOpacity } from "components/BasicTouchableOpacity";
-import { DefaultLayout } from "layout/DefaultLayout";
-import { object, string } from "yup";
 
 export const validationSchema = () =>
   object().shape({
@@ -39,6 +43,7 @@ export const FixedStepButton = ({ onPress, title = "Next", progress }) => {
       style={{
         marginVertical: 12,
         justifyContent: "flex-end",
+        zIndex: -1,
       }}
     >
       <BasicTouchableOpacity
@@ -66,13 +71,30 @@ export const InitialValues = (keysArr, store) => {
   );
 };
 
+const agePickerItems = (min, max) => {
+  const minAge = min;
+  const maxAge = max;
+  let item = [];
+
+  for (let i = minAge; i <= maxAge; i++) {
+    item.push({ label: i.toString(), value: i });
+  }
+  return item;
+};
+
 export const InitialConsultationStepOne = ({ navigation }) => {
   useEffect(() => {
     // queryBase.deleteTable("InitialConsultation");
     queryBase.createTable("InitialConsultation", ICStoreInitialState); // Create table if not exists
   }, []);
 
-  const keysArr = ["horseName", "clientSurname", "dateOfCastration"]; // these keys matches the keys set in the store
+  const keysArr = [
+    "horseName",
+    "clientSurname",
+    "dateOfCastration",
+    "isLessThanTwo",
+    "ageAboveTwo",
+  ]; // these keys matches the keys set in the store
   const fields = InitialConsultationForm.fields;
 
   // passing store (an object which is either form fields default values or temporarily set values) and
@@ -90,7 +112,6 @@ export const InitialConsultationStepOne = ({ navigation }) => {
         initialValues={initialValues}
         validationSchema={validationSchema}
         onSubmit={(values) => {
-          console.log(values);
           // add values to global store
           // each step/stage submission acts as temp submission
           // only after the confirmation screen, data is finally added to the db
@@ -99,6 +120,9 @@ export const InitialConsultationStepOne = ({ navigation }) => {
             s.horseName = values.horseName;
             s.clientSurname = values.clientSurname;
             s.dateOfCastration = values.dateOfCastration;
+            s.isLessThanTwo = values.isLessThanTwo;
+            !values.isLessThanTwo && (s.ageAboveTwo = values.ageAboveTwo);
+            s.weight = values.weight;
           });
           navigation.navigate("InitialConsultationStepTwo");
         }}
@@ -120,6 +144,12 @@ export const InitialConsultationStepOne = ({ navigation }) => {
                 label={fields.dateOfCastration.label}
                 type="date"
               />
+
+              <CheckBoxField
+                name="isLessThanTwo"
+                label={fields.isLessThanTwo.label}
+              />
+              {/* <DropDownPickerField pickerItems={agePickerItems(3, 10)} /> */}
             </View>
             <FixedStepButton onPress={() => handleSubmit()} progress="15%" />
           </View>

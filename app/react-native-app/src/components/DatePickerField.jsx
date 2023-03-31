@@ -24,7 +24,7 @@ export const DatePickerField = ({
     <TouchableOpacity
       style={{
         marginVertical: 8,
-        backgroundColor: colors.ui.bgColor,
+        backgroundColor: colors.ui.bg,
         paddingHorizontal: 8,
         borderRadius: 8,
       }}
@@ -54,7 +54,7 @@ export const DatePickerField = ({
           }}
         />
         <DateTimePickerModal
-          initialDate=""
+          display="inline"
           isVisible={isDatePickerVisible}
           mode="date"
           onConfirm={handleDateConfirm}
