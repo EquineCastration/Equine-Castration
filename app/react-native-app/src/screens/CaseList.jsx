@@ -18,10 +18,13 @@ export const CaseList = ({ navigation }) => {
   }, []);
 
   return (
-    <DefaultLayout primaryTxt="Case list" secondaryTxt="List of cases">
+    <DefaultLayout>
       <FlatList
+        ItemSeparatorComponent={() => <View style={{ height: 8 }} />}
         style={{
           marginTop: 15,
+          marginHorizontal: 5,
+          paddingHorizontal: 5,
         }}
         data={data}
         renderItem={({ item }) => (
@@ -33,7 +36,12 @@ export const CaseList = ({ navigation }) => {
             }
             data={data}
           >
-            <View style={{ flexDirection: "row", alignItems: "center" }}>
+            <View
+              style={{
+                flexDirection: "row",
+                alignItems: "center",
+              }}
+            >
               <Text style={[style.listLabel, { flex: 1 }]}>
                 {item.horseName}
               </Text>

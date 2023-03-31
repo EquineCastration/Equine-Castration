@@ -9,7 +9,13 @@ export const CaseDetail = ({ route }) => {
       primaryTxt="Case summary"
       secondaryTxt={`Horse name: ${caseData.horseName}`}
     >
-      <ScrollView>
+      <ScrollView
+        style={{
+          marginVertical: 2,
+          marginHorizontal: 5,
+          paddingHorizontal: 5,
+        }}
+      >
         <CaseSummary data={caseData} />
       </ScrollView>
     </DefaultLayout>

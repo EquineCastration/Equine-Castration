@@ -1,79 +1,92 @@
 import { View } from "react-native";
+
 import { Formik } from "formik";
-import { InitialConsultationStore, InitialConsultationForm } from "store/store";
-import {
-  Layout,
-  InitialValues,
-  FixedStepButton,
-} from "./InitialConsultationStepOne";
-import { BasicGroupOptions } from "components/BasicGroupOptions";
+import { object, string } from "yup";
+
+import { BasicPickerField } from "components/BasicPickerField";
+import { InputField } from "components/InputField";
+import { BasicGroupOptionsField } from "components/BasicGroupOptionsField";
+
+import { InitialConsultationStore } from "store/store";
+import { Layout, InitialValues } from "./InitialConsultationStepOne";
+import { initialConsultation } from "constants/initial-consultation";
 
 export const InitialConsultationStepFour = ({ navigation }) => {
   const keysArr = [
-    "locationTesticleLeft",
-    "locationTesticleRight",
-    "ligatureUsed",
+    "skinClosure",
+    "skinClosure_other",
+    "restraint",
+    "restraint_standing",
   ];
-  const fields = InitialConsultationForm.fields;
+  const fields = initialConsultation.fields;
   const initialValues = InitialValues(
     keysArr,
     InitialConsultationStore.useState()
   );
 
+  const validationSchema = object().shape({
+    skinClosure: string()
+      .oneOf(fields.skinClosure.options, "Invalid skin closure")
+      .required("Skin Closure required"),
+    restraint: string()
+      .oneOf(fields.restraint.options, "Invalid restraint")
+      .required("Restraint required"),
+  });
+
   return (
-    <Layout>
-      <Formik
-        initialValues={initialValues}
-        onSubmit={(values) => {
-          InitialConsultationStore.update((s) => {
-            s.locationTesticleLeft = values.locationTesticleLeft;
-            s.locationTesticleRight = values.locationTesticleRight;
-            s.ligatureUsed = values.ligatureUsed;
-          });
-          navigation.navigate("InitialConsultationStepFive");
-        }}
-      >
-        {({ handleSubmit, values, setFieldValue }) => (
+    <Formik
+      initialValues={initialValues}
+      validationSchema={validationSchema}
+      onSubmit={(values) => {
+        InitialConsultationStore.update((s) => {
+          s.skinClosure = values.skinClosure;
+          s.skinClosure_other =
+            values.skinClosure === "Other" ? values.skinClosure_other : ""; // only if the 'skinClosure' is 'Other' else ''
+          s.restraint = values.restraint;
+          s.restraint_standing =
+            values.restraint === "Standing" ? values.restraint_standing : ""; // only if the 'restraint' is 'Standing' else ''
+        });
+        navigation.navigate("InitialConsultationStepFive");
+      }}
+    >
+      {({ handleSubmit, values }) => (
+        <Layout onSubmit={() => handleSubmit()} current={4}>
           <View
             style={{
               flex: 1,
             }}
           >
             <View>
-              <BasicGroupOptions
-                label={fields.locationTesticleLeft.label}
-                fieldName="locationTesticleLeft"
-                setFieldValue={setFieldValue}
-                options={fields.locationTesticleLeft.options}
-                selectedIndex={fields.locationTesticleLeft.options.findIndex(
-                  (o) => values.locationTesticleLeft.startsWith(o)
-                )}
+              <BasicPickerField
+                label={fields.skinClosure.label}
+                name="skinClosure"
+                pickerItems={fields.skinClosure.options}
               />
 
-              <BasicGroupOptions
-                label={fields.locationTesticleRight.label}
-                fieldName="locationTesticleRight"
-                setFieldValue={setFieldValue}
-                options={fields.locationTesticleRight.options}
-                selectedIndex={fields.locationTesticleRight.options.findIndex(
-                  (o) => values.locationTesticleRight.startsWith(o)
-                )}
+              {values?.skinClosure === "Other" && (
+                <InputField
+                  label={fields.skinClosure_other.label}
+                  name="skinClosure_other"
+                />
+              )}
+
+              <BasicGroupOptionsField
+                label={fields.restraint.label}
+                name="restraint"
+                options={fields.restraint.options}
               />
 
-              <BasicGroupOptions
-                label={fields.ligatureUsed.label}
-                fieldName="ligatureUsed"
-                setFieldValue={setFieldValue}
-                options={fields.ligatureUsed.options}
-                selectedIndex={fields.ligatureUsed.options.findIndex((o) =>
-                  values.ligatureUsed.startsWith(o)
-                )}
-              />
+              {values?.restraint === "Standing" && (
+                <BasicGroupOptionsField
+                  label={fields.restraint_standing.label}
+                  name="restraint_standing"
+                  options={fields.restraint_standing.options}
+                />
+              )}
             </View>
-            <FixedStepButton onPress={() => handleSubmit()} progress="65%" />
           </View>
-        )}
-      </Formik>
-    </Layout>
+        </Layout>
+      )}
+    </Formik>
   );
 };

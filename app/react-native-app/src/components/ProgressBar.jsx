@@ -1,24 +1,39 @@
-import { View } from "react-native";
-import { colors } from "style/style";
+import { View, Text } from "react-native";
+import { colors, font } from "style/style";
 
-export const ProgressBar = ({ progress, color = colors.primary[800] }) => {
-  // could add text that shows progress percentage
-  // change the color based on the progression
+export const ProgressBar = ({
+  total = 1,
+  current = 1,
+  color = colors.primary[800],
+}) => {
+  const percentage = Math.round((current / total) * 100);
   return (
-    <View
-      style={{
-        backgroundColor: colors.primary[200],
-        height: 5,
-        marginVertical: 10,
-      }}
-    >
+    <View>
       <View
         style={{
+          backgroundColor: colors.primary[200],
           height: 5,
-          backgroundColor: color,
-          width: progress,
+          marginVertical: 2,
+          borderRadius: 5,
         }}
-      />
+      >
+        <View
+          style={{
+            backgroundColor: color,
+            height: 5,
+            width: percentage + "%",
+            borderRadius: 5,
+          }}
+        />
+      </View>
+      <Text
+        style={{
+          textAlign: "center",
+          fontSize: font.size.xs,
+        }}
+      >
+        {`${current} of ${total} (${percentage}%)`}
+      </Text>
     </View>
   );
 };

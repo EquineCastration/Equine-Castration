@@ -10,6 +10,7 @@ export const queryBase = {
     }
     const columnNames = arr.join(", ");
     const sql = `create table if not exists ${table_name} (${columnNames});`;
+
     db.transaction((tx) => {
       tx.executeSql(
         sql,

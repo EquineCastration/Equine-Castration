@@ -1,8 +1,8 @@
-import { View, ScrollView } from "react-native";
+import { View, ScrollView, Text } from "react-native";
 import { useEffect } from "react";
 
 import { Formik } from "formik";
-import { object, string } from "yup";
+import { object, string, boolean } from "yup";
 
 import { DefaultLayout } from "layout/DefaultLayout";
 import { DatePickerField } from "components/DatePickerField";
@@ -10,34 +10,58 @@ import { ProgressBar } from "components/ProgressBar";
 import { InputField } from "components/InputField";
 import { BasicTouchableOpacity } from "components/BasicTouchableOpacity";
 import { CheckBoxField } from "components/CheckBoxField";
+import { BasicPickerField } from "components/BasicPickerField";
 
-import {
-  InitialConsultationStore,
-  ICStoreInitialState,
-  InitialConsultationForm,
-} from "store/store";
+import { InitialConsultationStore, ICStoreInitialState } from "store/store";
 import { queryBase } from "db/queries/base";
+import { initialConsultation } from "constants/initial-consultation";
+import { colors } from "style/style";
 
-export const validationSchema = () =>
-  object().shape({
-    horseName: string().required("Horse name required"),
-    clientSurname: string().required("Client surname required"),
-    dateOfCastration: string().required("Date of castration required"),
-  });
+const validationSchema = object().shape({
+  horseName: string().required("Horse name required"),
+  clientSurname: string().required("Client surname required"),
+  dateOfCastration: string().required("Date of castration required"),
+  isLessThanTwo: boolean(),
+  // TO DO: could be an issue with Picker component of BasicPicker unable to handle numbers.
+  // ageAboveTwo: number()
+  //   .typeError("Age must be a number")
+  //   .when("isLessThanTwo", {
+  //     is: true,
+  //     then: number().max(2, "Age cannot be more than 2 years old"),
+  //     otherwise: number()
+  //       .required("Age is required")
+  //       .min(3, "Age must be at least 3 years old")
+  //       .max(10, "Age cannot be more than 10 years old"),
+  //   }),
+});
 
 // Standard layout for the multi-step form
-export const Layout = ({ children }) => {
+export const Layout = ({ children, onSubmit, current, title }) => {
   return (
     <DefaultLayout>
-      <ScrollView style={{ marginVertical: 10, marginHorizontal: 2 }}>
+      <ScrollView
+        style={{
+          marginVertical: 2,
+          marginHorizontal: 5,
+          paddingHorizontal: 5,
+        }}
+      >
         {children}
       </ScrollView>
+      <View
+        style={{
+          marginHorizontal: 10,
+        }}
+      >
+        <FixedStepButton onPress={onSubmit} current={current} title={title} />
+      </View>
     </DefaultLayout>
   );
 };
 
 // Standard next step button component with progress bar
-export const FixedStepButton = ({ onPress, title = "Next", progress }) => {
+export const FixedStepButton = ({ onPress, title = "Next", current }) => {
+  const total = 7;
   return (
     <View
       style={{
@@ -51,7 +75,7 @@ export const FixedStepButton = ({ onPress, title = "Next", progress }) => {
         title={title}
         paddingVertical={3}
       />
-      <ProgressBar progress={progress} />
+      <ProgressBar total={total} current={current} color={colors.ui.btnBg} />
     </View>
   );
 };
@@ -77,7 +101,7 @@ const agePickerItems = (min, max) => {
   let item = [];
 
   for (let i = minAge; i <= maxAge; i++) {
-    item.push({ label: i.toString(), value: i });
+    item.push(i);
   }
   return item;
 };
@@ -95,7 +119,7 @@ export const InitialConsultationStepOne = ({ navigation }) => {
     "isLessThanTwo",
     "ageAboveTwo",
   ]; // these keys matches the keys set in the store
-  const fields = InitialConsultationForm.fields;
+  const fields = initialConsultation.fields;
 
   // passing store (an object which is either form fields default values or temporarily set values) and
   // relvant field names as an array (this should match with store obj keys)
@@ -107,27 +131,26 @@ export const InitialConsultationStepOne = ({ navigation }) => {
   );
 
   return (
-    <Layout>
-      <Formik
-        initialValues={initialValues}
-        validationSchema={validationSchema}
-        onSubmit={(values) => {
-          // add values to global store
-          // each step/stage submission acts as temp submission
-          // only after the confirmation screen, data is finally added to the db
-          // this allow user to navigate back and forth between the screens/forms
-          InitialConsultationStore.update((s) => {
-            s.horseName = values.horseName;
-            s.clientSurname = values.clientSurname;
-            s.dateOfCastration = values.dateOfCastration;
-            s.isLessThanTwo = values.isLessThanTwo;
-            !values.isLessThanTwo && (s.ageAboveTwo = values.ageAboveTwo);
-            s.weight = values.weight;
-          });
-          navigation.navigate("InitialConsultationStepTwo");
-        }}
-      >
-        {({ handleSubmit }) => (
+    <Formik
+      initialValues={initialValues}
+      validationSchema={validationSchema}
+      onSubmit={(values) => {
+        // add values to global store
+        // each step/stage submission acts as temp submission
+        // only after the confirmation screen, data is finally added to the db
+        // this allow user to navigate back and forth between the screens/forms
+        InitialConsultationStore.update((s) => {
+          s.horseName = values.horseName;
+          s.clientSurname = values.clientSurname;
+          s.dateOfCastration = values.dateOfCastration;
+          s.isLessThanTwo = values.isLessThanTwo;
+          !values.isLessThanTwo && (s.ageAboveTwo = values.ageAboveTwo);
+        });
+        navigation.navigate("InitialConsultationStepTwo");
+      }}
+    >
+      {({ handleSubmit, values }) => (
+        <Layout onSubmit={() => handleSubmit()} current={1}>
           <View
             style={{
               flex: 1,
@@ -149,12 +172,18 @@ export const InitialConsultationStepOne = ({ navigation }) => {
                 name="isLessThanTwo"
                 label={fields.isLessThanTwo.label}
               />
-              {/* <DropDownPickerField pickerItems={agePickerItems(3, 10)} /> */}
+
+              {!values?.isLessThanTwo && (
+                <BasicPickerField
+                  name="ageAboveTwo"
+                  label={"Select age"}
+                  pickerItems={agePickerItems(3, 10)}
+                />
+              )}
             </View>
-            <FixedStepButton onPress={() => handleSubmit()} progress="15%" />
           </View>
-        )}
-      </Formik>
-    </Layout>
+        </Layout>
+      )}
+    </Formik>
   );
 };

@@ -1,10 +1,10 @@
+import { initialConsultation } from "constants/initial-consultation";
 import { View, Text } from "react-native";
 import { font } from "style/style";
-import { InitialConsultationForm } from "store/store";
 import { colors } from "style/style";
 
 export const CaseSummary = ({ data }) => {
-  const fields = InitialConsultationForm.fields;
+  const fields = initialConsultation.fields;
   return (
     <View
       style={{
@@ -26,16 +26,18 @@ export const CaseSummary = ({ data }) => {
           <Text
             style={{
               fontWeight: 300,
-              fontSize: font.size["normal"],
+              fontSize: font.size.sm,
             }}
           >{`${fields[item]?.label} -`}</Text>
           <Text
             style={{
               fontWeight: 500,
-              fontSize: font.size["normal"],
+              fontSize: font.size.sm,
             }}
           >
-            {data[item]}
+            {Array.isArray(data[item])
+              ? `[${data[item].join(", ")}]`
+              : data[item]}
           </Text>
         </View>
       ))}

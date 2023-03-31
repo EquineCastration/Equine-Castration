@@ -10,8 +10,6 @@ import { InitialConsultationStepFive } from "screens/InitialConsultation/Initial
 import { InitialConsultationStepSix } from "screens/InitialConsultation/InitialConsultationStepSix";
 import { Confirmation } from "screens/InitialConsultation/Confirmation";
 import Toast from "react-native-toast-message";
-import { BgGradient } from "components/BgGradient";
-import { Text } from "react-native";
 import { colors, font } from "style/style";
 import { CaseDetail } from "screens/CaseDetail";
 import { ScreenHeader } from "components/ScreenHeader";
@@ -44,13 +42,27 @@ export default function App() {
           <Stack.Screen
             name="CaseList"
             component={CaseList}
-            options={{ ...commontHeaderOptions }}
+            options={{
+              headerBackground: () => (
+                <ScreenHeader title="Case list" fontSize={font.size.xl} />
+              ),
+              ...commontHeaderOptions,
+            }}
           />
 
           <Stack.Screen
             name="CaseDetail"
             component={CaseDetail}
-            options={{ ...commontHeaderOptions }}
+            options={({ route }) => ({
+              headerBackground: () => (
+                <ScreenHeader
+                  title={`Case detail of ${route.params.caseData.horseName}`}
+                  fontSize={font.size.md}
+                  fontWeight={400}
+                />
+              ),
+              ...commontHeaderOptions,
+            })}
           />
 
           <Stack.Group

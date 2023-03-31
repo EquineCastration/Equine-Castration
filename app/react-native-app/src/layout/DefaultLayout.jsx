@@ -12,7 +12,7 @@ export const DefaultLayout = ({ children }) => {
       <View
         style={{
           flex: 1,
-          paddingHorizontal: 20,
+          paddingHorizontal: 5,
         }}
       >
         {children}

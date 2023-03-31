@@ -42,7 +42,7 @@ export const CheckBoxField = ({
         <Text
           style={{
             marginVertical: 2,
-            fontSize: font.size.normal,
+            fontSize: font.size.sm,
             color: labelColor,
             marginLeft: 7,
           }}

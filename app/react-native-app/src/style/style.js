@@ -1,15 +1,15 @@
 export const font = {
   size: {
     xs: 12,
-    sm: 16,
-    normal: 18,
-    md: 20,
-    lg: 23,
-    xl: 26,
-    "2xl": 28,
-    "3xl": 32,
-    "4xl": 35,
-    "5xl": 38,
+    sm: 14,
+    normal: 16,
+    md: 18,
+    lg: 20,
+    xl: 22,
+    "2xl": 24,
+    "3xl": 26,
+    "4xl": 30,
+    "5xl": 34,
   },
 };
 

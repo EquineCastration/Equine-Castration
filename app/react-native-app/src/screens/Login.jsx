@@ -1,7 +1,7 @@
 import { BasicTouchableOpacity } from "components/BasicTouchableOpacity";
 import { SafeAreaView, View, Text } from "react-native";
 import { colors, font } from "style/style";
-import { ResetInitialConsultationStore } from "store/store";
+import { resetInitialConsultationStore } from "store/store";
 
 export const Login = ({ navigation }) => {
   // should be loaded as screen to get navigation prop
@@ -9,7 +9,7 @@ export const Login = ({ navigation }) => {
 
   const initialsOptions = [
     {
-      title: "Create Case (Initial Consultation)",
+      title: "Create Case",
       navigate: "InitialConsultationStepOne", // screen name
       icon: "ios-brush-outline", // only accepts ionicons
       bgColor: colors.primary[800],
@@ -72,7 +72,7 @@ export const Login = ({ navigation }) => {
                   option.navigate &&
                   (() => {
                     navigation.navigate(option.navigate);
-                    ResetInitialConsultationStore(); // clear existing form data
+                    resetInitialConsultationStore(); // clear existing form data
                   })
                 }
               />

@@ -47,7 +47,7 @@ export const InputField = ({
             borderColor: isFocused ? inputActiveBorderColor : inputBorderColor,
           }}
           onChangeText={field.onChange(field.name)}
-          value={field.value}
+          value={field.value || field.value.toString()}
           {...props}
         />
 
