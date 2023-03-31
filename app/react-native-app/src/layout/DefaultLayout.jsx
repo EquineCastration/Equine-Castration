@@ -1,4 +1,4 @@
-import { SafeAreaView, View, ScrollView } from "react-native";
+import { SafeAreaView, View } from "react-native";
 import { BasicHeader } from "components/BasicHeader";
 
 export const DefaultLayout = ({ children, secondaryTxt, primaryTxt }) => {
