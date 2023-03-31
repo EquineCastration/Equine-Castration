@@ -70,12 +70,13 @@ export const InitialConsultationStepTwo = ({ navigation }) => {
               )}
               <InputField
                 label={fields.weight.label}
-                onChangeText={(value) =>
-                  setFieldValue(
-                    "weight",
-                    value.replace(/[- #*;,.<>\{\}\[\]\\\/]/gi, "")
-                  )
-                }
+                name="weight"
+                // onChangeText={(value) =>
+                //   setFieldValue(
+                //     "weight",
+                //     value.replace(/[- #*;,.<>\{\}\[\]\\\/]/gi, "")
+                //   )
+                // }
                 value={values?.weight.toString()}
                 keyboardType="numeric"
               />

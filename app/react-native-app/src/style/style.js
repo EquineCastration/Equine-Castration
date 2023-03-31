@@ -14,7 +14,9 @@ export const font = {
 };
 
 export const colors = {
-  white: "#ffffff",
+  light: "#ffffff",
+  error: "#d12608",
+  success: "#00782a",
   primary: {
     50: "#ffffff",
     75: "#f5f6ff",
@@ -60,5 +62,10 @@ export const colors = {
     700: "#3A9D55",
     800: "#22913F",
     900: "#0e7d2b",
+  },
+  ui: {
+    bgColor: "#f8f8f8",
+    border: "#e6e6e6",
+    txt: "#b8b8b8",
   },
 };

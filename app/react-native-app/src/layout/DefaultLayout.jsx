@@ -1,7 +1,6 @@
 import { SafeAreaView, View } from "react-native";
-import { BasicHeader } from "components/BasicHeader";
 
-export const DefaultLayout = ({ children, secondaryTxt, primaryTxt }) => {
+export const DefaultLayout = ({ children }) => {
   return (
     <SafeAreaView
       style={{
@@ -15,7 +14,6 @@ export const DefaultLayout = ({ children, secondaryTxt, primaryTxt }) => {
           paddingHorizontal: 20,
         }}
       >
-        <BasicHeader primaryTxt={primaryTxt} secondaryTxt={secondaryTxt} />
         {children}
       </View>
     </SafeAreaView>

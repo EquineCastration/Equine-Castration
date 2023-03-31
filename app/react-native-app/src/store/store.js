@@ -104,7 +104,7 @@ export const InitialConsultationForm = {
 
 // Grab initial state/default values
 // E.g. { horseName : "" , clientSurname : "" ....}
-const ICStoreInitialState = Object.fromEntries(
+export const ICStoreInitialState = Object.fromEntries(
   Object.entries(InitialConsultationForm.fields)
     .filter(([key]) => key !== "id") // ignore specific keys
     .map(([key, { defaultValue }]) => [key, defaultValue])

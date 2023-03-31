@@ -14,6 +14,7 @@ import { BgGradient } from "components/BgGradient";
 import { Text } from "react-native";
 import { colors, font } from "style/style";
 import { CaseDetail } from "screens/CaseDetail";
+import { ScreenHeader } from "components/ScreenHeader";
 
 const Stack = createNativeStackNavigator();
 
@@ -21,6 +22,7 @@ const commontHeaderOptions = {
   headerShown: true,
   headerShadowVisible: false,
   title: "",
+  headerTintColor: colors.light,
 };
 
 export default function App() {
@@ -33,18 +35,7 @@ export default function App() {
             component={Login}
             options={{
               headerBackground: () => (
-                <BgGradient>
-                  <Text
-                    style={{
-                      color: colors.primary[50],
-                      fontWeight: 300,
-                      fontSize: font.size["3xl"],
-                      marginBottom: 10,
-                    }}
-                  >
-                    Equine Castration
-                  </Text>
-                </BgGradient>
+                <ScreenHeader title="Equine Castration" />
               ),
               ...commontHeaderOptions,
             }}
@@ -62,7 +53,17 @@ export default function App() {
             options={{ ...commontHeaderOptions }}
           />
 
-          <Stack.Group screenOptions={{ ...commontHeaderOptions }}>
+          <Stack.Group
+            screenOptions={{
+              headerBackground: () => (
+                <ScreenHeader
+                  title="Initial Consultation"
+                  fontSize={font.size["2xl"]}
+                />
+              ),
+              ...commontHeaderOptions,
+            }}
+          >
             <Stack.Screen
               name="InitialConsultationStepOne"
               component={InitialConsultationStepOne}

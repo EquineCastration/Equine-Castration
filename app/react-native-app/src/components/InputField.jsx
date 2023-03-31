@@ -9,9 +9,7 @@ export const InputField = ({
   labelColor = colors.primary[700],
   inputBorderColor = colors.primary[200],
   inputActiveBorderColor = colors.primary[500],
-  icon,
-  err,
-  pwd,
+  type,
   ...props
 }) => {
   const [field, meta] = useField(props);
@@ -20,27 +18,31 @@ export const InputField = ({
   return (
     <View
       style={{
-        marginVertical: 10,
+        marginVertical: 8,
+        backgroundColor: colors.ui.bgColor,
+        paddingHorizontal: 8,
+
+        borderRadius: 8,
       }}
     >
-      <Text
-        style={{
-          marginVertical: 2,
-          fontSize: font.size["md"],
-          color: labelColor,
-        }}
-      >
-        {label}
-      </Text>
-
       <View style={{ marginVertical: 10 }}>
+        <Text
+          style={{
+            marginBottom: 5,
+            fontSize: font.size["normal"],
+            color: labelColor,
+          }}
+        >
+          {label}
+        </Text>
         <TextInput
           placeholder={placeholder}
           onFocus={() => setIsFocused(true)}
           onBlur={() => setIsFocused(false)}
           style={{
+            backgroundColor: "white",
             borderWidth: 1,
-            borderRadius: 2,
+            borderRadius: 5,
             padding: 5,
             borderColor: isFocused ? inputActiveBorderColor : inputBorderColor,
           }}
@@ -50,7 +52,9 @@ export const InputField = ({
         />
 
         {meta.touched && meta.error ? (
-          <Text style={{ marginTop: 5, color: "red" }}>{meta.error}</Text>
+          <Text style={{ marginTop: 5, color: colors.error }}>
+            {meta.error}
+          </Text>
         ) : null}
       </View>
     </View>

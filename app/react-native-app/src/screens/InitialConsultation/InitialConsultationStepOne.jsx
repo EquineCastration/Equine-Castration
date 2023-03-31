@@ -21,14 +21,10 @@ export const validationSchema = () =>
   });
 
 // Standard layout for the multi-step form
-export const Layout = ({
-  children,
-  secondaryTxt = "Input the following information",
-  primaryTxt = "Initial Consultation",
-}) => {
+export const Layout = ({ children }) => {
   return (
-    <DefaultLayout secondaryTxt={secondaryTxt} primaryTxt={primaryTxt}>
-      <ScrollView style={{ marginVertical: 7, marginHorizontal: 5 }}>
+    <DefaultLayout>
+      <ScrollView style={{ marginVertical: 10, marginHorizontal: 2 }}>
         {children}
       </ScrollView>
     </DefaultLayout>
