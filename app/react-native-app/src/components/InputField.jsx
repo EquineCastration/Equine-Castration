@@ -4,6 +4,7 @@ import { View, Text, TextInput } from "react-native";
 import { colors, font } from "style/style";
 
 export const InputField = ({
+  name,
   label,
   placeholder = label,
   labelColor = colors.primary[700],
@@ -12,16 +13,15 @@ export const InputField = ({
   type,
   ...props
 }) => {
-  const [field, meta] = useField(props);
+  const [field, meta] = useField(name);
   const [isFocused, setIsFocused] = useState(false);
 
   return (
     <View
       style={{
         marginVertical: 8,
-        backgroundColor: colors.ui.bgColor,
+        backgroundColor: colors.ui.bg,
         paddingHorizontal: 8,
-
         borderRadius: 8,
       }}
     >
@@ -29,7 +29,7 @@ export const InputField = ({
         <Text
           style={{
             marginBottom: 5,
-            fontSize: font.size["normal"],
+            fontSize: font.size.normal,
             color: labelColor,
           }}
         >
@@ -40,7 +40,7 @@ export const InputField = ({
           onFocus={() => setIsFocused(true)}
           onBlur={() => setIsFocused(false)}
           style={{
-            backgroundColor: "white",
+            backgroundColor: colors.light,
             borderWidth: 1,
             borderRadius: 5,
             padding: 5,

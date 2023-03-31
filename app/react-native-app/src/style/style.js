@@ -64,8 +64,9 @@ export const colors = {
     900: "#0e7d2b",
   },
   ui: {
-    bgColor: "#f8f8f8",
+    bg: "#f8f8f8",
     border: "#e6e6e6",
     txt: "#b8b8b8",
+    btnBg: "#246980",
   },
 };

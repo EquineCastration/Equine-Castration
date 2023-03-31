@@ -18,6 +18,7 @@ export const validationSchema = () =>
   object().shape({
     horseName: string().required("Horse name required"),
     clientSurname: string().required("Client surname required"),
+    dateOfCastration: string().required("Date of castration required"),
   });
 
 // Standard layout for the multi-step form
@@ -89,6 +90,7 @@ export const InitialConsultationStepOne = ({ navigation }) => {
         initialValues={initialValues}
         validationSchema={validationSchema}
         onSubmit={(values) => {
+          console.log(values);
           // add values to global store
           // each step/stage submission acts as temp submission
           // only after the confirmation screen, data is finally added to the db
@@ -101,7 +103,7 @@ export const InitialConsultationStepOne = ({ navigation }) => {
           navigation.navigate("InitialConsultationStepTwo");
         }}
       >
-        {({ handleSubmit, values, setFieldValue }) => (
+        {({ handleSubmit }) => (
           <View
             style={{
               flex: 1,
@@ -117,8 +119,6 @@ export const InitialConsultationStepOne = ({ navigation }) => {
                 name="dateOfCastration"
                 label={fields.dateOfCastration.label}
                 type="date"
-                value={values?.dateOfCastration}
-                setFieldValue={setFieldValue}
               />
             </View>
             <FixedStepButton onPress={() => handleSubmit()} progress="15%" />
