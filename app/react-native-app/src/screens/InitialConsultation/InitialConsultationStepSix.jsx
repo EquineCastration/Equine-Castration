@@ -16,17 +16,19 @@ export const InitialConsultationStepSix = ({ navigation }) => {
     InitialConsultationStore.useState()
   );
 
-  const [selectedEnvironment, setSelectedEnvironment] = useState(
-    fields.environment.options.map(() => false)
+  const [selectedEnvIndex, setSelectedEnvIndex] = useState(
+    // create a boolean array that represents 'environment' field options
+    // if there's any match with the initial
+    fields.environment.options.map((o) => initialValues.environment.includes(o))
   );
 
   const handleOptionSelect = (index) => {
-    const newSelections = [...selectedEnvironment];
+    const newSelections = [...selectedEnvIndex];
     newSelections[index] = !newSelections[index];
-    setSelectedEnvironment(newSelections);
+    setSelectedEnvIndex(newSelections);
 
     const selectedValues = fields.environment.options.filter(
-      (option, index) => newSelections[index]
+      (o, index) => newSelections[index]
     );
 
     console.log(selectedValues);
@@ -54,7 +56,7 @@ export const InitialConsultationStepSix = ({ navigation }) => {
                 <CheckBox
                   key={index}
                   label={option}
-                  value={selectedEnvironment[index]}
+                  value={selectedEnvIndex[index]}
                   onValueChange={() => handleOptionSelect(index)}
                 />
               ))}

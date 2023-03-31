@@ -98,4 +98,19 @@ export const queryBase = {
       );
     });
   },
+
+  getData: (table_name, setData) => {
+    db.transaction((tx) => {
+      tx.executeSql(
+        `SELECT * FROM ${table_name}`,
+        [],
+        (_, result) => {
+          setData(result.rows._array);
+        },
+        (_, error) => {
+          console.log("Error during select operation:", error);
+        }
+      );
+    });
+  },
 };

@@ -1,7 +1,7 @@
 export const font = {
   size: {
     xs: 12,
-    sm: 14,
+    sm: 16,
     normal: 18,
     md: 20,
     lg: 23,

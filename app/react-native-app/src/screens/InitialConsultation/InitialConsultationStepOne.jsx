@@ -13,6 +13,7 @@ import { queryBase } from "db/queries/base";
 import { InputField } from "components/InputField";
 import { BasicTouchableOpacity } from "components/BasicTouchableOpacity";
 
+// Standard layout for the multi-step form
 export const Layout = ({
   children,
   secondaryTxt = "Input the following information",
@@ -42,6 +43,7 @@ export const Layout = ({
   );
 };
 
+// Standard next step button component with progress bar
 export const FixedStepButton = ({ onPress, title = "Next", progress }) => {
   return (
     <View
@@ -84,10 +86,9 @@ export const InitialConsultationStepOne = ({ navigation }) => {
   const keysArr = ["horseName", "clientSurname", "dateOfCastration"]; // these keys matches the keys set in the store
   const fields = InitialConsultationForm.fields;
 
-  // Since we have already declared default value for relevant fields,
-  // we can pass that and
-  // relvant field names (this should match with store obj keys) as an array
-  // the following function then returns default values
+  // passing store (an object which is either form fields default values or temporarily set values) and
+  // relvant field names as an array (this should match with store obj keys)
+  // the following function then returns a object with their values if available
   // which can be used as initial values in formik fields
   const initialValues = InitialValues(
     keysArr,
@@ -98,11 +99,11 @@ export const InitialConsultationStepOne = ({ navigation }) => {
     <Layout>
       <Formik
         initialValues={initialValues}
-        // adding values to global store
-        // each step/stage submission acts as temp submission
-        // only after the confirmation screen, data is added to the db
-        // this allow user to navigate back and forth between the screens/forms
         onSubmit={(values) => {
+          // add values to global store
+          // each step/stage submission acts as temp submission
+          // only after the confirmation screen, data is finally added to the db
+          // this allow user to navigate back and forth between the screens/forms
           InitialConsultationStore.update((s) => {
             s.horseName = values.horseName;
             s.clientSurname = values.clientSurname;

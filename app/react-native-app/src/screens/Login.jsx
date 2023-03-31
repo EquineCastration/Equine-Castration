@@ -9,14 +9,16 @@ export const Login = ({ navigation }) => {
 
   const initialsOptions = [
     {
-      title: "Initial Consultation",
+      title: "Create Case (Initial Consultation)",
       navigate: "InitialConsultationStepOne", // screen name
       icon: "ios-brush-outline", // only accepts ionicons
+      bgColor: colors.primary[800],
     },
     {
-      title: "List of Horses",
-      navigate: "RecordList", // screen name
+      title: "View Cases",
+      navigate: "CaseList", // screen name
       icon: "documents-outline", // only accepts ionicons
+      bgColor: colors.secondary[800],
     },
     {
       title: "Follow up",
@@ -60,6 +62,7 @@ export const Login = ({ navigation }) => {
           initialsOptions.map((option, index) => {
             return (
               <BasicTouchableOpacity
+                paddingVertical={11}
                 key={index}
                 title={option.title}
                 btnWidth="85%"
