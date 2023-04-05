@@ -21,7 +21,7 @@ export const initialConsultation = {
     },
     isLessThanTwo: {
       label: "Age less than two years?",
-      defaultValue: true,
+      defaultValue: false,
     },
     ageAboveTwo: {
       label: "Age in years(for animals above 2 to 10 and above)",
@@ -90,7 +90,7 @@ export const initialConsultation = {
     restraint_standing: {
       label: "Restraint Standing",
       options: ["Xylazine", "Detomidine", "Romifidine"],
-      defaultValue: "",
+      defaultValue: "Xylazine",
     },
     environment: {
       label: "Environment",
@@ -101,6 +101,7 @@ export const initialConsultation = {
       label: "Environment other",
       defaultValue: "",
     },
+
     location: {
       label: "Location",
       options: ["Stable", "Field", "School", "Theatre", "Other"],

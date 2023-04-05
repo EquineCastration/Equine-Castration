@@ -1,6 +1,5 @@
 import { View, TouchableOpacity, Text } from "react-native";
 import { font, colors } from "style/style";
-import { useEffect, useState } from "react";
 import { useField } from "formik";
 
 export const BasicGroupOptionsField = ({
@@ -15,7 +14,9 @@ export const BasicGroupOptionsField = ({
 }) => {
   const [field, meta, helpers] = useField(name);
 
-  const [selected, setSelected] = useState(field.value || options[0]);
+  const handleValueChange = (value) => {
+    helpers.setValue(value);
+  };
 
   const style = {
     border: {
@@ -24,11 +25,6 @@ export const BasicGroupOptionsField = ({
       borderWidth: 1,
     },
   };
-
-  useEffect(() => {
-    helpers.setValue(selected);
-  }, [selected]);
-
   return (
     <View
       style={{
@@ -66,18 +62,18 @@ export const BasicGroupOptionsField = ({
                   alignItems: "center",
                   paddingVertical: paddingVertical,
                   backgroundColor:
-                    selected === option ? selectecBgColor : "transparent",
+                    field.value === option ? selectecBgColor : "transparent", // if value matches with option then apply highlight
                   marginHorizontal: 4,
                   marginVertical: 4,
                   ...style.border,
                 }}
-                onPress={() => setSelected(option)}
+                onPress={() => handleValueChange(option)}
               >
                 <Text
                   style={{
                     fontSize: font.size.sm,
                     fontWeight: 400,
-                    color: selected === option ? selectedColor : labelColor,
+                    color: field.value === option ? selectedColor : labelColor, // if value matches with option then apply highlight
                     marginHorizontal: 10,
                   }}
                 >

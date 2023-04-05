@@ -92,7 +92,7 @@ export const queryBase = {
             const sql = `alter table ${table_name} add column ${columnDefinitions.join(
               ", "
             )}`;
-            -tx.executeSql(sql);
+            tx.executeSql(sql);
           }
         },
         (_, error) => console.log("Error", error)
