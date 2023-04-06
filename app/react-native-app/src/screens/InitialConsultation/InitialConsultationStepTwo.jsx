@@ -1,91 +1,94 @@
 import { View } from "react-native";
+
 import { Formik } from "formik";
-import { Picker } from "@react-native-picker/picker";
-import { CheckBox } from "components/CheckBox";
-import { Layout } from "./InitialConsultationStepOne";
-import { BasicPicker } from "components/BasicPicker";
+import { object, string, number } from "yup";
+
+import { BasicPickerField } from "components/BasicPickerField";
 import { InputField } from "components/InputField";
-import { FixedStepButton } from "./InitialConsultationStepOne";
-import { InitialConsulationStore } from "store/store";
-
-const AgePickerItem = () => {
-  const minAge = 3;
-  const maxAge = 20;
-  let item = [];
-
-  for (let i = minAge; i <= maxAge; i++) {
-    item.push(<Picker.Item key={i} label={i.toString()} value={i} />);
-  }
-  return item;
-};
+import { InitialValues, Layout } from "./InitialConsultationStepOne";
+import { InitialConsultationStore } from "store/store";
+import { initialConsultation } from "constants/initial-consultation";
 
 export const InitialConsultationStepTwo = ({ navigation }) => {
-  const data = InitialConsulationStore.useState();
+  const keysArr = ["weight", "breed", "technique", "technique_other"];
+  const fields = initialConsultation.fields;
+  const initialValues = InitialValues(
+    keysArr,
+    InitialConsultationStore.useState()
+  );
+
+  const validationSchema = object().shape({
+    weight: number()
+      .min(1, "Weight must be greater than 0")
+      .positive()
+      .required("Weight is required")
+      .typeError("Weight must be a number"),
+    breed: string()
+      .oneOf(fields.breed.options, "Invalid breed")
+      .required("Breed is required"),
+    technique: string()
+      .oneOf(fields.technique.options, "Invalid technique")
+      .required("Technique is required"),
+  });
 
   return (
-    <Layout>
-      <Formik
-        initialValues={{
-          isLessThanTwo: data?.isLessThanTwo || false,
-          ageAboveTwo: data?.ageAboveTwo || 0,
-          weight: data?.weight || 0,
-        }}
-        onSubmit={(values) => {
-          InitialConsulationStore.update((s) => {
-            s.isLessThanTwo = values.isLessThanTwo;
-            values.isLessThanTwo && (s.ageAboveTwo = values.ageAboveTwo);
-            s.weight = values.weight;
-          });
-        }}
-      >
-        {({ handleSubmit, values, setFieldValue }) => (
+    <Formik
+      initialValues={initialValues}
+      validationSchema={validationSchema}
+      onSubmit={(values) => {
+        InitialConsultationStore.update((s) => {
+          s.weight = values.weight;
+          s.breed = values.breed;
+          s.technique = values.technique;
+          s.technique_other =
+            values.technique === "Other" ? values.technique_other : ""; // only if the 'technique' is 'Other' else ''
+        });
+        navigation.navigate("InitialConsultationStepThree");
+      }}
+    >
+      {({ handleSubmit, values }) => (
+        <Layout onSubmit={() => handleSubmit()} current={2}>
           <View
             style={{
               flex: 1,
             }}
           >
-            <View style={{ marginVertical: 5 }}>
-              <CheckBox
-                label="Is horse less than 2 years old ?"
-                value={values?.isLessThanTwo}
-                onValueChange={(isLessThanTwo) => {
-                  setFieldValue("isLessThanTwo", isLessThanTwo);
-                  !isLessThanTwo && setFieldValue("ageAboveTwo", 0);
-                }}
-              />
-              {values?.isLessThanTwo && (
-                <BasicPicker
-                  label="Age:"
-                  fieldName="ageAboveTwo"
-                  value={values?.ageAboveTwo}
-                  setFieldValue={setFieldValue}
-                >
-                  {AgePickerItem()}
-                </BasicPicker>
-              )}
+            <View>
               <InputField
-                label="Weight:"
-                onChangeText={(value) =>
-                  setFieldValue(
-                    "weight",
-                    value.replace(/[- #*;,.<>\{\}\[\]\\\/]/gi, "")
-                  )
-                }
-                value={values?.weight.toString()}
+                label={fields.weight.label}
+                name="weight"
+                // onChangeText={(value) =>
+                //   setFieldValue(
+                //     "weight",
+                //     value.replace(/[- #*;,.<>\{\}\[\]\\\/]/gi, "")
+                //   )
+                // }
                 keyboardType="numeric"
               />
+
+              <BasicPickerField
+                label={fields.breed.label}
+                name="breed"
+                pickerItems={fields.breed.options}
+              />
+
+              <BasicPickerField
+                label={fields.technique.label}
+                name="technique"
+                pickerItems={fields.technique.options}
+                numberOfLines={2}
+              />
+
+              {values?.technique === "Other" && (
+                <InputField
+                  label={fields.technique_other.label}
+                  name="technique_other"
+                />
+              )}
             </View>
-            <FixedStepButton
-              onPress={() => {
-                handleSubmit();
-                navigation.navigate("InitialConsultationStepThree");
-              }}
-              title="Next"
-              progress="55%"
-            />
           </View>
-        )}
-      </Formik>
-    </Layout>
+        </Layout>
+      )}
+    </Formik>
   );
 };

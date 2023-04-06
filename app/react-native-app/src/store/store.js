@@ -1,14 +1,16 @@
 import { Store } from "pullstate";
+import { initialConsultation } from "constants/initial-consultation";
 
-export const ICStoreInitialState = {
-  horseName: "",
-  clientSurname: "",
-  dateOfCastration: "",
-  isLessThanTwo: false,
-  ageAboveTwo: 0,
-  weight: 0,
-  breed: "",
-  technique: "",
-  progress: 0,
-};
-export const InitialConsulationStore = new Store(ICStoreInitialState);
+// Grab initial state/default values
+// E.g. { horseName : "" , clientSurname : "" ....}
+export const ICStoreInitialState = Object.fromEntries(
+  Object.entries(initialConsultation.fields)
+    .filter(([key]) => key !== "id") // ignore specific keys
+    .map(([key, { defaultValue }]) => [key, defaultValue])
+);
+
+// Create a globally available store
+export const InitialConsultationStore = new Store(ICStoreInitialState);
+
+export const resetInitialConsultationStore = () =>
+  InitialConsultationStore.replace(ICStoreInitialState);

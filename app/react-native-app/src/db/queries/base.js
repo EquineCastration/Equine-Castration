@@ -10,6 +10,7 @@ export const queryBase = {
     }
     const columnNames = arr.join(", ");
     const sql = `create table if not exists ${table_name} (${columnNames});`;
+
     db.transaction((tx) => {
       tx.executeSql(
         sql,
@@ -71,7 +72,6 @@ export const queryBase = {
   },
 
   addMissingColumns: (table_name, columnsStore) => {
-    let res;
     db.transaction((tx) => {
       tx.executeSql(
         `pragma table_info('${table_name}');`,
@@ -92,13 +92,26 @@ export const queryBase = {
             const sql = `alter table ${table_name} add column ${columnDefinitions.join(
               ", "
             )}`;
-
             tx.executeSql(sql);
           }
         },
-        (_, error) => (res = { error: true, errMsg: error })
+        (_, error) => console.log("Error", error)
       );
     });
-    return res;
+  },
+
+  getData: (table_name, setData) => {
+    db.transaction((tx) => {
+      tx.executeSql(
+        `SELECT * FROM ${table_name}`,
+        [],
+        (_, result) => {
+          setData(result.rows._array);
+        },
+        (_, error) => {
+          console.log("Error during select operation:", error);
+        }
+      );
+    });
   },
 };

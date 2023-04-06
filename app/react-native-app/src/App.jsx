@@ -1,15 +1,18 @@
 import { NavigationContainer } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import { Login } from "screens/Login";
-import { RecordList } from "screens/RecordList";
+import { CaseList } from "screens/CaseList";
 import { InitialConsultationStepOne } from "screens/InitialConsultation/InitialConsultationStepOne";
 import { InitialConsultationStepTwo } from "screens/InitialConsultation/InitialConsultationStepTwo";
 import { InitialConsultationStepThree } from "screens/InitialConsultation/InitialConsultationStepThree";
+import { InitialConsultationStepFour } from "screens/InitialConsultation/InitialConsultationStepFour";
+import { InitialConsultationStepFive } from "screens/InitialConsultation/InitialConsultationStepFive";
+import { InitialConsultationStepSix } from "screens/InitialConsultation/InitialConsultationStepSix";
 import { Confirmation } from "screens/InitialConsultation/Confirmation";
 import Toast from "react-native-toast-message";
-import { BgGradient } from "components/BgGradient";
-import { Text } from "react-native";
 import { colors, font } from "style/style";
+import { CaseDetail } from "screens/CaseDetail";
+import { ScreenHeader } from "components/ScreenHeader";
 
 const Stack = createNativeStackNavigator();
 
@@ -17,6 +20,7 @@ const commontHeaderOptions = {
   headerShown: true,
   headerShadowVisible: false,
   title: "",
+  headerTintColor: colors.light,
 };
 
 export default function App() {
@@ -29,30 +33,49 @@ export default function App() {
             component={Login}
             options={{
               headerBackground: () => (
-                <BgGradient>
-                  <Text
-                    style={{
-                      color: colors.primary[50],
-                      fontWeight: 300,
-                      fontSize: font.size["3xl"],
-                      marginBottom: 10,
-                    }}
-                  >
-                    Equine Castration
-                  </Text>
-                </BgGradient>
+                <ScreenHeader title="Equine Castration" />
               ),
               ...commontHeaderOptions,
             }}
           />
 
           <Stack.Screen
-            name="RecordList"
-            component={RecordList}
-            options={{ ...commontHeaderOptions }}
+            name="CaseList"
+            component={CaseList}
+            options={{
+              headerBackground: () => (
+                <ScreenHeader title="Case list" fontSize={font.size.xl} />
+              ),
+              ...commontHeaderOptions,
+            }}
           />
 
-          <Stack.Group screenOptions={{ ...commontHeaderOptions }}>
+          <Stack.Screen
+            name="CaseDetail"
+            component={CaseDetail}
+            options={({ route }) => ({
+              headerBackground: () => (
+                <ScreenHeader
+                  title={`Case detail of ${route.params.caseData.horseName}`}
+                  fontSize={font.size.md}
+                  fontWeight={400}
+                />
+              ),
+              ...commontHeaderOptions,
+            })}
+          />
+
+          <Stack.Group
+            screenOptions={{
+              headerBackground: () => (
+                <ScreenHeader
+                  title="Initial Consultation"
+                  fontSize={font.size["2xl"]}
+                />
+              ),
+              ...commontHeaderOptions,
+            }}
+          >
             <Stack.Screen
               name="InitialConsultationStepOne"
               component={InitialConsultationStepOne}
@@ -64,6 +87,18 @@ export default function App() {
             <Stack.Screen
               name="InitialConsultationStepThree"
               component={InitialConsultationStepThree}
+            />
+            <Stack.Screen
+              name="InitialConsultationStepFour"
+              component={InitialConsultationStepFour}
+            />
+            <Stack.Screen
+              name="InitialConsultationStepFive"
+              component={InitialConsultationStepFive}
+            />
+            <Stack.Screen
+              name="InitialConsultationStepSix"
+              component={InitialConsultationStepSix}
             />
             <Stack.Screen
               name="InitialConsultationConfirmation"

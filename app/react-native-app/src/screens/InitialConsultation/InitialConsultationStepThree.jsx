@@ -1,84 +1,79 @@
 import { View } from "react-native";
-import { Formik } from "formik";
-import { Picker } from "@react-native-picker/picker";
-import { InitialConsulationStore } from "store/store";
-import { BasicPicker } from "components/BasicPicker";
-import { FixedStepButton } from "./InitialConsultationStepOne";
-import { Layout } from "./InitialConsultationStepOne";
 
-const info = {
-  breed: [
-    "TB or TB cross",
-    "WB or WB cross",
-    "Draft or draft cross",
-    "Cob",
-    "Pony",
-    "Miniature breed",
-    "Donkey",
-  ],
-  technique: [
-    "Tunica vaginalis removed (open technique)",
-    "Tunica vaginalis removed (closed technique)",
-    "Tunica vaginalis incised then removed (semi-closed)",
-    "Other technique e.g. Henderson tool, laparoscopic",
-  ],
-};
+import { Formik } from "formik";
+import { object, string, number } from "yup";
+
+import { InitialConsultationStore } from "store/store";
+import { InitialValues, Layout } from "./InitialConsultationStepOne";
+import { initialConsultation } from "constants/initial-consultation";
+import { BasicGroupOptionsField } from "components/BasicGroupOptionsField";
 
 export const InitialConsultationStepThree = ({ navigation }) => {
-  const data = InitialConsulationStore.useState();
+  const keysArr = [
+    "locationTesticleLeft",
+    "locationTesticleRight",
+    "ligatureUsed",
+  ];
+  const fields = initialConsultation.fields;
+  const initialValues = InitialValues(
+    keysArr,
+    InitialConsultationStore.useState()
+  );
+
+  const validationSchema = object().shape({
+    locationTesticleLeft: string()
+      .oneOf(fields.locationTesticleLeft.options, "Invalid")
+      .required("Required"),
+    locationTesticleRight: string()
+      .oneOf(fields.locationTesticleRight.options, "Invalid")
+      .required("Required"),
+    ligatureUsed: string()
+      .oneOf(fields.ligatureUsed.options, "Invalid")
+      .required("Ligature used is required"),
+  });
 
   return (
-    <Layout>
-      <Formik
-        initialValues={{
-          breed: data?.breed || "",
-          technique: data?.technique || "",
-        }}
-        onSubmit={(values) => {
-          InitialConsulationStore.update((s) => {
-            s.breed = values.breed;
-            s.technique = values.technique;
-          });
-          navigation.navigate("InitialConsultationConfirmation");
-        }}
-      >
-        {({ handleSubmit, values, setFieldValue }) => (
+    <Formik
+      initialValues={{ ...initialValues, otherTechnique: "" }}
+      validationSchema={validationSchema}
+      onSubmit={(values) => {
+        InitialConsultationStore.update((s) => {
+          s.locationTesticleLeft = values.locationTesticleLeft;
+          s.locationTesticleRight = values.locationTesticleRight;
+          s.ligatureUsed = values.ligatureUsed;
+        });
+        navigation.navigate("InitialConsultationStepFour");
+      }}
+    >
+      {({ handleSubmit }) => (
+        <Layout onSubmit={() => handleSubmit()} current={3}>
           <View
             style={{
               flex: 1,
             }}
           >
-            <View style={{ marginVertical: 5 }}>
-              <BasicPicker
-                label="Breed"
-                fieldName="breed"
-                value={values?.breed}
-                setFieldValue={setFieldValue}
-              >
-                {info?.breed.map((item, index) => (
-                  <Picker.Item key={index} label={item} value={item} />
-                ))}
-              </BasicPicker>
+            <View>
+              <BasicGroupOptionsField
+                label={fields.locationTesticleLeft.label}
+                name="locationTesticleLeft"
+                options={fields.locationTesticleLeft.options}
+              />
 
-              <BasicPicker
-                label="Technique"
-                fieldName="technique"
-                value={values?.technique}
-                setFieldValue={setFieldValue}
-              >
-                {info?.technique.map((item, index) => (
-                  <Picker.Item key={index} label={item} value={item} />
-                ))}
-              </BasicPicker>
+              <BasicGroupOptionsField
+                label={fields.locationTesticleRight.label}
+                name="locationTesticleRight"
+                options={fields.locationTesticleRight.options}
+              />
+
+              <BasicGroupOptionsField
+                label={fields.ligatureUsed.label}
+                name="ligatureUsed"
+                options={fields.ligatureUsed.options}
+              />
             </View>
-            <FixedStepButton
-              onPress={handleSubmit}
-              title="Confirm"
-              progress="85%"
-            />
           </View>
-        )}
-      </Formik>
-    </Layout>
+        </Layout>
+      )}
+    </Formik>
   );
 };
