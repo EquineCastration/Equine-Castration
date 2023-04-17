@@ -1,4 +1,7 @@
-import { InitialConsultationStore, ICStoreInitialState } from "store/store";
+import {
+  InitialConsultationStore,
+  ICStoreInitialState,
+} from "store/InitialConsultationStore";
 import { Layout } from "./InitialConsultationStepOne";
 import { queryBase } from "db/queries/base";
 import { CaseSummary } from "components/CaseSummary";

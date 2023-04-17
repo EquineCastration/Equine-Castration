@@ -99,19 +99,6 @@ public class RegistrationRulesController : ControllerBase
   }
 
   /// <summary>
-  /// Get Minimal Registration rules list i.e. get rule value and its status
-  /// </summary>
-  /// <returns>Minimal Registration rules list</returns>
-  [HttpGet("minimal")]
-  public async Task<List<RegistrationRuleModel>> MinimalList()
-  {
-    var rules = await _registrationRules.List();
-    
-    return rules.ConvertAll<RegistrationRuleModel>(x =>
-      new RegistrationRuleModel { Value = x.Value, IsBlocked = x.IsBlocked, });
-  }
-
-  /// <summary>
   /// Get email validation result
   /// </summary>
   /// <param name="email">email to validate</param>

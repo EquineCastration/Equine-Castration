@@ -6,7 +6,7 @@ import { object, string, number } from "yup";
 import { BasicPickerField } from "components/BasicPickerField";
 import { InputField } from "components/InputField";
 import { InitialValues, Layout } from "./InitialConsultationStepOne";
-import { InitialConsultationStore } from "store/store";
+import { InitialConsultationStore } from "store/InitialConsultationStore";
 import { initialConsultation } from "constants/initial-consultation";
 
 export const InitialConsultationStepTwo = ({ navigation }) => {
