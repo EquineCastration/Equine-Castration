@@ -1,8 +1,9 @@
 import { useBackendApi } from "contexts/BackendApi";
 import useSWR from "swr";
+import { Spinner } from "components/Spinner";
 
 const fetchKeys = {
-  userList: "https://smooth-taxes-jam-81-129-109-219.loca.lt/api/users",
+  userList: "users",
 };
 
 /**
@@ -17,6 +18,6 @@ export const useUserList = () => {
       const data = await apiFetcher(url);
       return data;
     },
-    { suspense: true }
+    { suspense: false }
   );
 };

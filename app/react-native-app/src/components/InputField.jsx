@@ -10,7 +10,7 @@ export const InputField = ({
   labelColor = colors.primary[700],
   inputBorderColor = colors.primary[200],
   inputActiveBorderColor = colors.primary[500],
-  type,
+  type = "text",
   ...props
 }) => {
   const [field, meta] = useField(name);

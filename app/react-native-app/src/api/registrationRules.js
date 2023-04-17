@@ -5,7 +5,9 @@ export const getRegistrationRulesApi = ({ api }) => ({
    * @returns
    */
   validate: (email) =>
-    api.post("registrationRules/validate", {
-      json: email,
+    api.post("registrationRules/validate", email, {
+      headers: {
+        "Content-Type": "application/json",
+      },
     }),
 });

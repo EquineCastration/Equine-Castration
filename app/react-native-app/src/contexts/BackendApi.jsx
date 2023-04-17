@@ -1,26 +1,33 @@
 import { getAccountApi } from "api/account";
 import { getRegistrationRulesApi } from "api/registrationRules";
-import ky from "ky";
 import { createContext, useCallback, useContext, useMemo } from "react";
+import { LOCAL_PUBLIC_API } from "react-native-dotenv";
+
+import axios from "axios";
+
 const BackendApiContext = createContext({});
 export const useBackendApi = () => useContext(BackendApiContext);
 
-/** Default KY instance options for hitting the backend API */
+/** Default axios instance options for hitting the backend API */
 export const getBackendDefaults = () => ({
-  prefixUrl: "/api/",
+  baseURL: `${LOCAL_PUBLIC_API}/api/`,
 });
 
 export const BackendApiProvider = ({ children }) => {
-  // preconfigured ky instance for hitting the backend api
-  const api = useMemo(() => ky.create(getBackendDefaults()), []);
+  // preconfigured axios instance for hitting the backend api
+  const api = useMemo(() => axios.create(getBackendDefaults()), []);
 
   /**
    * A default fetcher for SWR to get data from the backend API
    * @param {*} path the url path relative to `https://{backend}/api/`
    * @returns
    */
+
   const apiFetcher = useCallback(
-    async (path) => await api.get(path).json(),
+    async (path) => {
+      const response = await api.get(path);
+      return response.data;
+    },
     [api]
   );
 

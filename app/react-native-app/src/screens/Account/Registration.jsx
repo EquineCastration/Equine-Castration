@@ -1,17 +1,21 @@
 import { ScrollView, View } from "react-native";
 
 import { Formik } from "formik";
-import { object, string, boolean } from "yup";
 
 import { DefaultLayout } from "layout/DefaultLayout";
 import { FixedStepButton } from "components/FixedStepButton";
 import { InputField } from "components/InputField";
 import { accountRegistration } from "constants/account-registration";
 import { AccountRegistrationStore } from "store/AccountRegistrationStore";
-import { validationSchema as emailSchema } from "components/InputField";
 import { useBackendApi } from "contexts/BackendApi";
-import { useUserList } from "api/user";
-import useSWR from "swr";
+import { validationSchemaRegRules as emailSchema } from "components/EmailField";
+import { EmailField } from "components/EmailField";
+import { object } from "yup";
+
+const validationSchema = () =>
+  object().shape({
+    ...emailSchema("email"),
+  });
 
 const Layout = ({ children, onSubmit, current, title }) => {
   return (
@@ -58,38 +62,14 @@ export const RegistrationStepOne = ({ navigation }) => {
     registrationRules: { validate },
   } = useBackendApi();
 
-  // const { data } = useUserList();
-
-  // const { data, error } = useSWR("https://smooth-taxes-jam-81-129-109-219.loca.lt/api/users", async (url) => {
-  //   const response = await fetch(url);
-  //   const data = await response.json();
-  //   return data;
-  // });
-
-  // console.log("data", data);
-
-  const validationSchema = (emailName) =>
-    object().shape({
-      [emailName]: emailSchema.test(
-        "backend-validation",
-        "Email is not valid.",
-        async (value) => {
-          const email = value?.toLowerCase();
-          const res = await validate(email);
-          const json = await res.json();
-          return json.isValid;
-        }
-      ),
-    });
-
   return (
     <Formik
       initialValues={initialValues}
-      validationSchema={validationSchema("email")}
+      validationSchema={validationSchema()}
       onSubmit={async (values) => {
         console.log(values);
         const res = await validate(values.email);
-        console.log(await res.json());
+        console.log(res?.data);
       }}
     >
       {({ handleSubmit, values }) => (
@@ -101,7 +81,7 @@ export const RegistrationStepOne = ({ navigation }) => {
             }}
           >
             <InputField label={fields.name.label} name="name" />
-            <InputField label={fields.email.label} name="email" />
+            <EmailField label={fields.email.label} name="email" />
             <InputField label={fields.password.label} name="password" />
           </View>
         </Layout>

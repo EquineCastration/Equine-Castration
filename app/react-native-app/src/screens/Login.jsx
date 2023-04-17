@@ -1,7 +1,7 @@
 import { BasicTouchableOpacity } from "components/BasicTouchableOpacity";
 import { SafeAreaView, View, Text } from "react-native";
 import { colors, font } from "style/style";
-import { resetInitialConsultationStore } from "store/store";
+import { resetInitialConsultationStore } from "store/InitialConsultationStore";
 
 export const Login = ({ navigation }) => {
   // should be loaded as screen to get navigation prop
