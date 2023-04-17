@@ -7,7 +7,7 @@ namespace EquineCastration.Middleware;
 public class ConfigCookieMiddleware
 {
 
-  public static readonly string ConfigCookieName = ".Adhesion.Config";
+  public static readonly string ConfigCookieName = ".EquineCastration.Config";
 
   private readonly RequestDelegate _next;
 

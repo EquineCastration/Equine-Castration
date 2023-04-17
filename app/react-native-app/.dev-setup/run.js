@@ -17,7 +17,7 @@ const initLocaltunnel = async () => {
   return tunnel;
 };
 
-// Spawns my React-Native subprocess
+// Spawns React-Native subprocess
 const spawnReactNativeProcess = (closeLocaltunnel) => {
   const process = spawn("pnpm", ["start"], { stdio: "inherit" });
 
