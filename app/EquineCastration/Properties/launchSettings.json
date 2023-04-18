@@ -1,0 +1,11 @@
+﻿{
+  "profiles": {
+    "EquineCastration": {
+      "commandName": "Project",
+      "applicationUrl": "http://localhost:5735",
+      "environmentVariables": {
+        "ASPNETCORE_ENVIRONMENT": "Development"
+      }
+    }
+  }
+}

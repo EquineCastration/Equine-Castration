@@ -7,7 +7,7 @@ import { InputField } from "components/InputField";
 import { MultiCheckBoxField } from "components/MultiCheckBoxField";
 import { initialConsultation } from "constants/initial-consultation";
 
-import { InitialConsultationStore } from "store/store";
+import { InitialConsultationStore } from "store/InitialConsultationStore";
 import { Layout, InitialValues } from "./InitialConsultationStepOne";
 import { BasicGroupOptionsField } from "components/BasicGroupOptionsField";
 

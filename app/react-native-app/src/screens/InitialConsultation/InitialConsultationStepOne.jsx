@@ -1,4 +1,4 @@
-import { View, ScrollView, Text } from "react-native";
+import { View, ScrollView } from "react-native";
 import { useEffect } from "react";
 
 import { Formik } from "formik";
@@ -6,16 +6,17 @@ import { object, string, boolean } from "yup";
 
 import { DefaultLayout } from "layout/DefaultLayout";
 import { DatePickerField } from "components/DatePickerField";
-import { ProgressBar } from "components/ProgressBar";
+import { FixedStepButton } from "components/FixedStepButton";
 import { InputField } from "components/InputField";
-import { BasicTouchableOpacity } from "components/BasicTouchableOpacity";
 import { CheckBoxField } from "components/CheckBoxField";
 import { BasicPickerField } from "components/BasicPickerField";
 
-import { InitialConsultationStore, ICStoreInitialState } from "store/store";
+import {
+  InitialConsultationStore,
+  ICStoreInitialState,
+} from "store/InitialConsultationStore";
 import { queryBase } from "db/queries/base";
 import { initialConsultation } from "constants/initial-consultation";
-import { colors } from "style/style";
 
 const validationSchema = object().shape({
   horseName: string().required("Horse name required"),
@@ -53,30 +54,14 @@ export const Layout = ({ children, onSubmit, current, title }) => {
           marginHorizontal: 10,
         }}
       >
-        <FixedStepButton onPress={onSubmit} current={current} title={title} />
+        <FixedStepButton
+          onPress={onSubmit}
+          current={current}
+          title={title}
+          total={7}
+        />
       </View>
     </DefaultLayout>
-  );
-};
-
-// Standard next step button component with progress bar
-export const FixedStepButton = ({ onPress, title = "Next", current }) => {
-  const total = 7;
-  return (
-    <View
-      style={{
-        marginVertical: 12,
-        justifyContent: "flex-end",
-        zIndex: -1,
-      }}
-    >
-      <BasicTouchableOpacity
-        onPress={onPress}
-        title={title}
-        paddingVertical={3}
-      />
-      <ProgressBar total={total} current={current} color={colors.ui.btnBg} />
-    </View>
   );
 };
 

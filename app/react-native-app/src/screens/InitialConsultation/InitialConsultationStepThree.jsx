@@ -1,9 +1,9 @@
 import { View } from "react-native";
 
 import { Formik } from "formik";
-import { object, string, number } from "yup";
+import { object, string } from "yup";
 
-import { InitialConsultationStore } from "store/store";
+import { InitialConsultationStore } from "store/InitialConsultationStore";
 import { InitialValues, Layout } from "./InitialConsultationStepOne";
 import { initialConsultation } from "constants/initial-consultation";
 import { BasicGroupOptionsField } from "components/BasicGroupOptionsField";

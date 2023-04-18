@@ -7,7 +7,7 @@ import { BasicPickerField } from "components/BasicPickerField";
 import { InputField } from "components/InputField";
 import { BasicGroupOptionsField } from "components/BasicGroupOptionsField";
 
-import { InitialConsultationStore } from "store/store";
+import { InitialConsultationStore } from "store/InitialConsultationStore";
 import { Layout, InitialValues } from "./InitialConsultationStepOne";
 import { initialConsultation } from "constants/initial-consultation";
 
