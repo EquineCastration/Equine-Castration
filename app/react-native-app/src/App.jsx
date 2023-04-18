@@ -18,6 +18,7 @@ import { ScreenHeader } from "components/ScreenHeader";
 import { RegistrationStepOne } from "screens/Account/Registration";
 import { Suspense } from "react";
 import { Spinner } from "components/Spinner";
+import { AccountLogin } from "screens/Account/AccountLogin";
 
 const Stack = createNativeStackNavigator();
 
@@ -36,6 +37,8 @@ export default function App() {
           <BackendConfigProvider>
             <NavigationContainer>
               <Stack.Navigator screenOptions={{ headerShown: false }}>
+                <Stack.Screen name="AccountLogin" component={AccountLogin} />
+
                 <Stack.Group
                   screenOptions={{
                     headerBackground: () => (

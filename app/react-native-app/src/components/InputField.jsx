@@ -6,6 +6,8 @@ import { colors, font } from "style/style";
 export const InputField = ({
   name,
   label,
+  labelAlign = "left",
+  bgColor = colors.ui.bg,
   placeholder = label,
   labelColor = colors.primary[700],
   inputBorderColor = colors.primary[200],
@@ -20,7 +22,7 @@ export const InputField = ({
     <View
       style={{
         marginVertical: 8,
-        backgroundColor: colors.ui.bg,
+        backgroundColor: bgColor,
         paddingHorizontal: 8,
         borderRadius: 8,
       }}
@@ -28,6 +30,7 @@ export const InputField = ({
       <View style={{ marginVertical: 10 }}>
         <Text
           style={{
+            textAlign: labelAlign,
             marginBottom: 5,
             fontSize: font.size.normal,
             color: labelColor,
