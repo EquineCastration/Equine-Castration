@@ -58,18 +58,13 @@ export const RegistrationStepOne = ({ navigation }) => {
     AccountRegistrationStore.useState()
   );
 
-  const {
-    registrationRules: { validate },
-  } = useBackendApi();
-
   return (
     <Formik
       initialValues={initialValues}
       validationSchema={validationSchema()}
       onSubmit={async (values) => {
         console.log(values);
-        const res = await validate(values.email);
-        console.log(res?.data);
+        // TODO: Handle submission
       }}
     >
       {({ handleSubmit, values }) => (

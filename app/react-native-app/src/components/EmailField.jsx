@@ -21,17 +21,20 @@ export const validationSchemaRegRules = (emailName) => {
       async (value) => {
         if (!value) return;
         const email = value.toLowerCase();
-        const res = await validate(email);
+        const res = await validate(email); // validate the email against the backend
         const { isValid } = await res.data;
-        return isValid;
+        return isValid; // booleans
       }
     ),
   };
 };
 
 // Validate email based against registration rules and check if email is same as old one
-export const validationSchemaExistingEmail = ({ existingEmail }) => ({
-  email: validationSchemaRegRules().email.notOneOf(
+export const validationSchemaExistingEmail = ({
+  emailName,
+  existingEmail,
+}) => ({
+  [emailName]: validationSchemaRegRules(emailName)[emailName].notOneOf(
     [existingEmail],
     "Email must be different than the current one"
   ),
