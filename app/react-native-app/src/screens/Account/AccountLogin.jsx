@@ -1,116 +1,109 @@
-import { InputField } from "components/InputField";
-import { DefaultLayout } from "layout/DefaultLayout";
-import { Formik } from "formik";
-import { View, Text, SafeAreaView } from "react-native";
-import { colors, font } from "style/style";
-import { BgGradient } from "components/BgGradient";
-import { BasicTouchableOpacity } from "components/BasicTouchableOpacity";
-export const AccountLogin = () => {
-  return (
-    <SafeAreaView
-      style={{
-        flex: 1,
-        justifyContent: "center",
-      }}
-    >
-      <View
-        style={{
-          height: "35%",
-          justifyContent: "center",
-        }}
-      >
-        <BgGradient>
-          <View style={{ alignItems: "center", marginBottom: 40, gap: 5 }}>
-            <Text
-              style={{
-                fontSize: font.size["6xl"],
-                fontWeight: 500,
-                color: colors.light,
-              }}
-            >
-              Login
-            </Text>
-            <Text
-              style={{
-                fontSize: font.size["lg"],
-                color: colors.light,
-              }}
-            >
-              Please sign in to continue
-            </Text>
-          </View>
-        </BgGradient>
-      </View>
+import { View, Text, SafeAreaView, TouchableOpacity } from "react-native";
 
+import { Formik } from "formik";
+import { object, string } from "yup";
+
+import { InputField } from "components/InputField";
+import { BasicTouchableOpacity } from "components/BasicTouchableOpacity";
+import { colors, font } from "style/style";
+import { validationSchema as emailSchema } from "components/EmailField";
+import { AccountLayout } from "./AccountLayout";
+import { EmailField } from "components/EmailField";
+
+const validationSchema = () =>
+  object().shape({
+    ...emailSchema("username"),
+    password: string().required("Please enter a password"),
+  });
+
+export const AccountLogin = ({ navigation }) => {
+  return (
+    <AccountLayout
+      primaryHeading="Welcome"
+      secondaryHeading="Please sign into continue"
+    >
       <Formik
         initialValues={{ username: "", password: "" }}
+        validationSchema={validationSchema()}
         onSubmit={async (values) => {
           console.log(values);
           // TODO: Handle submission
         }}
       >
-        <View
-          style={{
-            flex: 1,
-            gap: 10,
-            backgroundColor: colors.light,
-            marginTop: -20,
-            padding: 10,
-            borderRadius: 8,
-          }}
-        >
-          <InputField
-            label="Username/email"
-            name="username"
-            labelAlign="center"
-            bgColor={colors.light}
-          />
-          <InputField
-            label="Password"
-            name="password"
-            type="password"
-            labelAlign="center"
-            bgColor={colors.light}
-          />
-
-          <Text
-            style={{
-              textAlign: "center",
-              fontSize: font.size["md"],
-              color: colors.primary[800],
-              fontWeight: 400,
-            }}
-          >
-            Forgot password ?
-          </Text>
-          <View style={{ alignItems: "center" }}>
-            <BasicTouchableOpacity
-              title="Login"
-              btnWidth="60%"
-              paddingVertical={5}
+        {({ handleSubmit, values }) => (
+          <View style={{ gap: 10 }}>
+            <EmailField
+              label="Username/email"
+              name="username"
+              labelAlign="center"
+              bgColor={colors.light}
             />
-          </View>
-          <Text
-            style={{
-              textAlign: "center",
-              fontSize: font.size["normal"],
-              color: colors.primary[700],
-              fontWeight: 300,
-            }}
-          >
-            Don't have an account ?{" "}
-            <Text
+            <InputField
+              label="Password"
+              name="password"
+              type="password"
+              labelAlign="center"
+              bgColor={colors.light}
+            />
+
+            <TouchableOpacity>
+              <Text
+                style={{
+                  textAlign: "center",
+                  fontSize: font.size["normal"],
+                  color: colors.ui.btnBg,
+                  fontWeight: 400,
+                }}
+              >
+                Forgot password ?
+              </Text>
+            </TouchableOpacity>
+
+            <View style={{ alignItems: "center" }}>
+              <BasicTouchableOpacity
+                title="Sign In"
+                btnWidth="60%"
+                paddingVertical={5}
+                onPress={() => handleSubmit()}
+              />
+            </View>
+
+            <View
               style={{
-                fontSize: font.size["md"],
-                color: colors.ui.btnBg,
-                fontWeight: 500,
+                marginTop: 20,
+                flexDirection: "row",
+                alignItems: "center",
+                gap: 5,
+                justifyContent: "center",
               }}
             >
-              Sign Up
-            </Text>
-          </Text>
-        </View>
+              <Text
+                style={{
+                  textAlign: "center",
+                  fontSize: font.size["normal"],
+                  color: colors.primary[700],
+                  fontWeight: 300,
+                }}
+              >
+                Don't have an account ?
+              </Text>
+              <TouchableOpacity
+                onPress={() => navigation.navigate("RegistrationStepOne")}
+              >
+                <Text
+                  style={{
+                    fontSize: font.size["md"],
+                    color: colors.ui.btnBg,
+                    fontWeight: 500,
+                  }}
+                >
+                  Sign Up
+                </Text>
+              </TouchableOpacity>
+            </View>
+          </View>
+        )}
       </Formik>
-    </SafeAreaView>
+    </AccountLayout>
   );
 };

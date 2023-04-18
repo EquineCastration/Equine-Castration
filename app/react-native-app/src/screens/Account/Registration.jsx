@@ -2,29 +2,24 @@ import { ScrollView, View } from "react-native";
 
 import { Formik } from "formik";
 
-import { DefaultLayout } from "layout/DefaultLayout";
 import { FixedStepButton } from "components/FixedStepButton";
 import { InputField } from "components/InputField";
 import { accountRegistration } from "constants/account-registration";
 import { AccountRegistrationStore } from "store/AccountRegistrationStore";
-import { useBackendApi } from "contexts/BackendApi";
 import { validationSchemaRegRules as emailSchema } from "components/EmailField";
+import { validationSchema as pwdSchema } from "components/PasswordField";
 import { EmailField } from "components/EmailField";
-import { object } from "yup";
+import { object, string } from "yup";
+import { AccountLayout } from "./AccountLayout";
+import { colors } from "style/style";
+import { PasswordField } from "components/PasswordField";
 
-const validationSchema = () =>
-  object().shape({
-    ...emailSchema("email"),
-  });
-
-const Layout = ({ children, onSubmit, current, title }) => {
+const Layout = ({ children, onSubmit, current, steptitle }) => {
   return (
-    <DefaultLayout>
+    <>
       <ScrollView
         style={{
           marginVertical: 2,
-          marginHorizontal: 5,
-          paddingHorizontal: 5,
         }}
       >
         {children}
@@ -34,9 +29,13 @@ const Layout = ({ children, onSubmit, current, title }) => {
           marginHorizontal: 10,
         }}
       >
-        <FixedStepButton onPress={onSubmit} current={current} title={title} />
+        <FixedStepButton
+          onPress={onSubmit}
+          current={current}
+          title={steptitle}
+        />
       </View>
-    </DefaultLayout>
+    </>
   );
 };
 
@@ -59,28 +58,119 @@ export const RegistrationStepOne = ({ navigation }) => {
   );
 
   return (
-    <Formik
-      initialValues={initialValues}
-      validationSchema={validationSchema()}
-      onSubmit={async (values) => {
-        console.log(values);
-        // TODO: Handle submission
-      }}
+    <AccountLayout
+      primaryHeading="Register"
+      secondaryHeading="Please register to use the app"
+      backBtn
     >
-      {({ handleSubmit, values }) => (
-        <Layout onSubmit={() => handleSubmit()} current={1}>
-          <View
-            style={{
-              flex: 1,
-              gap: 20,
-            }}
-          >
-            <InputField label={fields.name.label} name="name" />
-            <EmailField label={fields.email.label} name="email" />
-            <InputField label={fields.password.label} name="password" />
-          </View>
-        </Layout>
-      )}
-    </Formik>
+      <Formik
+        initialValues={initialValues}
+        validationSchema={object().shape({
+          name: string().required("Name required"),
+          ...pwdSchema("password"),
+          ...emailSchema("email"),
+        })}
+        onSubmit={async (values) => {
+          console.log(values);
+          // TODO: Handle submission
+        }}
+      >
+        {({ handleSubmit, values }) => (
+          <Layout onSubmit={() => handleSubmit()} current={1}>
+            <View
+              style={{
+                flex: 1,
+                gap: 20,
+              }}
+            >
+              <InputField
+                label={fields.name.label}
+                name="name"
+                labelAlign="center"
+                bgColor={colors.light}
+              />
+              <EmailField
+                label={fields.email.label}
+                name="email"
+                labelAlign="center"
+                bgColor={colors.light}
+              />
+              <PasswordField
+                label={fields.password.label}
+                name="password"
+                labelAlign="center"
+                bgColor={colors.light}
+              />
+            </View>
+          </Layout>
+        )}
+      </Formik>
+    </AccountLayout>
+  );
+};
+
+export const RegistrationStepTwo = ({ navigation }) => {
+  const keysArr = [
+    "institution",
+    "isAmbulatory",
+    "yearsQualified",
+    "gdprConfirmation",
+  ];
+  const fields = accountRegistration.fields;
+  const initialValues = InitialValues(
+    keysArr,
+    AccountRegistrationStore.useState()
+  );
+
+  return (
+    <AccountLayout
+      primaryHeading="Register"
+      secondaryHeading="Please register to use the app"
+      backBtn
+    >
+      <Formik
+        initialValues={initialValues}
+        validationSchema={object().shape({
+          name: string().required("Name required"),
+          ...pwdSchema("password"),
+          ...emailSchema("email"),
+        })}
+        onSubmit={async (values) => {
+          console.log(values);
+          // TODO: Handle submission
+        }}
+      >
+        {({ handleSubmit, values }) => (
+          <Layout onSubmit={() => handleSubmit()} current={1}>
+            <View
+              style={{
+                flex: 1,
+                gap: 20,
+              }}
+            >
+              <InputField
+                label={fields.institution.label}
+                name="institution"
+                labelAlign="center"
+                bgColor={colors.light}
+              />
+              <EmailField
+                label={fields.email.label}
+                name="email"
+                labelAlign="center"
+                bgColor={colors.light}
+              />
+              <InputField
+                label={fields.yearsQualified.label}
+                name="yearsQualified"
+                keyboardType="numeric"
+                labelAlign="center"
+                bgColor={colors.light}
+              />
+            </View>
+          </Layout>
+        )}
+      </Formik>
+    </AccountLayout>
   );
 };

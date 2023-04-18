@@ -43,6 +43,7 @@ export const validationSchemaExistingEmail = ({
 export const EmailField = ({
   name,
   label,
+  labelAlign,
   placeholder,
   labelColor,
   inputBorderColor,
@@ -53,6 +54,7 @@ export const EmailField = ({
     <InputField
       name={name}
       label={label}
+      labelAlign={labelAlign}
       placeholder={placeholder}
       labelColor={labelColor}
       inputBorderColor={inputBorderColor}

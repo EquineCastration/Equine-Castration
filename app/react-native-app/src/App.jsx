@@ -19,10 +19,11 @@ import { RegistrationStepOne } from "screens/Account/Registration";
 import { Suspense } from "react";
 import { Spinner } from "components/Spinner";
 import { AccountLogin } from "screens/Account/AccountLogin";
+import { BasicBackButton } from "components/BasicBackButton";
 
 const Stack = createNativeStackNavigator();
 
-const commontHeaderOptions = {
+const commonHeaderOptions = {
   headerShown: true,
   headerShadowVisible: false,
   title: "",
@@ -36,25 +37,12 @@ export default function App() {
         <BackendApiProvider>
           <BackendConfigProvider>
             <NavigationContainer>
-              <Stack.Navigator screenOptions={{ headerShown: false }}>
+              <Stack.Navigator
+                screenOptions={{
+                  headerShown: false,
+                }}
+              >
                 <Stack.Screen name="AccountLogin" component={AccountLogin} />
-
-                <Stack.Group
-                  screenOptions={{
-                    headerBackground: () => (
-                      <ScreenHeader
-                        title="Account Registration"
-                        fontSize={font.size["2xl"]}
-                      />
-                    ),
-                    ...commontHeaderOptions,
-                  }}
-                >
-                  <Stack.Screen
-                    name="RegistrationStepOne"
-                    component={RegistrationStepOne}
-                  />
-                </Stack.Group>
 
                 <Stack.Screen
                   name="Login"
@@ -63,9 +51,16 @@ export default function App() {
                     headerBackground: () => (
                       <ScreenHeader title="Equine Castration" />
                     ),
-                    ...commontHeaderOptions,
+                    ...commonHeaderOptions,
                   }}
                 />
+
+                <Stack.Group>
+                  <Stack.Screen
+                    name="RegistrationStepOne"
+                    component={RegistrationStepOne}
+                  />
+                </Stack.Group>
 
                 <Stack.Screen
                   name="CaseList"
@@ -74,7 +69,7 @@ export default function App() {
                     headerBackground: () => (
                       <ScreenHeader title="Case list" fontSize={font.size.xl} />
                     ),
-                    ...commontHeaderOptions,
+                    ...commonHeaderOptions,
                   }}
                 />
 
@@ -89,7 +84,7 @@ export default function App() {
                         fontWeight={400}
                       />
                     ),
-                    ...commontHeaderOptions,
+                    ...commonHeaderOptions,
                   })}
                 />
 
@@ -101,7 +96,7 @@ export default function App() {
                         fontSize={font.size["2xl"]}
                       />
                     ),
-                    ...commontHeaderOptions,
+                    ...commonHeaderOptions,
                   }}
                 >
                   <Stack.Screen
