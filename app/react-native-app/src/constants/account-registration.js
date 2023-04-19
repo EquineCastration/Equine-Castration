@@ -19,12 +19,16 @@ export const accountRegistration = {
       label: "Email",
       defaultValue: "",
     },
+    isVeterinarian: {
+      label: "Are you registering as Veterinarian ?",
+      default: false,
+    },
     institution: {
       label: "Institution",
       defaultValue: "",
     },
     isAmbulatory: {
-      label: "Ambulatory or Hospital ?",
+      label: "Please check if Ambulatory, otherwise uncheck the box.",
       options: ["Ambulatory", "Hospital"],
       defaultValue: true,
     },

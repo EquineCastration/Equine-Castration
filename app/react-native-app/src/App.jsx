@@ -15,11 +15,14 @@ import Toast from "react-native-toast-message";
 import { colors, font } from "style/style";
 import { CaseDetail } from "screens/CaseDetail";
 import { ScreenHeader } from "components/ScreenHeader";
-import { RegistrationStepOne } from "screens/Account/Registration";
+import {
+  RegistrationStepOne,
+  RegistrationStepTwo,
+  RegistrationStepGDPR,
+} from "screens/Account/Registration";
 import { Suspense } from "react";
 import { Spinner } from "components/Spinner";
 import { AccountLogin } from "screens/Account/AccountLogin";
-import { BasicBackButton } from "components/BasicBackButton";
 
 const Stack = createNativeStackNavigator();
 
@@ -59,6 +62,14 @@ export default function App() {
                   <Stack.Screen
                     name="RegistrationStepOne"
                     component={RegistrationStepOne}
+                  />
+                  <Stack.Screen
+                    name="RegistrationStepTwo"
+                    component={RegistrationStepTwo}
+                  />
+                  <Stack.Screen
+                    name="RegistrationStepGDPR"
+                    component={RegistrationStepGDPR}
                   />
                 </Stack.Group>
 
