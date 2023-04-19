@@ -45,6 +45,7 @@ public class AccountController : ControllerBase
   [HttpPost("register")]
   public async Task<IActionResult> Register(RegisterAccountModel model)
   {
+    Console.WriteLine("Register end point hit");
     RegisterAccountResult regResult = new();
 
     if (ModelState.IsValid) // Additional Pre-registration checks

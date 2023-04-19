@@ -1,17 +1,24 @@
+import { useEffect, useState } from "react";
 import { ScrollView, View, Text } from "react-native";
 
-import { Formik, useField } from "formik";
+import { Formik } from "formik";
+import { boolean, object, string } from "yup";
+
+import { accountRegistration } from "constants/account-registration";
+import {
+  AccountRegistrationStore,
+  resetAccountRegistrationStore,
+} from "store/AccountRegistrationStore";
+import { colors, font } from "style/style";
+import { useBackendApi } from "contexts/BackendApi";
+import { AccountLayout } from "./AccountLayout";
+import { Toast } from "react-native-toast-message/lib/src/Toast";
 
 import { FixedStepButton } from "components/FixedStepButton";
 import { InputField } from "components/InputField";
-import { accountRegistration } from "constants/account-registration";
-import { AccountRegistrationStore } from "store/AccountRegistrationStore";
 import { validationSchemaRegRules as emailSchema } from "components/EmailField";
 import { validationSchema as pwdSchema } from "components/PasswordField";
 import { EmailField } from "components/EmailField";
-import { boolean, object, string } from "yup";
-import { AccountLayout } from "./AccountLayout";
-import { colors, font } from "style/style";
 import { PasswordField } from "components/PasswordField";
 import { CheckBoxField } from "components/CheckBoxField";
 
@@ -52,13 +59,12 @@ const InitialValues = (keysArr, store) => {
 };
 
 export const RegistrationStepOne = ({ navigation }) => {
-  const keysArr = ["name", "email", "password", "isVeterinarian"];
+  const keysArr = ["fullName", "email", "password", "isVeterinarian"];
   const fields = accountRegistration.fields;
   const initialValues = InitialValues(
     keysArr,
     AccountRegistrationStore.useState()
   );
-
   return (
     <AccountLayout
       primaryHeading="Register"
@@ -68,13 +74,17 @@ export const RegistrationStepOne = ({ navigation }) => {
       <Formik
         initialValues={initialValues}
         validationSchema={object().shape({
-          name: string().required("Name required"),
+          fullName: string().required("Full name required"),
           ...pwdSchema("password"),
           ...emailSchema("email"),
         })}
         onSubmit={async (values) => {
-          console.log(values);
-          // TODO: Handle submission
+          AccountRegistrationStore.update((s) => {
+            s.fullName = values.fullName;
+            s.email = values.email;
+            s.password = values.password;
+            s.isVeterinarian = values.isVeterinarian;
+          });
           values.isVeterinarian
             ? navigation.navigate("RegistrationStepTwo")
             : navigation.navigate("RegistrationStepGDPR");
@@ -93,8 +103,8 @@ export const RegistrationStepOne = ({ navigation }) => {
               }}
             >
               <InputField
-                label={fields.name.label}
-                name="name"
+                label={fields.fullName.label}
+                name="fullName"
                 labelAlign="center"
                 bgColor={colors.light}
               />
@@ -143,12 +153,15 @@ export const RegistrationStepTwo = ({ navigation }) => {
           institution: string().required("Name required"),
         })}
         onSubmit={async (values) => {
-          console.log(values);
-          // TODO: Handle submission
+          AccountRegistrationStore.update((s) => {
+            s.institution = values.institution;
+            s.isAmbulatory = values.isAmbulatory;
+            s.yearsQualified = values.yearsQualified;
+          });
           navigation.navigate("RegistrationStepGDPR");
         }}
       >
-        {({ handleSubmit, values }) => (
+        {({ handleSubmit }) => (
           <Layout onSubmit={() => handleSubmit()} current={2}>
             <View
               style={{
@@ -184,11 +197,65 @@ export const RegistrationStepTwo = ({ navigation }) => {
 
 export const RegistrationStepGDPR = ({ navigation }) => {
   const keysArr = ["gdprConfirmation", "isVeterinarian"];
-  const fields = accountRegistration.fields;
+  const [feedback, setFeedback] = useState();
+
+  useEffect(() => {
+    feedback &&
+      Toast.show({
+        type: feedback.status,
+        text1: feedback.message,
+      });
+  }, [feedback]);
+
   const initialValues = InitialValues(
     keysArr,
     AccountRegistrationStore.useState()
   );
+
+  const {
+    account: { register },
+  } = useBackendApi();
+
+  const data = AccountRegistrationStore.useState();
+
+  const handleInitialConsultationSubmit = async () => {
+    try {
+      await register(data);
+      setFeedback({
+        status: "success",
+        message: "Thank you for registering!",
+      });
+
+      resetAccountRegistrationStore(); // reset registration store
+      navigation.reset({
+        index: 0,
+        routes: [{ name: "RegistrationStepOne" }], // reset to Login screens
+      });
+    } catch (e) {
+      const error = await e.response;
+      switch (error?.status) {
+        case 400: {
+          const result = error.data;
+          let message =
+            "There was an issue with your form submission. Please check for errors and try again.";
+          if (result.isExistingUser)
+            message =
+              "There is already a user registered with that email address.";
+          else if (result.isNotAllowlisted)
+            message =
+              "The email address provided is not eligible for registration.";
+
+          setFeedback({ status: "error", message });
+          break;
+        }
+        default:
+          setFeedback({
+            status: "error",
+            message: "An unknown error has occurred.",
+          });
+      }
+    }
+  };
 
   const Heading = ({ children }) => (
     <Text style={{ fontSize: font.size["lg"], fontWeight: 400 }}>
@@ -211,8 +278,10 @@ export const RegistrationStepGDPR = ({ navigation }) => {
             .oneOf([true], "GDPR consent form must be accepted."),
         })}
         onSubmit={async (values) => {
-          console.log(values);
-          // TODO: Handle submission
+          AccountRegistrationStore.update((s) => {
+            s.gdprConfirmation = values.gdprConfirmation;
+          });
+          await handleInitialConsultationSubmit();
         }}
       >
         {({ handleSubmit, values }) => (

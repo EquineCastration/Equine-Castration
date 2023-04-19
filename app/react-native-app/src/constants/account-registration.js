@@ -7,7 +7,7 @@ export const accountRegistration = {
     id: {
       label: "Account Id",
     },
-    name: {
+    fullName: {
       label: "Full name",
       defaultValue: "",
     },
@@ -21,7 +21,7 @@ export const accountRegistration = {
     },
     isVeterinarian: {
       label: "Are you registering as Veterinarian ?",
-      default: false,
+      defaultValue: false,
     },
     institution: {
       label: "Institution",
