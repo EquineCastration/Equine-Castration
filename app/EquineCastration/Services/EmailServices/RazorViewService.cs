@@ -46,6 +46,8 @@ namespace EquineCastration.Services.EmailServices
     public async Task<(string view, ViewContext context)> RenderToString<T>(string viewName, T? model = null)
       where T : class
     {
+      if (model is null) throw new ArgumentNullException(nameof(model));
+      
       var view = FindView(viewName);
 
       await using var output = new StringWriter();
