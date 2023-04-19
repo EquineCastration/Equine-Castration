@@ -1,14 +1,19 @@
 import { createContext, useContext, useEffect, useMemo, useState } from "react";
-import Cookies from "js-cookie";
+import { AsyncStorage } from "@react-native-async-storage/async-storage";
+// import Cookies from "js-cookie";
 import { useProfile } from "api/user";
-import { useTranslation } from "react-i18next";
 
 const UserContext = createContext({});
 
 export const useUser = () => useContext(UserContext);
 
-const getCookieProfile = () => {
-  const yum = Cookies.get(".EquineCastration.Profile");
+// const getCookieProfile = () => {
+//   const yum = Cookies.get(".EquineCastration.Profile");
+//   return yum ? JSON.parse(yum) : null;
+// };
+
+const getCookieProfile = async () => {
+  const yum = await AsyncStorage.getItem(".EquineCastration.Profile");
   return yum ? JSON.parse(yum) : null;
 };
 
@@ -18,7 +23,6 @@ const getCookieProfile = () => {
  * in response to app events (e.g. Login/Logout)
  */
 export const UserProvider = ({ children }) => {
-  const { i18n } = useTranslation();
   const [user, setUser] = useState(getCookieProfile());
 
   const { data: profile, mutate } = useProfile();
@@ -26,10 +30,6 @@ export const UserProvider = ({ children }) => {
   useEffect(() => {
     setUser(profile);
   }, [profile]);
-
-  useEffect(() => {
-    user && i18n.changeLanguage(user.uiCulture);
-  }, [user]);
 
   const signOut = () => setUser(null);
   const updateProfile = () => mutate();

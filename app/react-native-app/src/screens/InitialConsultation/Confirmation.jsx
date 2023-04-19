@@ -11,7 +11,7 @@ const handleInitialConsultationSubmit = (navigation, data) => {
   InitialConsultationStore.replace(ICStoreInitialState);
   navigation.reset({
     index: 0,
-    routes: [{ name: "Login" }],
+    routes: [{ name: "Home" }],
   });
 };
 

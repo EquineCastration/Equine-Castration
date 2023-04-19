@@ -196,8 +196,8 @@ export const RegistrationStepTwo = ({ navigation }) => {
 };
 
 export const RegistrationStepGDPR = ({ navigation }) => {
-  const keysArr = ["gdprConfirmation", "isVeterinarian"];
   const [feedback, setFeedback] = useState();
+  const keysArr = ["gdprConfirmation", "isVeterinarian"];
 
   useEffect(() => {
     feedback &&
@@ -218,7 +218,7 @@ export const RegistrationStepGDPR = ({ navigation }) => {
 
   const data = AccountRegistrationStore.useState();
 
-  const handleInitialConsultationSubmit = async () => {
+  const handleRegistrationSubmit = async () => {
     try {
       await register(data);
       setFeedback({
@@ -229,7 +229,7 @@ export const RegistrationStepGDPR = ({ navigation }) => {
       resetAccountRegistrationStore(); // reset registration store
       navigation.reset({
         index: 0,
-        routes: [{ name: "RegistrationStepOne" }], // reset to Login screens
+        routes: [{ name: "AccountLogin" }], // reset to Login screens
       });
     } catch (e) {
       const error = await e.response;
@@ -281,7 +281,7 @@ export const RegistrationStepGDPR = ({ navigation }) => {
           AccountRegistrationStore.update((s) => {
             s.gdprConfirmation = values.gdprConfirmation;
           });
-          await handleInitialConsultationSubmit();
+          await handleRegistrationSubmit();
         }}
       >
         {({ handleSubmit, values }) => (

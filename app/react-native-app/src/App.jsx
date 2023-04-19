@@ -2,7 +2,7 @@ import { BackendApiProvider } from "contexts/BackendApi";
 import { BackendConfigProvider } from "contexts/Config";
 import { NavigationContainer } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
-import { Login } from "screens/Login";
+import { Home } from "screens/Home";
 import { CaseList } from "screens/CaseList";
 import { InitialConsultationStepOne } from "screens/InitialConsultation/InitialConsultationStepOne";
 import { InitialConsultationStepTwo } from "screens/InitialConsultation/InitialConsultationStepTwo";
@@ -23,6 +23,7 @@ import {
 import { Suspense } from "react";
 import { Spinner } from "components/Spinner";
 import { AccountLogin } from "screens/Account/AccountLogin";
+import { UserProvider } from "contexts/User";
 
 const Stack = createNativeStackNavigator();
 
@@ -38,110 +39,115 @@ export default function App() {
     <>
       <Suspense fallback={<Spinner />}>
         <BackendApiProvider>
-          <BackendConfigProvider>
-            <NavigationContainer>
-              <Stack.Navigator
-                screenOptions={{
-                  headerShown: false,
-                }}
-              >
-                <Stack.Screen name="AccountLogin" component={AccountLogin} />
-
-                <Stack.Screen
-                  name="Login"
-                  component={Login}
-                  options={{
-                    headerBackground: () => (
-                      <ScreenHeader title="Equine Castration" />
-                    ),
-                    ...commonHeaderOptions,
-                  }}
-                />
-
-                <Stack.Group>
-                  <Stack.Screen
-                    name="RegistrationStepOne"
-                    component={RegistrationStepOne}
-                  />
-                  <Stack.Screen
-                    name="RegistrationStepTwo"
-                    component={RegistrationStepTwo}
-                  />
-                  <Stack.Screen
-                    name="RegistrationStepGDPR"
-                    component={RegistrationStepGDPR}
-                  />
-                </Stack.Group>
-
-                <Stack.Screen
-                  name="CaseList"
-                  component={CaseList}
-                  options={{
-                    headerBackground: () => (
-                      <ScreenHeader title="Case list" fontSize={font.size.xl} />
-                    ),
-                    ...commonHeaderOptions,
-                  }}
-                />
-
-                <Stack.Screen
-                  name="CaseDetail"
-                  component={CaseDetail}
-                  options={({ route }) => ({
-                    headerBackground: () => (
-                      <ScreenHeader
-                        title={`Case detail of ${route.params.caseData.horseName}`}
-                        fontSize={font.size.md}
-                        fontWeight={400}
-                      />
-                    ),
-                    ...commonHeaderOptions,
-                  })}
-                />
-
-                <Stack.Group
+          <UserProvider>
+            <BackendConfigProvider>
+              <NavigationContainer>
+                <Stack.Navigator
                   screenOptions={{
-                    headerBackground: () => (
-                      <ScreenHeader
-                        title="Initial Consultation"
-                        fontSize={font.size["2xl"]}
-                      />
-                    ),
-                    ...commonHeaderOptions,
+                    headerShown: false,
                   }}
                 >
+                  <Stack.Screen name="AccountLogin" component={AccountLogin} />
+
                   <Stack.Screen
-                    name="InitialConsultationStepOne"
-                    component={InitialConsultationStepOne}
+                    name="Home"
+                    component={Home}
+                    options={{
+                      headerBackground: () => (
+                        <ScreenHeader title="Equine Castration" />
+                      ),
+                      ...commonHeaderOptions,
+                    }}
                   />
+
+                  <Stack.Group>
+                    <Stack.Screen
+                      name="RegistrationStepOne"
+                      component={RegistrationStepOne}
+                    />
+                    <Stack.Screen
+                      name="RegistrationStepTwo"
+                      component={RegistrationStepTwo}
+                    />
+                    <Stack.Screen
+                      name="RegistrationStepGDPR"
+                      component={RegistrationStepGDPR}
+                    />
+                  </Stack.Group>
+
                   <Stack.Screen
-                    name="InitialConsultationStepTwo"
-                    component={InitialConsultationStepTwo}
+                    name="CaseList"
+                    component={CaseList}
+                    options={{
+                      headerBackground: () => (
+                        <ScreenHeader
+                          title="Case list"
+                          fontSize={font.size.xl}
+                        />
+                      ),
+                      ...commonHeaderOptions,
+                    }}
                   />
+
                   <Stack.Screen
-                    name="InitialConsultationStepThree"
-                    component={InitialConsultationStepThree}
+                    name="CaseDetail"
+                    component={CaseDetail}
+                    options={({ route }) => ({
+                      headerBackground: () => (
+                        <ScreenHeader
+                          title={`Case detail of ${route.params.caseData.horseName}`}
+                          fontSize={font.size.md}
+                          fontWeight={400}
+                        />
+                      ),
+                      ...commonHeaderOptions,
+                    })}
                   />
-                  <Stack.Screen
-                    name="InitialConsultationStepFour"
-                    component={InitialConsultationStepFour}
-                  />
-                  <Stack.Screen
-                    name="InitialConsultationStepFive"
-                    component={InitialConsultationStepFive}
-                  />
-                  <Stack.Screen
-                    name="InitialConsultationStepSix"
-                    component={InitialConsultationStepSix}
-                  />
-                  <Stack.Screen
-                    name="InitialConsultationConfirmation"
-                    component={Confirmation}
-                  />
-                </Stack.Group>
-              </Stack.Navigator>
-            </NavigationContainer>
-          </BackendConfigProvider>
+
+                  <Stack.Group
+                    screenOptions={{
+                      headerBackground: () => (
+                        <ScreenHeader
+                          title="Initial Consultation"
+                          fontSize={font.size["2xl"]}
+                        />
+                      ),
+                      ...commonHeaderOptions,
+                    }}
+                  >
+                    <Stack.Screen
+                      name="InitialConsultationStepOne"
+                      component={InitialConsultationStepOne}
+                    />
+                    <Stack.Screen
+                      name="InitialConsultationStepTwo"
+                      component={InitialConsultationStepTwo}
+                    />
+                    <Stack.Screen
+                      name="InitialConsultationStepThree"
+                      component={InitialConsultationStepThree}
+                    />
+                    <Stack.Screen
+                      name="InitialConsultationStepFour"
+                      component={InitialConsultationStepFour}
+                    />
+                    <Stack.Screen
+                      name="InitialConsultationStepFive"
+                      component={InitialConsultationStepFive}
+                    />
+                    <Stack.Screen
+                      name="InitialConsultationStepSix"
+                      component={InitialConsultationStepSix}
+                    />
+                    <Stack.Screen
+                      name="InitialConsultationConfirmation"
+                      component={Confirmation}
+                    />
+                  </Stack.Group>
+                </Stack.Navigator>
+              </NavigationContainer>
+            </BackendConfigProvider>
+          </UserProvider>
         </BackendApiProvider>
       </Suspense>
       <Toast />

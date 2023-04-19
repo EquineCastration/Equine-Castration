@@ -1,12 +1,12 @@
-import { createContext, useContext, useState } from "react";
-import Cookies from "js-cookie";
+import { createContext, useContext, useState, useEffect } from "react";
+import { AsyncStorage } from "@react-native-async-storage/async-storage";
 
 const BackendConfigContext = createContext({});
 
 export const useBackendConfig = () => useContext(BackendConfigContext);
 
-const getCookieConfig = () => {
-  const yum = Cookies.get(".EquineCastration.Config");
+const getCookieConfig = async () => {
+  const yum = await AsyncStorage.getItem(".EquineCastration.Config");
   return yum ? JSON.parse(yum) : null;
 };
 

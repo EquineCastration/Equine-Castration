@@ -8,7 +8,7 @@ public class SitePermissionClaims
   public const string ListOwnCases = "ListOwnCases";
   public const string ViewOwnCases = "ViewOwnCases";
   public const string ListEligibleCases = "ListEligibleCases";
-  public const string ViewEligibleCases = "ViewEligibleProposals";
+  public const string ViewEligibleCases = "ViewEligibleCases";
   public const string DeleteOwnCases = "DeleteOwnCases";
   public const string EditOwnCases = "EditOwnCases";
   

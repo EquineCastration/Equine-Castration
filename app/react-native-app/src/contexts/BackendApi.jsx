@@ -2,6 +2,7 @@ import { getAccountApi } from "api/account";
 import { getRegistrationRulesApi } from "api/registrationRules";
 import { createContext, useCallback, useContext, useMemo } from "react";
 import { LOCAL_PUBLIC_API } from "react-native-dotenv";
+import { AsyncStorage } from "@react-native-async-storage/async-storage";
 
 import axios from "axios";
 
@@ -40,6 +41,23 @@ export const BackendApiProvider = ({ children }) => {
       registrationRules: getRegistrationRulesApi(baseContext),
     }),
     [baseContext]
+  );
+
+  // Add an interceptor to extract cookies from the Set-Cookie header
+  api.interceptors.response.use(
+    async (response) => {
+      const cookies = response.headers["set-cookie"];
+      console.log(cookies);
+      if (cookies) {
+        const cookieString = cookies.join("; ");
+        await AsyncStorage.setItem(".EquineCastration.Config", cookieString);
+      }
+      return response;
+    },
+    (error) => {
+      console.log("Error while intercepting cookies");
+      return Promise.reject(error);
+    }
   );
 
   return (

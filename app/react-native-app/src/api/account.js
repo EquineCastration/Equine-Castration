@@ -8,10 +8,7 @@ export const getAccountApi = ({ api }) => ({
    * Login a user, given their username and password
    * @param {*} values
    */
-  login: (values) =>
-    api.post("account/login", {
-      json: values,
-    }),
+  login: (values) => api.post("account/login", values),
 
   /**
    * Logout the current user

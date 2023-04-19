@@ -2,10 +2,14 @@ import { BasicTouchableOpacity } from "components/BasicTouchableOpacity";
 import { SafeAreaView, View, Text } from "react-native";
 import { colors, font } from "style/style";
 import { resetInitialConsultationStore } from "store/InitialConsultationStore";
+import { useUser } from "contexts/User";
 
-export const Login = ({ navigation }) => {
+export const Home = ({ navigation }) => {
   // should be loaded as screen to get navigation prop
   const welcomeTxt = "Welcome Vet";
+
+  const { user } = useUser();
+  console.log(user);
 
   const initialsOptions = [
     {

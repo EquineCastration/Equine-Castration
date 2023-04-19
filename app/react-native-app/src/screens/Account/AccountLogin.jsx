@@ -1,13 +1,18 @@
-import { View, Text, SafeAreaView, TouchableOpacity } from "react-native";
+import { useState, useEffect } from "react";
+import { View, Text, TouchableOpacity } from "react-native";
 
 import { Formik } from "formik";
 import { object, string } from "yup";
 
+import { useUser } from "contexts/User";
+import { useBackendApi } from "contexts/BackendApi";
+import { colors, font } from "style/style";
+import { AccountLayout } from "./AccountLayout";
+import { Toast } from "react-native-toast-message/lib/src/Toast";
+
 import { InputField } from "components/InputField";
 import { BasicTouchableOpacity } from "components/BasicTouchableOpacity";
-import { colors, font } from "style/style";
 import { validationSchema as emailSchema } from "components/EmailField";
-import { AccountLayout } from "./AccountLayout";
 import { EmailField } from "components/EmailField";
 
 const validationSchema = () =>
@@ -17,20 +22,58 @@ const validationSchema = () =>
   });
 
 export const AccountLogin = ({ navigation }) => {
+  const [feedback, setFeedback] = useState();
+
+  useEffect(() => {
+    feedback &&
+      Toast.show({
+        type: feedback.status,
+        text1: feedback.message,
+      });
+  }, [feedback]);
+
+  const { signIn } = useUser();
+  const {
+    account: { login },
+  } = useBackendApi();
+
+  const handleRegistrationSubmit = async (values) => {
+    try {
+      const { data } = await login(values);
+      console.log("data-", data);
+    } catch (e) {
+      const error = await e.response;
+      switch (error?.status) {
+        case 400: {
+          const result = error.data;
+          setFeedback({
+            status: "error",
+            message: result.isUnconfirmedAccount
+              ? "Your account email address has not been confirmed."
+              : "We couldn't log you in with the username and password you provided.",
+            resendConfirm: result.isUnconfirmedAccount,
+          });
+          break;
+        }
+        default:
+          setFeedback({
+            status: "error",
+            message: "An unknown error has occurred.",
+          });
+      }
+    }
+  };
+
   return (
     <AccountLayout
       primaryHeading="Welcome"
-      secondaryHeading="Please sign into continue"
+      secondaryHeading="Please sign in to continue"
     >
       <Formik
         initialValues={{ username: "", password: "" }}
         validationSchema={validationSchema()}
-        onSubmit={async (values) => {
-          console.log(values);
-          // TODO: Handle submission
-        }}
       >
-        {({ handleSubmit, values }) => (
+        {({ values }) => (
           <View style={{ gap: 10 }}>
             <EmailField
               label="Username/email"
@@ -64,7 +107,7 @@ export const AccountLogin = ({ navigation }) => {
                 title="Sign In"
                 btnWidth="60%"
                 paddingVertical={5}
-                onPress={() => handleSubmit()}
+                onPress={async () => await handleRegistrationSubmit(values)}
               />
             </View>
 
