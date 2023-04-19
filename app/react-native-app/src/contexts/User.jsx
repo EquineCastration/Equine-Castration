@@ -1,5 +1,5 @@
 import { createContext, useContext, useEffect, useMemo, useState } from "react";
-import { AsyncStorage } from "@react-native-async-storage/async-storage";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 // import Cookies from "js-cookie";
 import { useProfile } from "api/user";
 
@@ -13,8 +13,16 @@ export const useUser = () => useContext(UserContext);
 // };
 
 const getCookieProfile = async () => {
-  const yum = await AsyncStorage.getItem(".EquineCastration.Profile");
-  return yum ? JSON.parse(yum) : null;
+  try {
+    const value = await AsyncStorage.getItem(".EquineCastration.Profile");
+    if (value !== null) {
+      const decodedCookie = decodeURIComponent(value.split("=")[1]);
+      return JSON.parse(decodedCookie);
+    }
+  } catch (e) {
+    console.log("Error reading cookies from Async Storage", e);
+  }
+  return null;
 };
 
 /**

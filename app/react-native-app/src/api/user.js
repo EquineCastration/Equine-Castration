@@ -3,6 +3,7 @@ import useSWR from "swr";
 
 const fetchKeys = {
   me: "user/me",
+  userList: "users",
 };
 
 /**
@@ -37,3 +38,20 @@ export const getUserApi = ({ api }) => ({
       json: culture,
     }),
 });
+
+/**
+ * Get a list of users
+ * @returns
+ */
+export const useUserList = () => {
+  const { apiFetcher } = useBackendApi();
+  return useSWR(
+    fetchKeys.userList,
+    async (url) => {
+      console.log(url);
+      const data = await apiFetcher(url);
+      return data;
+    },
+    { suspense: true }
+  );
+};

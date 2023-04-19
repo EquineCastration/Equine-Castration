@@ -2,7 +2,7 @@ import { getAccountApi } from "api/account";
 import { getRegistrationRulesApi } from "api/registrationRules";
 import { createContext, useCallback, useContext, useMemo } from "react";
 import { LOCAL_PUBLIC_API } from "react-native-dotenv";
-import { AsyncStorage } from "@react-native-async-storage/async-storage";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 import axios from "axios";
 
@@ -45,17 +45,36 @@ export const BackendApiProvider = ({ children }) => {
 
   // Add an interceptor to extract cookies from the Set-Cookie header
   api.interceptors.response.use(
-    async (response) => {
-      const cookies = response.headers["set-cookie"];
-      console.log(cookies);
-      if (cookies) {
-        const cookieString = cookies.join("; ");
-        await AsyncStorage.setItem(".EquineCastration.Config", cookieString);
+    (response) => {
+      const cookiesStr = response.headers["set-cookie"];
+
+      if (cookiesStr) {
+        const cookiesArr = cookiesStr[0].split(", "); // split the string by comma and space to get an array of cookies
+        const cookiesNameValueArr = cookiesArr.map(
+          (cookie) => cookie.split(";")[0]
+        );
+        const cookiesExpected = [
+          ".EquineCastration.Config",
+          ".EquineCastration.Profile",
+          ".EquineCastration.Identity",
+        ];
+
+        cookiesExpected.forEach(async (item) => {
+          //store them if match found else empty string
+          const cookieItem =
+            cookiesNameValueArr.filter((cookie) => cookie.includes(item))[0] ||
+            "";
+          try {
+            await AsyncStorage.setItem(item, cookieItem);
+          } catch (e) {
+            console.log("error setting cookie", e);
+          }
+        });
       }
       return response;
     },
     (error) => {
-      console.log("Error while intercepting cookies");
+      console.log("Error while intercepting cookies", error);
       return Promise.reject(error);
     }
   );

@@ -40,8 +40,10 @@ export const AccountLogin = ({ navigation }) => {
   const handleRegistrationSubmit = async (values) => {
     try {
       const { data } = await login(values);
-      console.log("data-", data);
+      signIn(data?.user);
+      navigation.navigate("Home");
     } catch (e) {
+      console.log(e);
       const error = await e.response;
       switch (error?.status) {
         case 400: {
