@@ -1,16 +1,15 @@
-import Stack from "./NavigationStack";
+import { Stack } from "./navigationStack";
 import { ScreenHeader } from "components/ScreenHeader";
 import { colors, font } from "style/style";
-import {
-  InitialConsultationStepOne,
-  InitialConsultationStepTwo,
-  InitialConsultationStepThree,
-  InitialConsultationStepFour,
-  InitialConsultationStepFive,
-  InitialConsultationStepSix,
-  Confirmation,
-} from "screens/InitialConsultation/InitialConsultationStepOne";
+
 import { CaseDetail } from "screens/CaseDetail";
+import { InitialConsultationStepOne } from "screens/InitialConsultation/InitialConsultationStepOne";
+import { InitialConsultationStepTwo } from "screens/InitialConsultation/InitialConsultationStepTwo";
+import { InitialConsultationStepThree } from "screens/InitialConsultation/InitialConsultationStepThree";
+import { InitialConsultationStepFour } from "screens/InitialConsultation/InitialConsultationStepFour";
+import { InitialConsultationStepFive } from "screens/InitialConsultation/InitialConsultationStepFive";
+import { InitialConsultationStepSix } from "screens/InitialConsultation/InitialConsultationStepSix";
+import { Confirmation } from "screens/InitialConsultation/Confirmation";
 
 const headerOptions = {
   headerShown: true,
@@ -21,7 +20,7 @@ const headerOptions = {
 
 export const InitialConsultation = () => {
   return (
-    <Stack.Navigator>
+    <Stack.Navigator screenOptions={{ headerShown: false }}>
       <Stack.Group
         screenOptions={{
           headerBackground: () => (
@@ -62,20 +61,6 @@ export const InitialConsultation = () => {
           component={Confirmation}
         />
       </Stack.Group>
-      <Stack.Screen
-        name="CaseDetail"
-        component={CaseDetail}
-        options={({ route }) => ({
-          headerBackground: () => (
-            <ScreenHeader
-              title={`Case detail of ${route.params.caseData.horseName}`}
-              fontSize={font.size.md}
-              fontWeight={400}
-            />
-          ),
-          ...headerOptions,
-        })}
-      />
     </Stack.Navigator>
   );
 };

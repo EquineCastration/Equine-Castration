@@ -1,16 +1,10 @@
 import { createContext, useContext, useEffect, useMemo, useState } from "react";
 import AsyncStorage from "@react-native-async-storage/async-storage";
-// import Cookies from "js-cookie";
 import { useProfile } from "api/user";
 
 const UserContext = createContext({});
 
 export const useUser = () => useContext(UserContext);
-
-// const getCookieProfile = () => {
-//   const yum = Cookies.get(".EquineCastration.Profile");
-//   return yum ? JSON.parse(yum) : null;
-// };
 
 const getCookieProfile = async () => {
   try {

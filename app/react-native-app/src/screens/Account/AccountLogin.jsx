@@ -3,6 +3,7 @@ import { View, Text, TouchableOpacity } from "react-native";
 
 import { Formik } from "formik";
 import { object, string } from "yup";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 import { useUser } from "contexts/User";
 import { useBackendApi } from "contexts/BackendApi";
@@ -37,11 +38,17 @@ export const AccountLogin = ({ navigation }) => {
     account: { login },
   } = useBackendApi();
 
-  const handleRegistrationSubmit = async (values) => {
+  const handleLoginSubmit = async (values) => {
     try {
       const { data } = await login(values);
       signIn(data?.user);
-      navigation.navigate("Home"); // Take user to home screen
+      try {
+        await AsyncStorage.setItem("keepUserLoggedIn", JSON.stringify(true)); // store the login status in async storage
+      } catch (e) {
+        console.log(`Error setting cookie for 'isLoggedIn' `, e);
+      }
+      // Here 'Home' is the paret screen and 'UserHome' is the screen child
+      navigation.navigate("Home", { screen: "UserHome" }); // Take user to home screen
     } catch (e) {
       console.log(e);
       const error = await e.response;
@@ -109,7 +116,7 @@ export const AccountLogin = ({ navigation }) => {
                 title="Sign In"
                 btnWidth="60%"
                 paddingVertical={5}
-                onPress={async () => await handleRegistrationSubmit(values)}
+                onPress={async () => await handleLoginSubmit(values)}
               />
             </View>
 

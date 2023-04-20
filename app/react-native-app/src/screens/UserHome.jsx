@@ -4,7 +4,7 @@ import { colors, font } from "style/style";
 import { resetInitialConsultationStore } from "store/InitialConsultationStore";
 import { useUser } from "contexts/User";
 
-export const Home = ({ navigation }) => {
+export const UserHome = ({ navigation }) => {
   // should be loaded as screen to get navigation prop
 
   const { user } = useUser();
@@ -12,12 +12,14 @@ export const Home = ({ navigation }) => {
   const initialsOptions = [
     {
       title: "Create Case",
+      navigateToParent: "InitialConsultation",
       navigate: "InitialConsultationStepOne", // screen name
       icon: "ios-brush-outline", // only accepts ionicons
       bgColor: colors.primary[800],
     },
     {
       title: "View Cases",
+      navigateToParent: "Home",
       navigate: "CaseList", // screen name
       icon: "documents-outline", // only accepts ionicons
       bgColor: colors.secondary[800],
@@ -68,7 +70,7 @@ export const Home = ({ navigation }) => {
               color: colors.primary[700],
             }}
           >
-            {user.fullName.toUpperCase()}
+            {user?.fullName.toUpperCase()}
           </Text>
         </View>
         {initialsOptions &&
@@ -83,7 +85,9 @@ export const Home = ({ navigation }) => {
                 onPress={
                   option.navigate &&
                   (() => {
-                    navigation.navigate(option.navigate);
+                    navigation.navigate(option.navigateToParent, {
+                      screen: option.navigate,
+                    });
                     resetInitialConsultationStore(); // clear existing form data
                   })
                 }

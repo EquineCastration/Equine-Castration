@@ -1,4 +1,4 @@
-import Stack from "./NavigationStack";
+import { Stack } from "./navigationStack";
 import { AccountLogin } from "screens/Account/AccountLogin";
 import {
   RegistrationStepOne,
@@ -8,7 +8,7 @@ import {
 
 export const Account = () => {
   return (
-    <Stack.Navigator>
+    <Stack.Navigator screenOptions={{ headerShown: false }}>
       <Stack.Screen name="AccountLogin" component={AccountLogin} />
 
       <Stack.Group>
