@@ -23,7 +23,7 @@ export const useProfile = () => {
         throw e;
       }
     },
-    { suspense: true, refreshInterval: 600000 } // re-check profile every 10mins in case of cookie expiry
+    { suspense: false, refreshInterval: 600000 } // re-check profile every 10mins in case of cookie expiry
   );
 };
 
@@ -48,10 +48,14 @@ export const useUserList = () => {
   return useSWR(
     fetchKeys.userList,
     async (url) => {
-      console.log(url);
-      const data = await apiFetcher(url);
-      return data;
+      try {
+        const data = await apiFetcher(url);
+        return data;
+      } catch (error) {
+        console.log("Error fetching usersList", error);
+        return error;
+      }
     },
-    { suspense: true }
+    { suspense: false }
   );
 };

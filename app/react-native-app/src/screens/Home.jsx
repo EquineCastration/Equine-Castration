@@ -3,18 +3,11 @@ import { SafeAreaView, View, Text } from "react-native";
 import { colors, font } from "style/style";
 import { resetInitialConsultationStore } from "store/InitialConsultationStore";
 import { useUser } from "contexts/User";
-import { useUserList } from "api/user";
 
 export const Home = ({ navigation }) => {
   // should be loaded as screen to get navigation prop
 
   const { user } = useUser();
-
-  const { data: usersList } = useUserList();
-
-  console.log(usersList);
-
-  console.log(user);
 
   const initialsOptions = [
     {

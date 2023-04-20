@@ -41,7 +41,7 @@ export const AccountLogin = ({ navigation }) => {
     try {
       const { data } = await login(values);
       signIn(data?.user);
-      navigation.navigate("Home");
+      navigation.navigate("Home"); // Take user to home screen
     } catch (e) {
       console.log(e);
       const error = await e.response;

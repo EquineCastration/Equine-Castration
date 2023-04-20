@@ -20,7 +20,10 @@ const getCookieProfile = async () => {
       return JSON.parse(decodedCookie);
     }
   } catch (e) {
-    console.log("Error reading cookies from Async Storage", e);
+    console.log(
+      "Error reading cookie '.EquineCastration.Profile' from Async Storage",
+      e
+    );
   }
   return null;
 };

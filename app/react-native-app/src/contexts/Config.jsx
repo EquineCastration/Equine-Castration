@@ -8,12 +8,15 @@ export const useBackendConfig = () => useContext(BackendConfigContext);
 const getCookieConfig = async () => {
   try {
     const value = await AsyncStorage.getItem(".EquineCastration.Config");
-    console.log("config cookies", JSON.parse(value));
     if (value !== null) {
-      return JSON.parse(value);
+      const decodedCookie = decodeURIComponent(value.split("=")[1]);
+      return JSON.parse(decodedCookie);
     }
   } catch (e) {
-    console.log("Error reading cookies from Async Storage", e);
+    console.log(
+      "Error reading cookie '.EquineCastration.Config' from Async Storage",
+      e
+    );
   }
   return null;
 };

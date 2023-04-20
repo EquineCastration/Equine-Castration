@@ -48,7 +48,6 @@ public class UsersController : ControllerBase
   /// Get users list
   /// </summary>
   /// <returns>users list with their associated roles</returns>
-  [AllowAnonymous]
   [HttpGet]
   public async Task<List<UserModel>> List()
   {
