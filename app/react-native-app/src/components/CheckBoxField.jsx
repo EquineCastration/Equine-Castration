@@ -8,6 +8,7 @@ export const CheckBoxField = ({
   label,
   labelColor = colors.primary[700],
   disabled = false,
+  bgColor = colors.ui.bg,
   ...props
 }) => {
   const [field, meta, helpers] = useField(name);
@@ -20,7 +21,7 @@ export const CheckBoxField = ({
     <View
       style={{
         marginVertical: 8,
-        backgroundColor: colors.ui.bg,
+        backgroundColor: bgColor,
         paddingHorizontal: 8,
         borderRadius: 8,
       }}
@@ -42,7 +43,7 @@ export const CheckBoxField = ({
         <Text
           style={{
             marginVertical: 2,
-            fontSize: font.size.sm,
+            fontSize: font.size["normal"],
             color: labelColor,
             marginLeft: 7,
           }}

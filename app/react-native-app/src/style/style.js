@@ -10,6 +10,7 @@ export const font = {
     "3xl": 26,
     "4xl": 30,
     "5xl": 34,
+    "6xl": 40,
   },
 };
 

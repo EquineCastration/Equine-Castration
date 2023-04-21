@@ -1,23 +1,39 @@
 import { useBackendApi } from "contexts/BackendApi";
 import useSWR from "swr";
-import { Spinner } from "components/Spinner";
 
 const fetchKeys = {
-  userList: "users",
+  me: "user/me",
 };
 
 /**
- * Get a list of users
+ * Get an authenticated user's profile
  * @returns
  */
-export const useUserList = () => {
+export const useProfile = () => {
   const { apiFetcher } = useBackendApi();
+
   return useSWR(
-    fetchKeys.userList,
+    fetchKeys.me,
     async (url) => {
-      const data = await apiFetcher(url);
-      return data;
+      try {
+        return await apiFetcher(url);
+      } catch (e) {
+        if (e?.response?.status === 401) return null;
+        throw e;
+      }
     },
-    { suspense: false }
+    { suspense: false, refreshInterval: 600000 } // re-check profile every 10mins in case of cookie expiry
   );
 };
+
+export const getUserApi = ({ api }) => ({
+  /**
+   * Save the User's UI Culture
+   * @param {*} culture a culture/locale/language code
+   * @returns
+   */
+  setUICulture: (culture) =>
+    api.put("user/uiCulture", {
+      json: culture,
+    }),
+});

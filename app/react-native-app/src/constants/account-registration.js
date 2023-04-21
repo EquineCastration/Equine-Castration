@@ -7,7 +7,7 @@ export const accountRegistration = {
     id: {
       label: "Account Id",
     },
-    name: {
+    fullName: {
       label: "Full name",
       defaultValue: "",
     },
@@ -19,12 +19,16 @@ export const accountRegistration = {
       label: "Email",
       defaultValue: "",
     },
+    isVeterinarian: {
+      label: "Are you registering as Veterinarian?",
+      defaultValue: false,
+    },
     institution: {
       label: "Institution",
       defaultValue: "",
     },
     isAmbulatory: {
-      label: "Ambulatory or Hospital ?",
+      label: "Please check if Ambulatory, otherwise uncheck the box.",
       options: ["Ambulatory", "Hospital"],
       defaultValue: true,
     },

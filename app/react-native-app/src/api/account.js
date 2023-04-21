@@ -3,19 +3,12 @@ export const getAccountApi = ({ api }) => ({
    * Register a new User account
    * @param {*} body
    */
-  register: (values) =>
-    api.post("account/register", {
-      json: values,
-    }),
-
+  register: (values) => api.post("account/register", values),
   /**
    * Login a user, given their username and password
    * @param {*} values
    */
-  login: (values) =>
-    api.post("account/login", {
-      json: values,
-    }),
+  login: (values) => api.post("account/login", values),
 
   /**
    * Logout the current user
