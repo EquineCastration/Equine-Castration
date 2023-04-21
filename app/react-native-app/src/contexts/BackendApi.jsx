@@ -79,15 +79,18 @@ export const BackendApiProvider = ({ children }) => {
         const cookiesNameValueArr = cookiesArr.map(
           (cookie) => cookie.split(";")[0]
         );
-
         cookiesExpected.forEach(async (item) => {
           const cookieItem = // get cookie name-value pair for the item, if not available assign empty string
             cookiesNameValueArr.filter((cookie) => cookie.includes(item))[0] ||
             "";
-          try {
-            await AsyncStorage.setItem(item, cookieItem); // store the cookieItem in async storage
-          } catch (e) {
-            console.log(`Error setting cookie for '${item}' `, e);
+
+          // only if cookie exist
+          if (cookieItem) {
+            try {
+              await AsyncStorage.setItem(item, cookieItem); // store the cookieItem in async storage
+            } catch (e) {
+              console.log(`Error setting cookie for '${item}' `, e);
+            }
           }
         });
       }

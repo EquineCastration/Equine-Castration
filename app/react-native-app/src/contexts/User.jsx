@@ -6,21 +6,15 @@ const UserContext = createContext({});
 
 export const useUser = () => useContext(UserContext);
 
-const getCookieProfile = async () => {
-  try {
-    const value = await AsyncStorage.getItem(".EquineCastration.Profile");
-    if (value !== null) {
-      const decodedCookie = decodeURIComponent(value.split("=")[1]);
-      return JSON.parse(decodedCookie);
-    }
-  } catch (e) {
-    console.log(
-      "Error reading cookie '.EquineCastration.Profile' from Async Storage",
-      e
-    );
-  }
-  return null;
-};
+// Clear the entire AsyncStorage ()
+// const clearAsyncStorage = async () => {
+//   try {
+//     await AsyncStorage.clear();
+//     console.log("AsyncStorage cleared!");
+//   } catch (e) {
+//     console.log("Error clearing AsyncStorage: ", e);
+//   }
+// };
 
 /**
  * Checks User Status on app load,
@@ -28,11 +22,12 @@ const getCookieProfile = async () => {
  * in response to app events (e.g. Login/Logout)
  */
 export const UserProvider = ({ children }) => {
-  const [user, setUser] = useState(getCookieProfile());
+  const [user, setUser] = useState(null);
 
   const { data: profile, mutate } = useProfile();
 
   useEffect(() => {
+    // clearAsyncStorage();
     setUser(profile);
   }, [profile]);
 
