@@ -20,7 +20,7 @@ export const accountRegistration = {
       defaultValue: "",
     },
     isVeterinarian: {
-      label: "Are you registering as Veterinarian ?",
+      label: "Are you registering as Veterinarian?",
       defaultValue: false,
     },
     institution: {

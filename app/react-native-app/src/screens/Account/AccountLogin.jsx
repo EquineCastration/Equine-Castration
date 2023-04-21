@@ -42,12 +42,7 @@ export const AccountLogin = ({ navigation }) => {
     try {
       const { data } = await login(values);
       signIn(data?.user);
-      try {
-        await AsyncStorage.setItem("keepUserLoggedIn", JSON.stringify(true)); // store the login status in async storage
-      } catch (e) {
-        console.log(`Error setting cookie for 'isLoggedIn' `, e);
-      }
-      // Here 'Home' is the paret screen and 'UserHome' is the screen child
+      // Here 'Home' is the parent screen and 'UserHome' is the screen child
       navigation.navigate("Home", { screen: "UserHome" }); // Take user to home screen
     } catch (e) {
       console.log(e);

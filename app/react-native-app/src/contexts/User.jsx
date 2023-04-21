@@ -6,16 +6,6 @@ const UserContext = createContext({});
 
 export const useUser = () => useContext(UserContext);
 
-// Clear the entire AsyncStorage ()
-// const clearAsyncStorage = async () => {
-//   try {
-//     await AsyncStorage.clear();
-//     console.log("AsyncStorage cleared!");
-//   } catch (e) {
-//     console.log("Error clearing AsyncStorage: ", e);
-//   }
-// };
-
 /**
  * Checks User Status on app load,
  * and provides methods to sign a user in and out
@@ -35,29 +25,24 @@ export const UserProvider = ({ children }) => {
         ".EquineCastration.Profile",
         ".EquineCastration.Identity",
       ];
-      try {
-        // we are checking if cookies exist
-        // as cookies would normally be cleared when user logs out
-        // and available if logged in or has been authenticated before
-        const isAllCookiesFound = await Promise.all(
-          cookiesExpected.map(async (item) => {
-            const itemValue = await AsyncStorage.getItem(item);
-            return itemValue !== null && itemValue !== undefined;
-          })
-        ).then((results) => results.every(Boolean));
 
-        // if above is true,
-        // this only we will set user with profile
-        if (isAllCookiesFound) {
-          // TODO: Look into how client was able to make authenticated request even without cookies (not Backend issue)
-          // could have simply set user with profile
-          // as only authenticated user can make api calls to get their profile
-          // but, for some reason on Android, valid cookies are being added from somewhere even after clearing cookies
-          // thus, this check was added to restrict that
-          setUser(profile);
-        }
-      } catch (error) {
-        console.log("Error reading cookies from Async Storage", error);
+      // we are checking if cookies exist
+      // as cookies would normally be cleared when user logs out
+      // and available if logged in or has been authenticated before
+      const isAllCookiesFound = await Promise.all(
+        cookiesExpected.map(async (item) => {
+          return await AsyncStorage.getItem(item);
+        })
+      ).then((results) => results.every((itemValue) => Boolean(itemValue)));
+
+      // if above is true, then only we will set user with profile
+      if (isAllCookiesFound) {
+        // TODO: Look into how client was able to make authenticated request even without cookies (not Backend issue)
+        // could have simply set user with profile
+        // as only authenticated user can make api calls to get their profile
+        // but, for some reason on Android, valid cookies are being added from somewhere even after clearing cookies
+        // thus, this check was added to restrict that
+        setUser(profile);
       }
     };
     checkAsyncStorage();

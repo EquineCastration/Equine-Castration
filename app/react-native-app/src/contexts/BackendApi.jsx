@@ -58,7 +58,7 @@ export const BackendApiProvider = ({ children }) => {
     );
 
     // If cookies exist
-    if (cookies.length >= 1) {
+    if (cookies?.length >= 1) {
       // Concatenate the cookie values into a single string
       const cookieHeaderValue = cookies.filter((cookie) => cookie).join("; ");
       config.headers["Cookie"] = cookieHeaderValue; // add them to the request headers

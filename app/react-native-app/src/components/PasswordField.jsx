@@ -14,11 +14,11 @@ export const validationSchema = (pwdName) => ({
     )
     .matches(
       /[a-z]/,
-      "Passwords must have at least one lower character ('a' - 'z')."
+      "Passwords must have at least one lowercase character ('a' - 'z')."
     )
     .matches(
       /[^A-Za-z0-9]/,
-      "Passwords must have at least one non alphanumeric character."
+      "Passwords must have at least one non-alphanumeric character."
     )
     .required("Please enter a password"),
 });

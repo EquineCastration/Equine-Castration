@@ -267,7 +267,7 @@ export const RegistrationStepGDPR = ({ navigation }) => {
   return (
     <AccountLayout
       primaryHeading="GDPR Consent Form"
-      secondaryHeading="Please carefully read the GDPR consent"
+      secondaryHeading="Please carefully read the GDPR consent form"
       backBtn
     >
       <Formik

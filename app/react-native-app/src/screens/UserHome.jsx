@@ -70,7 +70,7 @@ export const UserHome = ({ navigation }) => {
               color: colors.primary[700],
             }}
           >
-            {user?.fullName.toUpperCase()}
+            {user?.fullName?.toUpperCase()}
           </Text>
         </View>
         {initialsOptions &&
