@@ -23,7 +23,7 @@ const validationSchema = () =>
   });
 
 export const AccountLogin = ({ navigation }) => {
-  const [loading, setLoading] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
   const [feedback, setFeedback] = useState();
 
   useEffect(() => {
@@ -40,11 +40,10 @@ export const AccountLogin = ({ navigation }) => {
   } = useBackendApi();
 
   const handleLoginSubmit = async (values) => {
+    setIsLoading(true);
     try {
-      setLoading(true);
       const { data } = await login(values);
       signIn(data?.user);
-      setLoading(false);
     } catch (e) {
       const error = await e.response;
       switch (error?.status) {
@@ -66,92 +65,96 @@ export const AccountLogin = ({ navigation }) => {
           });
       }
     }
+    setIsLoading(false);
   };
 
   return (
-    <AccountLayout
-      primaryHeading="Welcome"
-      secondaryHeading="Please sign in to continue"
-    >
-      {loading ? <Spinner /> : null}
-      <Formik
-        initialValues={{ username: "", password: "" }}
-        validationSchema={validationSchema()}
+    <>
+      {isLoading ? <Spinner text="Signing in" /> : null}
+      <AccountLayout
+        primaryHeading="Welcome"
+        secondaryHeading="Please sign in to continue"
       >
-        {({ values }) => (
-          <View style={{ gap: 10 }}>
-            <EmailField
-              label="Username/email"
-              name="username"
-              labelAlign="center"
-              bgColor={colors.light}
-            />
-            <InputField
-              label="Password"
-              name="password"
-              type="password"
-              labelAlign="center"
-              bgColor={colors.light}
-            />
-
-            <TouchableOpacity>
-              <Text
-                style={{
-                  textAlign: "center",
-                  fontSize: font.size["normal"],
-                  color: colors.ui.btnBg,
-                  fontWeight: 400,
-                }}
-              >
-                Forgot password ?
-              </Text>
-            </TouchableOpacity>
-
-            <View style={{ alignItems: "center" }}>
-              <BasicTouchableOpacity
-                title="Sign In"
-                btnWidth="60%"
-                paddingVertical={5}
-                onPress={async () => await handleLoginSubmit(values)}
+        <Formik
+          initialValues={{ username: "", password: "" }}
+          validationSchema={validationSchema()}
+          onSubmit={async (values) => await handleLoginSubmit(values)}
+        >
+          {({ handleSubmit }) => (
+            <View style={{ gap: 10 }}>
+              <EmailField
+                label="Username/email"
+                name="username"
+                labelAlign="center"
+                bgColor={colors.light}
               />
-            </View>
+              <InputField
+                label="Password"
+                name="password"
+                type="password"
+                labelAlign="center"
+                bgColor={colors.light}
+              />
 
-            <View
-              style={{
-                marginTop: 20,
-                flexDirection: "row",
-                alignItems: "center",
-                gap: 5,
-                justifyContent: "center",
-              }}
-            >
-              <Text
+              <TouchableOpacity>
+                <Text
+                  style={{
+                    textAlign: "center",
+                    fontSize: font.size["normal"],
+                    color: colors.ui.btnBg,
+                    fontWeight: 400,
+                  }}
+                >
+                  Forgot password ?
+                </Text>
+              </TouchableOpacity>
+
+              <View style={{ alignItems: "center" }}>
+                <BasicTouchableOpacity
+                  title="Sign In"
+                  btnWidth="60%"
+                  paddingVertical={5}
+                  onPress={() => handleSubmit()}
+                />
+              </View>
+
+              <View
                 style={{
-                  textAlign: "center",
-                  fontSize: font.size["normal"],
-                  color: colors.primary[700],
-                  fontWeight: 300,
+                  marginTop: 20,
+                  flexDirection: "row",
+                  alignItems: "center",
+                  gap: 5,
+                  justifyContent: "center",
                 }}
-              >
-                Don't have an account ?
-              </Text>
-              <TouchableOpacity
-                onPress={() => navigation.navigate("RegistrationStepOne")}
               >
                 <Text
                   style={{
-                    fontSize: font.size["md"],
-                    color: colors.ui.btnBg,
-                    fontWeight: 500,
+                    textAlign: "center",
+                    fontSize: font.size["normal"],
+                    color: colors.primary[700],
+                    fontWeight: 300,
                   }}
                 >
-                  Sign Up
+                  Don't have an account ?
                 </Text>
-              </TouchableOpacity>
+                <TouchableOpacity
+                  onPress={() => navigation.navigate("RegistrationStepOne")}
+                >
+                  <Text
+                    style={{
+                      fontSize: font.size["md"],
+                      color: colors.ui.btnBg,
+                      fontWeight: 500,
+                    }}
+                  >
+                    Sign Up
+                  </Text>
+                </TouchableOpacity>
+              </View>
             </View>
-          </View>
-        )}
-      </Formik>
-    </AccountLayout>
+          )}
+        </Formik>
+      </AccountLayout>
+    </>
   );
 };
