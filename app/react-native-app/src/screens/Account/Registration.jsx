@@ -11,7 +11,7 @@ import {
 } from "store/AccountRegistrationStore";
 import { colors, font } from "style/style";
 import { useBackendApi } from "contexts/BackendApi";
-import { AccountLayout } from "./AccountLayout";
+import { AccountLayout } from "layout/AccountLayout";
 import { Toast } from "react-native-toast-message/lib/src/Toast";
 
 import { FixedStepButton } from "components/FixedStepButton";

@@ -10,12 +10,17 @@ export const Navigation = () => {
   return (
     <NavigationContainer>
       <Stack.Navigator screenOptions={{ headerShown: false }}>
-        {!user && <Stack.Screen name="Account" component={Account} />}
-        <Stack.Screen name="Home" component={Home} />
-        <Stack.Screen
-          name="InitialConsultation"
-          component={InitialConsultation}
-        />
+        {!user ? (
+          <Stack.Screen name="Account" component={Account} />
+        ) : (
+          <>
+            <Stack.Screen name="Home" component={Home} />
+            <Stack.Screen
+              name="InitialConsultation"
+              component={InitialConsultation}
+            />
+          </>
+        )}
       </Stack.Navigator>
     </NavigationContainer>
   );

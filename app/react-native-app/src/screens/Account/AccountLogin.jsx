@@ -3,18 +3,18 @@ import { View, Text, TouchableOpacity } from "react-native";
 
 import { Formik } from "formik";
 import { object, string } from "yup";
-import AsyncStorage from "@react-native-async-storage/async-storage";
 
 import { useUser } from "contexts/User";
 import { useBackendApi } from "contexts/BackendApi";
 import { colors, font } from "style/style";
-import { AccountLayout } from "./AccountLayout";
+import { AccountLayout } from "layout/AccountLayout";
 import { Toast } from "react-native-toast-message/lib/src/Toast";
 
 import { InputField } from "components/InputField";
 import { BasicTouchableOpacity } from "components/BasicTouchableOpacity";
 import { validationSchema as emailSchema } from "components/EmailField";
 import { EmailField } from "components/EmailField";
+import { Spinner } from "components/Spinner";
 
 const validationSchema = () =>
   object().shape({
@@ -23,6 +23,7 @@ const validationSchema = () =>
   });
 
 export const AccountLogin = ({ navigation }) => {
+  const [loading, setLoading] = useState(false);
   const [feedback, setFeedback] = useState();
 
   useEffect(() => {
@@ -39,13 +40,11 @@ export const AccountLogin = ({ navigation }) => {
   } = useBackendApi();
 
   const handleLoginSubmit = async (values) => {
+    setLoading(true);
     try {
       const { data } = await login(values);
       signIn(data?.user);
-      // Here 'Home' is the parent screen and 'UserHome' is the screen child
-      navigation.navigate("Home", { screen: "UserHome" }); // Take user to home screen
     } catch (e) {
-      console.log(e);
       const error = await e.response;
       switch (error?.status) {
         case 400: {
@@ -66,6 +65,7 @@ export const AccountLogin = ({ navigation }) => {
           });
       }
     }
+    setLoading(false);
   };
 
   return (
@@ -73,6 +73,7 @@ export const AccountLogin = ({ navigation }) => {
       primaryHeading="Welcome"
       secondaryHeading="Please sign in to continue"
     >
+      {loading ? <Spinner /> : null}
       <Formik
         initialValues={{ username: "", password: "" }}
         validationSchema={validationSchema()}
