@@ -1,8 +1,7 @@
 import { Stack } from "./navigationStack";
 import { ScreenHeader } from "components/ScreenHeader";
-import { colors, font } from "style/style";
+import { font, colors } from "style/style";
 
-import { CaseDetail } from "screens/CaseDetail";
 import { InitialConsultationStepOne } from "screens/InitialConsultation/InitialConsultationStepOne";
 import { InitialConsultationStepTwo } from "screens/InitialConsultation/InitialConsultationStepTwo";
 import { InitialConsultationStepThree } from "screens/InitialConsultation/InitialConsultationStepThree";
@@ -10,15 +9,10 @@ import { InitialConsultationStepFour } from "screens/InitialConsultation/Initial
 import { InitialConsultationStepFive } from "screens/InitialConsultation/InitialConsultationStepFive";
 import { InitialConsultationStepSix } from "screens/InitialConsultation/InitialConsultationStepSix";
 import { Confirmation } from "screens/InitialConsultation/Confirmation";
+import { headerOptions } from "./HomeStack";
+import { Ionicons } from "@expo/vector-icons";
 
-const headerOptions = {
-  headerShown: true,
-  headerShadowVisible: false,
-  title: "",
-  headerTintColor: colors.light,
-};
-
-export const InitialConsultation = () => {
+export const InitialConsultationStack = ({ navigation }) => {
   return (
     <Stack.Navigator screenOptions={{ headerShown: false }}>
       <Stack.Group
@@ -30,6 +24,14 @@ export const InitialConsultation = () => {
             />
           ),
           ...headerOptions,
+          headerLeft: () => (
+            <Ionicons
+              name="menu-outline"
+              size={24}
+              color={colors.light}
+              onPress={() => navigation.openDrawer()}
+            />
+          ),
         }}
       >
         <Stack.Screen

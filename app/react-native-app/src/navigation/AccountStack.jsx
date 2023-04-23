@@ -6,7 +6,7 @@ import {
   RegistrationStepGDPR,
 } from "screens/Account/Registration";
 
-export const Account = () => {
+export const AccountStack = () => {
   return (
     <Stack.Navigator screenOptions={{ headerShown: false }}>
       <Stack.Screen name="AccountLogin" component={AccountLogin} />

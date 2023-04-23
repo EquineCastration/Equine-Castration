@@ -40,10 +40,11 @@ export const AccountLogin = ({ navigation }) => {
   } = useBackendApi();
 
   const handleLoginSubmit = async (values) => {
-    setLoading(true);
     try {
+      setLoading(true);
       const { data } = await login(values);
       signIn(data?.user);
+      setLoading(false);
     } catch (e) {
       const error = await e.response;
       switch (error?.status) {
@@ -65,7 +66,6 @@ export const AccountLogin = ({ navigation }) => {
           });
       }
     }
-    setLoading(false);
   };
 
   return (

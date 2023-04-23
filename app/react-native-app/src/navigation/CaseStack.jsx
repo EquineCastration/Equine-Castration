@@ -1,27 +1,30 @@
-import { CaseDetail } from "screens/CaseDetail";
 import { Stack } from "./navigationStack";
 import { ScreenHeader } from "components/ScreenHeader";
+import { font, colors } from "style/style";
+import { CaseDetail } from "screens/CaseDetail";
 import { CaseList } from "screens/CaseList";
-import { UserHome } from "screens/UserHome";
-import { font } from "style/style";
-import { colors } from "style/style";
+import { headerOptions } from "./HomeStack";
+import { Ionicons } from "@expo/vector-icons";
 
-const headerOptions = {
-  headerShown: true,
-  headerShadowVisible: false,
-  title: "",
-  headerTintColor: colors.light,
-};
-
-export const Home = () => {
+export const CaseStack = ({ navigation }) => {
   return (
     <Stack.Navigator screenOptions={{ headerShown: false }}>
       <Stack.Screen
-        name="UserHome"
-        component={UserHome}
+        name="CaseList"
+        component={CaseList}
         options={{
-          headerBackground: () => <ScreenHeader title="Equine Castration" />,
+          headerBackground: () => (
+            <ScreenHeader title="Caselist" fontSize={font.size["xl"]} />
+          ),
           ...headerOptions,
+          headerLeft: () => (
+            <Ionicons
+              name="menu-outline"
+              size={24}
+              color={colors.light}
+              onPress={() => navigation.openDrawer()}
+            />
+          ),
         }}
       />
       <Stack.Screen
@@ -37,17 +40,6 @@ export const Home = () => {
           ),
           ...headerOptions,
         })}
-      />
-
-      <Stack.Screen
-        name="CaseList"
-        component={CaseList}
-        options={{
-          headerBackground: () => (
-            <ScreenHeader title="Caselist" fontSize={font.size["xl"]} />
-          ),
-          ...headerOptions,
-        }}
       />
     </Stack.Navigator>
   );
