@@ -46,8 +46,24 @@ export const DrawerNavigator = () => {
             }}
           >
             <View>
-              <Text>{user?.fullName?.toUpperCase()}</Text>
-              <Text>{user?.email}</Text>
+              <Text
+                style={{
+                  fontSize: font.size["sm"],
+                  color: colors.primary[800],
+                  fontWeight: 300,
+                }}
+              >
+                {user?.fullName?.toUpperCase()}
+              </Text>
+              <Text
+                style={{
+                  fontSize: font.size["xs"],
+                  color: colors.primary[800],
+                  fontWeight: 300,
+                }}
+              >
+                {user?.email}
+              </Text>
             </View>
           </View>
           <DrawerItemList {...props} />
@@ -70,7 +86,16 @@ export const DrawerNavigator = () => {
             setIsLoading(false);
           }}
         >
-          <Text style={[styles.drawerLabel, { fontWeight: 400 }]}>
+          <Text
+            style={[
+              styles.drawerLabel,
+              {
+                fontWeight: 400,
+                fontSize: font.size["normal"],
+                color: colors.primary[800],
+              },
+            ]}
+          >
             Sign Out
           </Text>
         </TouchableOpacity>
