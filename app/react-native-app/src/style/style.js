@@ -79,6 +79,7 @@ export const toastConfig = {
   success: (props) => (
     <BaseToast
       {...props}
+      style={{ borderLeftColor: colors.patra[700] }}
       text1Style={{
         fontSize: font.size["sm"],
         fontWeight: 300,
