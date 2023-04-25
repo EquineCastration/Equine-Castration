@@ -40,12 +40,23 @@ namespace EquineCastration.Migrations
                     EnvironmentCleanliness = table.Column<string>(type: "text", nullable: false),
                     EnvironmentCleanlinessOther = table.Column<string>(type: "text", nullable: false),
                     PatienceCompliance = table.Column<string>(type: "text", nullable: false),
-                    PatienceComplianceOther = table.Column<string>(type: "text", nullable: false)
+                    PatienceComplianceOther = table.Column<string>(type: "text", nullable: false),
+                    AuthorId = table.Column<string>(type: "text", nullable: true)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Cases", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Cases_AspNetUsers_AuthorId",
+                        column: x => x.AuthorId,
+                        principalTable: "AspNetUsers",
+                        principalColumn: "Id");
                 });
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Cases_AuthorId",
+                table: "Cases",
+                column: "AuthorId");
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)

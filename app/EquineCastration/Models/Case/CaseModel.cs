@@ -1,8 +1,8 @@
-using EquineCastration.Data.Entities.Identity;
+using System.ComponentModel.DataAnnotations;
 
-namespace EquineCastration.Data.Entities;
+namespace EquineCastration.Models.Case;
 
-public class Case
+public record CaseModel
 {
   public int Id { get; set; }
   public string HorseName { get; set; } = string.Empty;
@@ -30,5 +30,5 @@ public class Case
   public string EnvironmentCleanlinessOther { get; set; } = string.Empty;
   public string PatienceCompliance { get; set; } = string.Empty;
   public string PatienceComplianceOther { get; set; } = string.Empty;
-  public ApplicationUser Author { get; set; } = null!;
 }
+

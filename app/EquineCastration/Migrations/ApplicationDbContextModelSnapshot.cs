@@ -33,6 +33,9 @@ namespace EquineCastration.Migrations
                     b.Property<int>("AgeAboveTwo")
                         .HasColumnType("integer");
 
+                    b.Property<string>("AuthorId")
+                        .HasColumnType("text");
+
                     b.Property<string>("Breed")
                         .IsRequired()
                         .HasColumnType("text");
@@ -127,6 +130,8 @@ namespace EquineCastration.Migrations
                         .HasColumnType("integer");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("AuthorId");
 
                     b.ToTable("Cases");
                 });
@@ -379,6 +384,15 @@ namespace EquineCastration.Migrations
                     b.HasKey("UserId", "LoginProvider", "Name");
 
                     b.ToTable("AspNetUserTokens", (string)null);
+                });
+
+            modelBuilder.Entity("EquineCastration.Data.Entities.Case", b =>
+                {
+                    b.HasOne("EquineCastration.Data.Entities.Identity.ApplicationUser", "Author")
+                        .WithMany()
+                        .HasForeignKey("AuthorId");
+
+                    b.Navigation("Author");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
