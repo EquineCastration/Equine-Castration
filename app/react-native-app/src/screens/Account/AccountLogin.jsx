@@ -105,7 +105,7 @@ export const AccountLogin = ({ navigation }) => {
                     fontWeight: 400,
                   }}
                 >
-                  Forgot password ?
+                  Forgot password?
                 </Text>
               </TouchableOpacity>
 
@@ -135,7 +135,7 @@ export const AccountLogin = ({ navigation }) => {
                     fontWeight: 300,
                   }}
                 >
-                  Don't have an account ?
+                  Don't have an account?
                 </Text>
                 <TouchableOpacity
                   onPress={() => navigation.navigate("RegistrationStepOne")}
