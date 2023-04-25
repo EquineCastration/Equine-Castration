@@ -12,7 +12,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace EquineCastration.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20230417112838_Initial")]
+    [Migration("20230425124919_Initial")]
     partial class Initial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)

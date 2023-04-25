@@ -13,9 +13,5 @@ public class ApplicationDbContext : IdentityDbContext<ApplicationUser>
   public DbSet<FeatureFlag> FeatureFlags => Set<FeatureFlag>();
   
   public DbSet<RegistrationRule> RegistrationRules => Set<RegistrationRule>();
-
-  protected override void OnModelCreating(ModelBuilder builder)
-  {
-    base.OnModelCreating(builder);
-  }
+  public DbSet<Case> Cases => Set<Case>();
 }
