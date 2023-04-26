@@ -14,4 +14,6 @@ public class SitePermissionClaims
   
   public const string ListAllCases = "ListAllCases";
   public const string ViewAllCases = "ViewAllCases";
+  public const string EditAllCases = "EditAllCases";
+  public const string DeleteAllCases = "DeleteAllCases";
 }

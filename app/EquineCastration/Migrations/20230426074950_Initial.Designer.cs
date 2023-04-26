@@ -12,8 +12,8 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace EquineCastration.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20230425141325_AddCase")]
-    partial class AddCase
+    [Migration("20230417112838_Initial")]
+    partial class Initial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -23,120 +23,6 @@ namespace EquineCastration.Migrations
                 .HasAnnotation("Relational:MaxIdentifierLength", 63);
 
             NpgsqlModelBuilderExtensions.UseIdentityByDefaultColumns(modelBuilder);
-
-            modelBuilder.Entity("EquineCastration.Data.Entities.Case", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("integer");
-
-                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
-
-                    b.Property<int>("AgeAboveTwo")
-                        .HasColumnType("integer");
-
-                    b.Property<string>("AuthorId")
-                        .HasColumnType("text");
-
-                    b.Property<string>("Breed")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.Property<string>("ClientSurname")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.Property<DateOnly>("DateOfCastration")
-                        .HasColumnType("date");
-
-                    b.Property<string>("Environment")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.Property<string>("EnvironmentCleanliness")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.Property<string>("EnvironmentCleanlinessOther")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.Property<string>("EnvironmentOther")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.Property<string>("HorseName")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.Property<bool>("IsLessThanTwo")
-                        .HasColumnType("boolean");
-
-                    b.Property<string>("LigatureUsed")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.Property<string>("Location")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.Property<string>("LocationTesticleLeft")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.Property<string>("LocationTesticleRight")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.Property<string>("PatienceCompliance")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.Property<string>("PatienceComplianceOther")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.Property<string>("PatientCleanliness")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.Property<string>("PatientCleanlinessOther")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.Property<string>("Restraint")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.Property<string>("RestraintStanding")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.Property<string>("SkinClosure")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.Property<string>("SkinClosureOther")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.Property<string>("Technique")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.Property<string>("TechniqueOther")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.Property<int>("Weight")
-                        .HasColumnType("integer");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("AuthorId");
-
-                    b.ToTable("Cases");
-                });
 
             modelBuilder.Entity("EquineCastration.Data.Entities.FeatureFlag", b =>
                 {
@@ -386,15 +272,6 @@ namespace EquineCastration.Migrations
                     b.HasKey("UserId", "LoginProvider", "Name");
 
                     b.ToTable("AspNetUserTokens", (string)null);
-                });
-
-            modelBuilder.Entity("EquineCastration.Data.Entities.Case", b =>
-                {
-                    b.HasOne("EquineCastration.Data.Entities.Identity.ApplicationUser", "Author")
-                        .WithMany()
-                        .HasForeignKey("AuthorId");
-
-                    b.Navigation("Author");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>

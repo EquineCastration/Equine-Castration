@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using Microsoft.EntityFrameworkCore.Migrations;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
@@ -18,7 +19,7 @@ namespace EquineCastration.Migrations
                         .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
                     HorseName = table.Column<string>(type: "text", nullable: false),
                     ClientSurname = table.Column<string>(type: "text", nullable: false),
-                    DateOfCastration = table.Column<DateOnly>(type: "date", nullable: false),
+                    DateOfCastration = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
                     IsLessThanTwo = table.Column<bool>(type: "boolean", nullable: false),
                     AgeAboveTwo = table.Column<int>(type: "integer", nullable: false),
                     Weight = table.Column<int>(type: "integer", nullable: false),
@@ -32,7 +33,7 @@ namespace EquineCastration.Migrations
                     SkinClosureOther = table.Column<string>(type: "text", nullable: false),
                     Restraint = table.Column<string>(type: "text", nullable: false),
                     RestraintStanding = table.Column<string>(type: "text", nullable: false),
-                    Environment = table.Column<string>(type: "text", nullable: false),
+                    Environment = table.Column<List<string>>(type: "text[]", nullable: false),
                     EnvironmentOther = table.Column<string>(type: "text", nullable: false),
                     Location = table.Column<string>(type: "text", nullable: false),
                     PatientCleanliness = table.Column<string>(type: "text", nullable: false),

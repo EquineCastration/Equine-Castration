@@ -7,7 +7,7 @@ public class Case
   public int Id { get; set; }
   public string HorseName { get; set; } = string.Empty;
   public string ClientSurname { get; set; } = string.Empty;
-  public DateOnly DateOfCastration { get; set; }
+  public DateTime DateOfCastration { get; set; }
   public bool IsLessThanTwo { get; set; }
   public int AgeAboveTwo { get; set; }
   public int Weight { get; set; }
@@ -21,7 +21,7 @@ public class Case
   public string SkinClosureOther { get; set; } = string.Empty;
   public string Restraint { get; set; } = string.Empty;
   public string RestraintStanding { get; set; } = string.Empty;
-  public string Environment { get; set; } = string.Empty;
+  public List<string> Environment { get; set; } = new();
   public string EnvironmentOther { get; set; } = string.Empty;
   public string Location { get; set; } = string.Empty;
   public string PatientCleanliness { get; set; } = string.Empty;

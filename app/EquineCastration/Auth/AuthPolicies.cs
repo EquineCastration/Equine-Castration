@@ -22,6 +22,30 @@ public static class AuthPolicies
       .RequireClaim(CustomClaimTypes.SitePermission, SitePermissionClaims.ManageUsers)
       .Build();
  
+ public static AuthorizationPolicy CanViewAllCases
+   => new AuthorizationPolicyBuilder()
+     .Combine(IsAuthenticatedUser)
+     .RequireClaim(CustomClaimTypes.SitePermission, SitePermissionClaims.ViewAllCases)
+     .Build();
+ 
+ public static AuthorizationPolicy CanListAllCases
+   => new AuthorizationPolicyBuilder()
+     .Combine(IsAuthenticatedUser)
+     .RequireClaim(CustomClaimTypes.SitePermission, SitePermissionClaims.ListAllCases)
+     .Build();
+ 
+ public static AuthorizationPolicy CanEditAllCases
+   => new AuthorizationPolicyBuilder()
+     .Combine(IsAuthenticatedUser)
+     .RequireClaim(CustomClaimTypes.SitePermission, SitePermissionClaims.EditAllCases)
+     .Build();
+ 
+ public static AuthorizationPolicy CanDeleteAllCases
+   => new AuthorizationPolicyBuilder()
+     .Combine(IsAuthenticatedUser)
+     .RequireClaim(CustomClaimTypes.SitePermission, SitePermissionClaims.DeleteAllCases)
+     .Build();
+ 
  public static AuthorizationPolicy CanCreateCases
    => new AuthorizationPolicyBuilder()
      .Combine(IsAuthenticatedUser)
@@ -33,6 +57,19 @@ public static class AuthPolicies
      .Combine(IsAuthenticatedUser)
      .RequireClaim(CustomClaimTypes.SitePermission, SitePermissionClaims.ViewOwnCases)
      .Build();
+ 
+ public static AuthorizationPolicy CanListOwnCases
+   => new AuthorizationPolicyBuilder()
+     .Combine(IsAuthenticatedUser)
+     .RequireClaim(CustomClaimTypes.SitePermission, SitePermissionClaims.ListOwnCases)
+     .Build();
+ 
+ public static AuthorizationPolicy CanDeleteOwnCases
+   => new AuthorizationPolicyBuilder()
+     .Combine(IsAuthenticatedUser)
+     .RequireClaim(CustomClaimTypes.SitePermission, SitePermissionClaims.DeleteOwnCases)
+     .Build();
+ 
  
  private static readonly Func<AuthorizationHandlerContext, bool> IsSameHost =
     context =>
