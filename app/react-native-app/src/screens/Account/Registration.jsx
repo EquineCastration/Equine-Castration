@@ -21,6 +21,7 @@ import { validationSchema as pwdSchema } from "components/PasswordField";
 import { EmailField } from "components/EmailField";
 import { PasswordField } from "components/PasswordField";
 import { CheckBoxField } from "components/CheckBoxField";
+import { useUser } from "contexts/User";
 
 const Layout = ({ children, onSubmit, current, steptitle, total = 3 }) => {
   return (
@@ -198,7 +199,7 @@ export const RegistrationStepTwo = ({ navigation }) => {
 export const RegistrationStepGDPR = ({ navigation }) => {
   const [feedback, setFeedback] = useState();
   const keysArr = ["gdprConfirmation", "isVeterinarian"];
-
+  const { signIn } = useUser();
   useEffect(() => {
     feedback &&
       Toast.show({
@@ -220,17 +221,14 @@ export const RegistrationStepGDPR = ({ navigation }) => {
 
   const handleRegistrationSubmit = async () => {
     try {
-      await register(data);
+      const res = await register(data);
       setFeedback({
         status: "success",
         message: "Thank you for registering!",
       });
 
       resetAccountRegistrationStore(); // reset registration store
-      navigation.reset({
-        index: 0,
-        routes: [{ name: "AccountLogin" }], // reset to Login screens
-      });
+      signIn(res?.data); // sign in the user
     } catch (e) {
       const error = await e.response;
       switch (error?.status) {
