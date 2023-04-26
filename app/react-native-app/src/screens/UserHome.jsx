@@ -19,7 +19,7 @@ export const UserHome = ({ navigation }) => {
     },
     {
       title: "View Cases",
-      navigateToParent: "Home",
+      navigateToParent: "Cases",
       navigate: "CaseList", // screen name
       icon: "documents-outline", // only accepts ionicons
       bgColor: colors.secondary[800],
