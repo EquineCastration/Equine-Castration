@@ -14,13 +14,13 @@ import { BasicGroupOptionsField } from "components/BasicGroupOptionsField";
 export const InitialConsultationStepFive = ({ navigation }) => {
   const keysArr = [
     "environment",
-    "environment_other",
+    "environmentOther",
     "location",
-    "location_other",
+    "locationOther",
     "patientCleanliness",
-    "patientCleanliness_other",
+    "patientCleanlinessOther",
     "environmentCleanliness",
-    "environmentCleanliness_other",
+    "environmentCleanlinessOther",
   ];
   const fields = initialConsultation.fields;
   const initialValues = InitialValues(
@@ -53,23 +53,24 @@ export const InitialConsultationStepFive = ({ navigation }) => {
       onSubmit={(values) => {
         InitialConsultationStore.update((s) => {
           s.environment = values.environment;
-          s.environment_other =
-            values.environment === "Other" ? values.environment_other : ""; // only if the 'environment' is 'Other' else ''
+          s.environmentOther = values.environment.includes("Other")
+            ? values.environmentOther
+            : ""; // only if the 'environment' is 'Other' else ''
 
           s.location = values.location;
-          s.location_other =
-            values.location === "Other" ? values.location_other : ""; // only if the 'location' is 'Other' else ''
+          s.locationOther =
+            values.location === "Other" ? values.locationOther : ""; // only if the 'location' is 'Other' else ''
 
           s.patientCleanliness = values.patientCleanliness;
-          s.patientCleanliness_other =
+          s.patientCleanlinessOther =
             values.patientCleanliness === "Other"
-              ? values.patientCleanliness_other
+              ? values.patientCleanlinessOther
               : ""; // only if the 'patientCleanliness' is 'Other' else ''
 
           s.environmentCleanliness = values.environmentCleanliness;
-          s.environmentCleanliness_other =
+          s.environmentCleanlinessOther =
             values.environmentCleanliness === "Other"
-              ? values.environmentCleanliness_other
+              ? values.environmentCleanlinessOther
               : ""; // only if the 'environmentCleanliness' is 'Other' else ''
         });
         navigation.navigate("InitialConsultationStepSix");
@@ -90,8 +91,8 @@ export const InitialConsultationStepFive = ({ navigation }) => {
               />
               {values?.environment.includes("Other") && (
                 <InputField
-                  label={fields.environment_other.label}
-                  name="environment_other"
+                  label={fields.environmentOther.label}
+                  name="environmentOther"
                 />
               )}
 
@@ -102,8 +103,8 @@ export const InitialConsultationStepFive = ({ navigation }) => {
               />
               {values?.location === "Other" && (
                 <InputField
-                  label={fields.location_other.label}
-                  name="location_other"
+                  label={fields.locationOther.label}
+                  name="locationOther"
                 />
               )}
 
@@ -114,8 +115,8 @@ export const InitialConsultationStepFive = ({ navigation }) => {
               />
               {values?.patientCleanliness === "Other" && (
                 <InputField
-                  label={fields.patientCleanliness_other.label}
-                  name="patientCleanliness_other"
+                  label={fields.patientCleanlinessOther.label}
+                  name="patientCleanlinessOther"
                 />
               )}
 
@@ -126,8 +127,8 @@ export const InitialConsultationStepFive = ({ navigation }) => {
               />
               {values?.environmentCleanliness === "Other" && (
                 <InputField
-                  label={fields.environmentCleanliness_other.label}
-                  name="environmentCleanliness_other"
+                  label={fields.environmentCleanlinessOther.label}
+                  name="environmentCleanlinessOther"
                 />
               )}
             </View>

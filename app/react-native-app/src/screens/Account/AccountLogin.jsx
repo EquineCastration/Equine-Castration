@@ -108,18 +108,6 @@ export const AccountLogin = ({ navigation }) => {
                   Forgot password?
                 </Text>
               </TouchableOpacity>
-              <TouchableOpacity>
-                <Text
-                  style={{
-                    textAlign: "center",
-                    fontSize: font.size["normal"],
-                    color: colors.ui.btnBg,
-                    fontWeight: 400,
-                  }}
-                >
-                  Forgot password?
-                </Text>
-              </TouchableOpacity>
 
               <View style={{ alignItems: "center" }}>
                 <BasicTouchableOpacity

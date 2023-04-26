@@ -87,19 +87,19 @@ namespace EquineCastration.Migrations
                         .IsRequired()
                         .HasColumnType("text");
 
-                    b.Property<string>("PatienceCompliance")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.Property<string>("PatienceComplianceOther")
-                        .IsRequired()
-                        .HasColumnType("text");
-
                     b.Property<string>("PatientCleanliness")
                         .IsRequired()
                         .HasColumnType("text");
 
                     b.Property<string>("PatientCleanlinessOther")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<string>("PatientCompliance")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<string>("PatientComplianceOther")
                         .IsRequired()
                         .HasColumnType("text");
 

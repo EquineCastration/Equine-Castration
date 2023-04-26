@@ -28,7 +28,7 @@ public class Case
   public string PatientCleanlinessOther { get; set; } = string.Empty;
   public string EnvironmentCleanliness { get; set; } = string.Empty;
   public string EnvironmentCleanlinessOther { get; set; } = string.Empty;
-  public string PatienceCompliance { get; set; } = string.Empty;
-  public string PatienceComplianceOther { get; set; } = string.Empty;
+  public string PatientCompliance { get; set; } = string.Empty;
+  public string PatientComplianceOther { get; set; } = string.Empty;
   public ApplicationUser Author { get; set; } = null!;
 }

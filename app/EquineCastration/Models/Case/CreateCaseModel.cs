@@ -28,8 +28,8 @@ public record CreateCaseModel
   public string PatientCleanlinessOther { get; set; } = string.Empty;
   public string EnvironmentCleanliness { get; set; } = string.Empty;
   public string EnvironmentCleanlinessOther { get; set; } = string.Empty;
-  public string PatienceCompliance { get; set; } = string.Empty;
-  public string PatienceComplianceOther { get; set; } = string.Empty;
+  public string PatientCompliance { get; set; } = string.Empty;
+  public string PatientComplianceOther { get; set; } = string.Empty;
   
 
   public Data.Entities.Case ToEntity(ApplicationUser author)
@@ -58,9 +58,8 @@ public record CreateCaseModel
       PatientCleanlinessOther = PatientCleanlinessOther,
       EnvironmentCleanliness = EnvironmentCleanliness,
       EnvironmentCleanlinessOther = EnvironmentCleanlinessOther,
-      PatienceCompliance = PatienceCompliance,
-      PatienceComplianceOther = PatienceComplianceOther,
+      PatientCompliance = PatientCompliance,
+      PatientComplianceOther = PatientComplianceOther,
       Author = author
-      
     };
   }

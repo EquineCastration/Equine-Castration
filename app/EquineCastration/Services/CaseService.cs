@@ -57,7 +57,7 @@ public class CaseService
   public async Task<CaseModel> Create(CreateCaseModel newCase, string userId)
   {
     var author = new ApplicationUser() { Id = userId };
-    _db.AttachRange(author);
+    _db.Attach(author);
     var entity = newCase.ToEntity(author);
     await _db.Cases.AddAsync(entity);
     await _db.SaveChangesAsync();

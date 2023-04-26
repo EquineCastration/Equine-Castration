@@ -24,19 +24,21 @@ export const InitialConsultationStack = ({ navigation }) => {
             />
           ),
           ...headerOptions,
-          headerLeft: () => (
-            <Ionicons
-              name="menu-outline"
-              size={24}
-              color={colors.light}
-              onPress={() => navigation.openDrawer()}
-            />
-          ),
         }}
       >
         <Stack.Screen
           name="InitialConsultationStepOne"
           component={InitialConsultationStepOne}
+          options={{
+            headerLeft: () => (
+              <Ionicons
+                name="menu-outline"
+                size={24}
+                color={colors.light}
+                onPress={() => navigation.openDrawer()}
+              />
+            ),
+          }}
         />
         <Stack.Screen
           name="InitialConsultationStepTwo"

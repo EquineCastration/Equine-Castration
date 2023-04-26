@@ -26,8 +26,8 @@ public record CaseModel
   public string PatientCleanlinessOther { get; set; } = string.Empty;
   public string EnvironmentCleanliness { get; set; } = string.Empty;
   public string EnvironmentCleanlinessOther { get; set; } = string.Empty;
-  public string PatienceCompliance { get; set; } = string.Empty;
-  public string PatienceComplianceOther { get; set; } = string.Empty;
+  public string PatientCompliance { get; set; } = string.Empty;
+  public string PatientComplianceOther { get; set; } = string.Empty;
   
   public CaseModel(Data.Entities.Case entity)
   {
@@ -55,8 +55,8 @@ public record CaseModel
     PatientCleanlinessOther = entity.PatientCleanlinessOther;
     EnvironmentCleanliness = entity.EnvironmentCleanliness;
     EnvironmentCleanlinessOther = entity.EnvironmentCleanlinessOther;
-    PatienceCompliance = entity.PatienceCompliance;
-    PatienceComplianceOther = entity.PatienceComplianceOther;
+    PatientCompliance = entity.PatientCompliance;
+    PatientComplianceOther = entity.PatientComplianceOther;
   }
 }
 

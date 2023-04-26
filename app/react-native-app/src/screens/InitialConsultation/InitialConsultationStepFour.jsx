@@ -14,9 +14,9 @@ import { initialConsultation } from "constants/initial-consultation";
 export const InitialConsultationStepFour = ({ navigation }) => {
   const keysArr = [
     "skinClosure",
-    "skinClosure_other",
+    "skinClosureOther",
     "restraint",
-    "restraint_standing",
+    "restraintStanding",
   ];
   const fields = initialConsultation.fields;
   const initialValues = InitialValues(
@@ -40,11 +40,11 @@ export const InitialConsultationStepFour = ({ navigation }) => {
       onSubmit={(values) => {
         InitialConsultationStore.update((s) => {
           s.skinClosure = values.skinClosure;
-          s.skinClosure_other =
-            values.skinClosure === "Other" ? values.skinClosure_other : ""; // only if the 'skinClosure' is 'Other' else ''
+          s.skinClosureOther =
+            values.skinClosure === "Other" ? values.skinClosureOther : ""; // only if the 'skinClosure' is 'Other' else ''
           s.restraint = values.restraint;
-          s.restraint_standing =
-            values.restraint === "Standing" ? values.restraint_standing : ""; // only if the 'restraint' is 'Standing' else ''
+          s.restraintStanding =
+            values.restraint === "Standing" ? values.restraintStanding : ""; // only if the 'restraint' is 'Standing' else ''
         });
         navigation.navigate("InitialConsultationStepFive");
       }}
@@ -65,8 +65,8 @@ export const InitialConsultationStepFour = ({ navigation }) => {
 
               {values?.skinClosure === "Other" && (
                 <InputField
-                  label={fields.skinClosure_other.label}
-                  name="skinClosure_other"
+                  label={fields.skinClosureOther.label}
+                  name="skinClosureOther"
                 />
               )}
 
@@ -78,9 +78,9 @@ export const InitialConsultationStepFour = ({ navigation }) => {
 
               {values?.restraint === "Standing" && (
                 <BasicGroupOptionsField
-                  label={fields.restraint_standing.label}
-                  name="restraint_standing"
-                  options={fields.restraint_standing.options}
+                  label={fields.restraintStanding.label}
+                  name="restraintStanding"
+                  options={fields.restraintStanding.options}
                 />
               )}
             </View>

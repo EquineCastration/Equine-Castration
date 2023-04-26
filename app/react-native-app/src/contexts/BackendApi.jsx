@@ -1,5 +1,6 @@
 import { getAccountApi } from "api/account";
 import { getRegistrationRulesApi } from "api/registrationRules";
+import { getCaseApi } from "api/case";
 import { createContext, useCallback, useContext, useMemo } from "react";
 import { LOCAL_PUBLIC_API } from "react-native-dotenv";
 import AsyncStorage from "@react-native-async-storage/async-storage";
@@ -46,6 +47,7 @@ export const BackendApiProvider = ({ children }) => {
       ...baseContext,
       account: getAccountApi(baseContext),
       registrationRules: getRegistrationRulesApi(baseContext),
+      case: getCaseApi(baseContext),
     }),
     [baseContext]
   );

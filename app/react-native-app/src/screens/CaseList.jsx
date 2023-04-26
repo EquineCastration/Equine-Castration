@@ -7,26 +7,32 @@ import {
   TouchableOpacity,
 } from "react-native";
 import { colors, font } from "style/style";
-import { queryBase } from "db/queries/base";
 import { DefaultLayout } from "layout/DefaultLayout";
+import { useCaseList } from "api/case";
 
 export const CaseList = ({ navigation }) => {
+  const { data: caseList } = useCaseList();
+
   const [data, setData] = useState();
 
   useEffect(() => {
-    queryBase.getData("InitialConsultation", setData);
+    // TODO:
+    // Store the loaded data onto the Async Storage
+    // Before apending the Async storage, always check if we are able to fetch data from Backend
+    // If we are not getting any data, then donot append
+    // This is useful during offline mode
   }, []);
 
   return (
     <DefaultLayout>
       <FlatList
-        ItemSeparatorComponent={() => <View style={{ height: 8 }} />}
+        ItemSeparatorComponent={() => <View style={{ height: 12 }} />}
         style={{
           marginTop: 15,
           marginHorizontal: 5,
           paddingHorizontal: 5,
         }}
-        data={data}
+        data={caseList}
         renderItem={({ item }) => (
           <ListItem
             onPress={() =>
@@ -34,7 +40,7 @@ export const CaseList = ({ navigation }) => {
                 caseData: item,
               })
             }
-            data={data}
+            data={caseList}
           >
             <View
               style={{
@@ -80,11 +86,11 @@ export const ListItem = ({ children, onPress }) => {
     <TouchableOpacity onPress={onPress}>
       <View
         style={{
-          borderBottomWidth: 1,
+          borderBottomWidth: 2,
           borderColor: colors.primary[100],
-          borderRadius: 5,
-          backgroundColor: colors.primary[75],
-          padding: 10,
+          borderRadius: 10,
+          backgroundColor: colors.ui.bg,
+          padding: 15,
         }}
       >
         {children}

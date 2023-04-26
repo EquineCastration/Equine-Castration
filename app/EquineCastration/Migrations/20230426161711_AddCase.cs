@@ -40,8 +40,8 @@ namespace EquineCastration.Migrations
                     PatientCleanlinessOther = table.Column<string>(type: "text", nullable: false),
                     EnvironmentCleanliness = table.Column<string>(type: "text", nullable: false),
                     EnvironmentCleanlinessOther = table.Column<string>(type: "text", nullable: false),
-                    PatienceCompliance = table.Column<string>(type: "text", nullable: false),
-                    PatienceComplianceOther = table.Column<string>(type: "text", nullable: false),
+                    PatientCompliance = table.Column<string>(type: "text", nullable: false),
+                    PatientComplianceOther = table.Column<string>(type: "text", nullable: false),
                     AuthorId = table.Column<string>(type: "text", nullable: true)
                 },
                 constraints: table =>

@@ -54,7 +54,7 @@ export const initialConsultation = {
       ],
       defaultValue: "",
     },
-    technique_other: {
+    techniqueOther: {
       label: "Other Technique e.g. Henderson tool, laparoscopic",
       defaultValue: "",
     },
@@ -78,7 +78,7 @@ export const initialConsultation = {
       options: ["Open", "Sutures", "Staples", "Sub-cut", "Other"],
       defaultValue: "",
     },
-    skinClosure_other: {
+    skinClosureOther: {
       label: "Other Skin closure",
       defaultValue: "",
     },
@@ -87,7 +87,7 @@ export const initialConsultation = {
       options: ["GA", "Standing"],
       defaultValue: "",
     },
-    restraint_standing: {
+    restraintStanding: {
       label: "Restraint Standing",
       options: ["Xylazine", "Detomidine", "Romifidine"],
       defaultValue: "Xylazine",
@@ -97,7 +97,7 @@ export const initialConsultation = {
       options: ["Hot", "Wet", "Muddy", "Other"],
       defaultValue: [],
     },
-    environment_other: {
+    environmentOther: {
       label: "Environment other",
       defaultValue: "",
     },
@@ -107,7 +107,7 @@ export const initialConsultation = {
       options: ["Stable", "Field", "School", "Theatre", "Other"],
       defaultValue: "",
     },
-    location_other: {
+    locationOther: {
       label: "Other Location",
       defaultValue: "",
     },
@@ -116,7 +116,7 @@ export const initialConsultation = {
       options: ["Poor", "Good", "Excellent", "Other"],
       defaultValue: "",
     },
-    patientCleanliness_other: {
+    patientCleanlinessOther: {
       label: "Other Patient Cleanliness",
       defaultValue: "",
     },
@@ -125,7 +125,7 @@ export const initialConsultation = {
       options: ["Poor", "Good", "Excellent", "Other"],
       defaultValue: "",
     },
-    environmentCleanliness_other: {
+    environmentCleanlinessOther: {
       label: "Other Environment Cleanliness",
       defaultValue: "",
     },
@@ -134,7 +134,7 @@ export const initialConsultation = {
       options: ["Poor", "Good", "Excellent", "Other"],
       defaultValue: "",
     },
-    patientCompliance_other: {
+    patientComplianceOther: {
       label: "Other Patient Compliance",
       defaultValue: "",
     },
