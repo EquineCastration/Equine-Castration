@@ -1,6 +1,7 @@
 import { BackendApiProvider } from "contexts/BackendApi";
 import { BackendConfigProvider } from "contexts/Config";
 import Toast from "react-native-toast-message";
+import { toastConfig } from "style/style";
 import { Suspense } from "react";
 import { Spinner } from "components/Spinner";
 import { UserProvider } from "contexts/User";
@@ -18,7 +19,7 @@ export default function App() {
           </UserProvider>
         </BackendApiProvider>
       </Suspense>
-      <Toast />
+      <Toast config={toastConfig} />
     </>
   );
 }
