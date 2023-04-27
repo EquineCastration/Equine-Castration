@@ -4,7 +4,7 @@ import { ScrollView, TouchableOpacity, View, Text } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
 import { colors, font } from "style/style";
 
-export const CaseDetail = ({ route }) => {
+export const CaseDetail = ({ navigation, route }) => {
   const { caseData } = route.params;
 
   const MenuButton = ({
@@ -57,9 +57,11 @@ export const CaseDetail = ({ route }) => {
           title="Edit"
           iconName="create-outline"
           color={colors.patra[900]}
-          onPress={() => {
-            console.log("Edit button clicked");
-          }}
+          onPress={() =>
+            navigation.navigate("EditInitialConsultation", {
+              editData: caseData,
+            })
+          }
         />
         <MenuButton
           title="Delete"

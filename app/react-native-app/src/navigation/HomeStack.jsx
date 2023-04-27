@@ -3,8 +3,6 @@ import { ScreenHeader } from "components/ScreenHeader";
 import { UserHome } from "screens/UserHome";
 import { Ionicons } from "@expo/vector-icons";
 import { colors } from "style/style";
-import { useEffect } from "react";
-import { resetInitialConsultationStore } from "store/InitialConsultationStore";
 
 export const headerOptions = {
   headerShown: true,
@@ -14,10 +12,6 @@ export const headerOptions = {
 };
 
 export const HomeStack = ({ navigation }) => {
-  useEffect(() => {
-    resetInitialConsultationStore();
-  }, []);
-
   return (
     <Stack.Navigator screenOptions={{ headerShown: false }}>
       <Stack.Screen

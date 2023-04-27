@@ -61,7 +61,7 @@ export const InputField = ({
                 : inputBorderColor,
             }}
             onChangeText={field.onChange(field.name)}
-            value={field.value || field.value.toString()}
+            value={field.value.toString()}
             secureTextEntry={type === "password" && isPwdHidden}
             {...props}
           />
