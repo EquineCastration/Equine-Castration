@@ -68,7 +68,6 @@ export const Layout = ({ children, onSubmit, current, title }) => {
 export const InitialValues = (keysArr, store) => {
   // returns a new object containing selective key-value pairss
   // 'keysArr' is an string array of keys to look for in the 'store' object
-
   return Object.fromEntries(
     Object.keys(store)
       // filter the object keys
@@ -115,8 +114,11 @@ export const InitialConsultationStepOne = ({ navigation }) => {
     InitialConsultationStore.useState()
   );
 
+  console.log(InitialConsultationStore.useState());
+
   return (
     <Formik
+      enableReinitialize
       initialValues={initialValues}
       validationSchema={validationSchema}
       onSubmit={(values) => {

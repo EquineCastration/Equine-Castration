@@ -5,10 +5,7 @@ export const CaseDetail = ({ route }) => {
   const { caseData } = route.params;
 
   return (
-    <DefaultLayout
-      primaryTxt="Case summary"
-      secondaryTxt={`Horse name: ${caseData.horseName}`}
-    >
+    <DefaultLayout>
       <ScrollView
         style={{
           marginVertical: 2,
