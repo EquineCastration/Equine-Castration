@@ -3,9 +3,19 @@ import { CaseSummary } from "components/CaseSummary";
 import { ScrollView, TouchableOpacity, View, Text } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
 import { colors, font } from "style/style";
+import { useUser } from "contexts/User";
+import { permissions } from "constants/site-permissions";
 
 export const CaseDetail = ({ navigation, route }) => {
   const { caseData } = route.params;
+  const { user } = useUser();
+
+  const canDelete =
+    user.permissions.includes(permissions.DeleteAllCases) ||
+    user.permissions.includes(permissions.DeleteOwnCases);
+  const canEdit =
+    user.permissions.includes(permissions.EditAllCases) ||
+    user.permissions.includes(permissions.EditOwnCases);
 
   const MenuButton = ({
     iconName,
@@ -53,21 +63,26 @@ export const CaseDetail = ({ navigation, route }) => {
           gap: 5,
         }}
       >
-        <MenuButton
-          title="Edit"
-          iconName="create-outline"
-          color={colors.patra[900]}
-          onPress={() =>
-            navigation.navigate("EditInitialConsultation", {
-              editData: caseData,
-            })
-          }
-        />
-        <MenuButton
-          title="Delete"
-          iconName="trash-outline"
-          color={colors.error}
-        />
+        {canEdit && (
+          <MenuButton
+            title="Edit"
+            iconName="create-outline"
+            color={colors.patra[900]}
+            onPress={() =>
+              navigation.navigate("EditInitialConsultation", {
+                editData: caseData,
+              })
+            }
+          />
+        )}
+
+        {canDelete && (
+          <MenuButton
+            title="Delete"
+            iconName="trash-outline"
+            color={colors.error}
+          />
+        )}
       </View>
       <ScrollView
         style={{

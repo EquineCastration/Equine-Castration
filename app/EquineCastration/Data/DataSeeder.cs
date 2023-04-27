@@ -61,8 +61,8 @@ public class DataSeeder
       (CustomClaimTypes.SitePermission, SitePermissionClaims.ManageUsers),
       
       (CustomClaimTypes.SitePermission, SitePermissionClaims.CreateCases),
-      (CustomClaimTypes.SitePermission, SitePermissionClaims.EditOwnCases),
-      (CustomClaimTypes.SitePermission, SitePermissionClaims.DeleteOwnCases),
+      (CustomClaimTypes.SitePermission, SitePermissionClaims.EditAllCases),
+      (CustomClaimTypes.SitePermission, SitePermissionClaims.DeleteAllCases),
       (CustomClaimTypes.SitePermission, SitePermissionClaims.ListAllCases),
       (CustomClaimTypes.SitePermission, SitePermissionClaims.ViewAllCases),
     });
