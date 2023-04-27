@@ -57,10 +57,11 @@ b.Services
   .Configure<UserAccountOptions>(b.Configuration.GetSection("UserAccounts"))
 
   .AddEmailSender(b.Configuration)
-  
+
   .AddTransient<UserService>()
   .AddTransient<FeatureFlagService>()
-  .AddTransient<RegistrationRuleService>();
+  .AddTransient<RegistrationRuleService>()
+  .AddTransient<CaseService>();
 
 b.Services.AddSwaggerGen();
 

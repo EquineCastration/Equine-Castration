@@ -11,7 +11,7 @@ import { Layout, InitialValues } from "./InitialConsultationStepOne";
 import { initialConsultation } from "constants/initial-consultation";
 
 export const InitialConsultationStepSix = ({ navigation }) => {
-  const keysArr = ["patientCompliance", "patientCompliance_other"];
+  const keysArr = ["patientCompliance", "patientComplianceOther"];
   const fields = initialConsultation.fields;
   const initialValues = InitialValues(
     keysArr,
@@ -31,9 +31,9 @@ export const InitialConsultationStepSix = ({ navigation }) => {
       onSubmit={(values) => {
         InitialConsultationStore.update((s) => {
           s.patientCompliance = values.patientCompliance;
-          s.patientCompliance_other =
+          s.patientComplianceOther =
             values.patientCompliance === "Other"
-              ? values.patientCompliance_other
+              ? values.patientComplianceOther
               : ""; // only if the 'patientCompliance' is 'Other' else ''
         });
         navigation.navigate("InitialConsultationConfirmation");
@@ -54,8 +54,8 @@ export const InitialConsultationStepSix = ({ navigation }) => {
               />
               {values?.patientCompliance === "Other" && (
                 <InputField
-                  label={fields.patientCompliance_other.label}
-                  name="patientCompliance_other"
+                  label={fields.patientComplianceOther.label}
+                  name="patientComplianceOther"
                 />
               )}
             </View>

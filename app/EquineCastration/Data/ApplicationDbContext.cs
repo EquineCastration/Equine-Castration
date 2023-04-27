@@ -13,7 +13,8 @@ public class ApplicationDbContext : IdentityDbContext<ApplicationUser>
   public DbSet<FeatureFlag> FeatureFlags => Set<FeatureFlag>();
   
   public DbSet<RegistrationRule> RegistrationRules => Set<RegistrationRule>();
-
+  
+  public DbSet<Case> Cases => Set<Case>();
   protected override void OnModelCreating(ModelBuilder builder)
   {
     base.OnModelCreating(builder);

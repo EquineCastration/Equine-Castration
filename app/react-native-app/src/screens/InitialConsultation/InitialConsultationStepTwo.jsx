@@ -10,7 +10,7 @@ import { InitialConsultationStore } from "store/InitialConsultationStore";
 import { initialConsultation } from "constants/initial-consultation";
 
 export const InitialConsultationStepTwo = ({ navigation }) => {
-  const keysArr = ["weight", "breed", "technique", "technique_other"];
+  const keysArr = ["weight", "breed", "technique", "techniqueOther"];
   const fields = initialConsultation.fields;
   const initialValues = InitialValues(
     keysArr,
@@ -40,8 +40,8 @@ export const InitialConsultationStepTwo = ({ navigation }) => {
           s.weight = values.weight;
           s.breed = values.breed;
           s.technique = values.technique;
-          s.technique_other =
-            values.technique === "Other" ? values.technique_other : ""; // only if the 'technique' is 'Other' else ''
+          s.techniqueOther =
+            values.technique === "Other" ? values.techniqueOther : ""; // only if the 'technique' is 'Other' else ''
         });
         navigation.navigate("InitialConsultationStepThree");
       }}
@@ -81,8 +81,8 @@ export const InitialConsultationStepTwo = ({ navigation }) => {
 
               {values?.technique === "Other" && (
                 <InputField
-                  label={fields.technique_other.label}
-                  name="technique_other"
+                  label={fields.techniqueOther.label}
+                  name="techniqueOther"
                 />
               )}
             </View>
