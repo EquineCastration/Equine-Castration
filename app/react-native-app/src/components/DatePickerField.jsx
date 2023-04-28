@@ -16,7 +16,9 @@ export const DatePickerField = ({
   const [isDatePickerVisible, setIsDatePickerVisible] = useState(false);
 
   const handleDateConfirm = (date) => {
-    helpers.setValue(moment(date).format("DD/MM/YYYY"));
+    const newDate = new Date(date);
+    newDate.setHours(0, 0, 0, 0); // reset time value to midnight
+    helpers.setValue(newDate);
     setIsDatePickerVisible(false);
   };
 
@@ -43,7 +45,7 @@ export const DatePickerField = ({
         <TextInput
           editable={false}
           placeholder={placeholder}
-          value={field.value}
+          value={field.value && moment(field.value).format("DD/MM/YYYY")}
           style={{
             backgroundColor: colors.light,
             borderWidth: 1,

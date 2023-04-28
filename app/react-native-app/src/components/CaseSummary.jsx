@@ -1,4 +1,5 @@
 import { initialConsultation } from "constants/initial-consultation";
+import moment from "moment";
 import { View, Text } from "react-native";
 import { font } from "style/style";
 import { colors } from "style/style";
@@ -40,6 +41,8 @@ export const CaseSummary = ({ data }) => {
             >
               {Array.isArray(data[item])
                 ? `[${data[item].join(", ")}]`
+                : item === "dateOfCastration"
+                ? moment(data[item]).format("DD/MM/YYYY")
                 : data[item]}
             </Text>
           </Text>

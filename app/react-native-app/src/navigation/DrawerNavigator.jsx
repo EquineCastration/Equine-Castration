@@ -107,6 +107,7 @@ export const DrawerNavigator = () => {
     <>
       {isLoading ? <Spinner text="Signing out" /> : null}
       <Drawer.Navigator
+        initialRouteName="Home"
         screenOptions={{
           headerShown: false,
           headerStyle: {

@@ -9,10 +9,12 @@ import {
 import { colors, font } from "style/style";
 import { DefaultLayout } from "layout/DefaultLayout";
 import { useCaseList } from "api/case";
+import moment from "moment";
+import { useIsFocused } from "@react-navigation/native";
 
 export const CaseList = ({ navigation }) => {
-  const { data: caseList } = useCaseList();
-
+  const { data: caseList, mutate } = useCaseList();
+  const isFocused = useIsFocused(); // is screen focussed
   const [data, setData] = useState();
 
   useEffect(() => {
@@ -21,7 +23,8 @@ export const CaseList = ({ navigation }) => {
     // Before apending the Async storage, always check if we are able to fetch data from Backend
     // If we are not getting any data, then donot append
     // This is useful during offline mode
-  }, []);
+    isFocused && mutate();
+  }, [isFocused]);
 
   return (
     <DefaultLayout>
@@ -72,7 +75,8 @@ export const CaseList = ({ navigation }) => {
                 },
               ]}
             >
-              Castration date: {item.dateOfCastration}
+              Castration date:{" "}
+              {moment(item.dateOfCastration).format("DD/MM/YYYY")}
             </Text>
           </ListItem>
         )}

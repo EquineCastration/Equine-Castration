@@ -11,6 +11,7 @@ import { InitialConsultationStepSix } from "screens/InitialConsultation/InitialC
 import { Confirmation } from "screens/InitialConsultation/Confirmation";
 import { headerOptions } from "./HomeStack";
 import { Ionicons } from "@expo/vector-icons";
+import { resetInitialConsultationStore } from "store/InitialConsultationStore";
 
 export const InitialConsultationStack = ({ navigation, route }) => {
   const editData = route.params?.editData ?? undefined;
@@ -46,6 +47,16 @@ export const InitialConsultationStack = ({ navigation, route }) => {
                 }
               />
             ),
+            headerRight: !editData
+              ? () => (
+                  <Ionicons
+                    name="refresh-outline"
+                    size={24}
+                    color={colors.light}
+                    onPress={() => resetInitialConsultationStore()}
+                  />
+                )
+              : undefined,
           }}
         />
         <Stack.Screen

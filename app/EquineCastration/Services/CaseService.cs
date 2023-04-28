@@ -1,3 +1,5 @@
+using System.Globalization;
+using System.Reflection;
 using EquineCastration.Data;
 using EquineCastration.Data.Entities.Identity;
 using EquineCastration.Models.Case;
@@ -67,12 +69,39 @@ public class CaseService
   public async Task<CaseModel> Edit(int caseId, CreateCaseModel caseUpdate)
   {
     var entity = await _db.Cases
-                   .AsNoTracking()
                    .Include(x => x.Author)
                    .Where(x => x.Id == caseId)
                    .SingleOrDefaultAsync()
                  ?? throw new KeyNotFoundException();
-    _db.Entry(entity).CurrentValues.SetValues(caseUpdate);
+    
+    entity.HorseName = caseUpdate.HorseName;
+    entity.ClientSurname = caseUpdate.ClientSurname;
+    entity.IsLessThanTwo = caseUpdate.IsLessThanTwo;
+    entity.AgeAboveTwo = caseUpdate.AgeAboveTwo;
+    entity.Weight = caseUpdate.Weight;
+    entity.Breed = caseUpdate.Breed;
+    entity.Technique = caseUpdate.Technique;
+    entity.TechniqueOther = caseUpdate.TechniqueOther;
+    entity.LocationTesticleLeft = caseUpdate.LocationTesticleLeft;
+    entity.LocationTesticleRight = caseUpdate.LocationTesticleRight;
+    entity.LigatureUsed = caseUpdate.LigatureUsed;
+    entity.SkinClosure = caseUpdate.SkinClosure;
+    entity.SkinClosureOther = caseUpdate.SkinClosureOther;
+    entity.Restraint = caseUpdate.Restraint;
+    entity.RestraintStanding = caseUpdate.RestraintStanding;
+    entity.Environment = caseUpdate.Environment;
+    entity.EnvironmentOther = caseUpdate.EnvironmentOther;
+    entity.Location = caseUpdate.Location;
+    entity.PatientCleanliness = caseUpdate.PatientCleanliness;
+    entity.PatientCleanlinessOther = caseUpdate.PatientCleanlinessOther;
+    entity.EnvironmentCleanliness = caseUpdate.EnvironmentCleanliness;
+    entity.EnvironmentCleanlinessOther = caseUpdate.EnvironmentCleanlinessOther;
+    entity.PatientCompliance = caseUpdate.PatientCompliance;
+    entity.PatientComplianceOther = caseUpdate.PatientComplianceOther;
+    
+    // Manually convert DateOfCastration property
+    entity.DateOfCastration = DateTime.ParseExact(caseUpdate.DateOfCastration, "dd/MM/yyyy", CultureInfo.InvariantCulture).ToUniversalTime();
+    
     await _db.SaveChangesAsync();
     return new CaseModel(entity);
   }

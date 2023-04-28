@@ -4,9 +4,10 @@ import { initialConsultation } from "constants/initial-consultation";
 // Grab initial state/default values
 // E.g. { horseName : "" , clientSurname : "" ....}
 export const ICStoreInitialState = Object.fromEntries(
-  Object.entries(initialConsultation.fields)
-    .filter(([key]) => key !== "id") // ignore specific keys
-    .map(([key, { defaultValue }]) => [key, defaultValue])
+  Object.entries(initialConsultation.fields).map(([key, { defaultValue }]) => [
+    key,
+    defaultValue,
+  ])
 );
 
 // Create a globally available store
