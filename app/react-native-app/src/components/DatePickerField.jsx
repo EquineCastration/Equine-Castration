@@ -16,10 +16,9 @@ export const DatePickerField = ({
   const [isDatePickerVisible, setIsDatePickerVisible] = useState(false);
 
   const handleDateConfirm = (date) => {
-    const newDate = new Date(date);
-    newDate.setHours(0, 0, 0, 0); // reset time value to midnight
-    helpers.setValue(newDate);
+    helpers.setValue(date);
     setIsDatePickerVisible(false);
+    console.log(moment(date).toISOString());
   };
 
   return (
