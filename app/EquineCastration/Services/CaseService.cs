@@ -122,7 +122,6 @@ public class CaseService
   public async Task Delete(int caseId)
   {
     var entity = await _db.Cases
-                   .AsNoTracking()
                    .Include(x => x.Author)
                    .Where(x => x.Id == caseId)
                    .SingleOrDefaultAsync()
@@ -134,7 +133,6 @@ public class CaseService
   public async Task DeleteAuthorCase(int caseId, string userId)
   {
     var entity = await _db.Cases
-                   .AsNoTracking()
                    .Include(x => x.Author)
                    .Where(x => x.Id == caseId && x.Author.Id==userId)
                    .SingleOrDefaultAsync()

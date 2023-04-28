@@ -25,7 +25,7 @@ export const Confirmation = ({ navigation }) => {
       });
   }, [feedback]);
 
-  const handleInitialConsultationSubmit = async (navigation, data) => {
+  const handleInitialConsultationSubmit = async (data) => {
     setIsLoading(true);
     try {
       // first convert date into string. Backend will handle the string to date conversion
@@ -75,7 +75,7 @@ export const Confirmation = ({ navigation }) => {
         <Spinner text={data.id ? "Updating " : "Creating new case."} />
       ) : null}
       <Layout
-        onSubmit={() => handleInitialConsultationSubmit(navigation, data)}
+        onSubmit={() => handleInitialConsultationSubmit(data)}
         current={7}
         title={data.id ? "Update" : "Confirm"}
       >

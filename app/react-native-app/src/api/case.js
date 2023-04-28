@@ -11,7 +11,7 @@ export const getCaseApi = ({ api }) => ({
 
   edit: (values, id) => api.put(`cases/${id}`, values), // update
 
-  delete: (id) => api.delete(`case/${id}`), // delete
+  delete: (id) => api.delete(`cases/${id}`), // delete
 });
 
 /**

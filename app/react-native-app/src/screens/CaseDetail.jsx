@@ -5,10 +5,26 @@ import { Ionicons } from "@expo/vector-icons";
 import { colors, font } from "style/style";
 import { useUser } from "contexts/User";
 import { permissions } from "constants/site-permissions";
+import { useBackendApi } from "contexts/BackendApi";
+import { useCaseList } from "api/case";
 
 export const CaseDetail = ({ navigation, route }) => {
   const { caseData } = route.params;
   const { user } = useUser();
+  const {
+    case: { delete: remove },
+  } = useBackendApi();
+  const { mutate } = useCaseList();
+
+  const handleDelete = async (caseId) => {
+    try {
+      await remove(caseId);
+      mutate(); // refresh the list
+      navigation.goBack();
+    } catch (e) {
+      console.log(e);
+    }
+  };
 
   const canDelete =
     user.permissions.includes(permissions.DeleteAllCases) ||
@@ -81,6 +97,7 @@ export const CaseDetail = ({ navigation, route }) => {
             title="Delete"
             iconName="trash-outline"
             color={colors.error}
+            onPress={() => handleDelete(caseData.id)}
           />
         )}
       </View>
