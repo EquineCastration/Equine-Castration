@@ -127,7 +127,18 @@ public class AccountController : ControllerBase
         await _db.SaveChangesAsync();
         
         await _tokens.SendAccountConfirmation(newUser);
-        return NoContent();
+        
+        await _signIn.SignInAsync(newUser, false); // sign in the new user
+
+        var profile = await _user.BuildProfile(newUser);
+
+        // Write a basic Profile Cookie for JS
+        HttpContext.Response.Cookies.Append(
+          AuthConfiguration.ProfileCookieName,
+          JsonSerializer.Serialize((BaseUserProfileModel)profile),
+          AuthConfiguration.ProfileCookieOptions);
+
+        return Ok(profile);
       }
 
       foreach (var e in result.Errors)

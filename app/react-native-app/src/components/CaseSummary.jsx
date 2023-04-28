@@ -1,4 +1,5 @@
 import { initialConsultation } from "constants/initial-consultation";
+import moment from "moment";
 import { View, Text } from "react-native";
 import { font } from "style/style";
 import { colors } from "style/style";
@@ -9,18 +10,21 @@ export const CaseSummary = ({ data }) => {
     <View
       style={{
         flex: 1,
-        marginVertical: 15,
+        marginVertical: 5,
         paddingHorizontal: 15,
         borderRadius: 10,
-        backgroundColor: colors.primary[75],
+        backgroundColor: colors.ui.bg,
       }}
     >
       {Object.keys(data).map((item, index) => (
         <View
           key={index}
           style={{
-            marginVertical: 10,
+            marginVertical: 2,
+            paddingVertical: 10,
             flexDirection: "row",
+            borderBottomWidth: 1,
+            borderColor: colors.primary[100],
           }}
         >
           <Text
@@ -28,16 +32,19 @@ export const CaseSummary = ({ data }) => {
               fontWeight: 300,
               fontSize: font.size.sm,
             }}
-          >{`${fields[item]?.label} -`}</Text>
-          <Text
-            style={{
-              fontWeight: 500,
-              fontSize: font.size.sm,
-            }}
           >
-            {Array.isArray(data[item])
-              ? `[${data[item].join(", ")}]`
-              : data[item]}
+            {`${fields[item]?.label} -`}{" "}
+            <Text
+              style={{
+                fontWeight: 500,
+              }}
+            >
+              {Array.isArray(data[item])
+                ? `[${data[item].join(", ")}]`
+                : item === "dateOfCastration"
+                ? moment(data[item]).format("DD/MM/YYYY")
+                : data[item]}
+            </Text>
           </Text>
         </View>
       ))}

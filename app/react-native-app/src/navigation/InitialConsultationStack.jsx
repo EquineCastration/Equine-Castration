@@ -11,16 +11,22 @@ import { InitialConsultationStepSix } from "screens/InitialConsultation/InitialC
 import { Confirmation } from "screens/InitialConsultation/Confirmation";
 import { headerOptions } from "./HomeStack";
 import { Ionicons } from "@expo/vector-icons";
+import { resetInitialConsultationStore } from "store/InitialConsultationStore";
 
-export const InitialConsultationStack = ({ navigation }) => {
+export const InitialConsultationStack = ({ navigation, route }) => {
+  const editData = route.params?.editData ?? undefined;
   return (
     <Stack.Navigator screenOptions={{ headerShown: false }}>
       <Stack.Group
         screenOptions={{
           headerBackground: () => (
             <ScreenHeader
-              title="Initial Consultation"
-              fontSize={font.size["2xl"]}
+              title={
+                editData
+                  ? `Editing case of ${route.params.editData.horseName}`
+                  : "Initial Consultation"
+              }
+              fontSize={editData ? font.size["xl"] : font.size["2xl"]}
             />
           ),
           ...headerOptions,
@@ -29,15 +35,28 @@ export const InitialConsultationStack = ({ navigation }) => {
         <Stack.Screen
           name="InitialConsultationStepOne"
           component={InitialConsultationStepOne}
+          initialParams={{ editData }}
           options={{
             headerLeft: () => (
               <Ionicons
-                name="menu-outline"
+                name={editData ? "arrow-back-outline" : "menu-outline"}
                 size={24}
                 color={colors.light}
-                onPress={() => navigation.openDrawer()}
+                onPress={() =>
+                  editData ? navigation.goBack() : navigation.openDrawer()
+                }
               />
             ),
+            headerRight: !editData
+              ? () => (
+                  <Ionicons
+                    name="refresh-outline"
+                    size={24}
+                    color={colors.light}
+                    onPress={() => resetInitialConsultationStore()}
+                  />
+                )
+              : undefined,
           }}
         />
         <Stack.Screen

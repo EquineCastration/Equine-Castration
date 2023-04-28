@@ -16,8 +16,9 @@ export const DatePickerField = ({
   const [isDatePickerVisible, setIsDatePickerVisible] = useState(false);
 
   const handleDateConfirm = (date) => {
-    helpers.setValue(moment(date).format("DD/MM/YYYY"));
+    helpers.setValue(date);
     setIsDatePickerVisible(false);
+    console.log(moment(date).toISOString());
   };
 
   return (
@@ -43,7 +44,7 @@ export const DatePickerField = ({
         <TextInput
           editable={false}
           placeholder={placeholder}
-          value={field.value}
+          value={field.value && moment(field.value).format("DD/MM/YYYY")}
           style={{
             backgroundColor: colors.light,
             borderWidth: 1,

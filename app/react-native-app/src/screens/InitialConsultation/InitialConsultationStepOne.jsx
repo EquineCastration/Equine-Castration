@@ -68,7 +68,6 @@ export const Layout = ({ children, onSubmit, current, title }) => {
 export const InitialValues = (keysArr, store) => {
   // returns a new object containing selective key-value pairss
   // 'keysArr' is an string array of keys to look for in the 'store' object
-
   return Object.fromEntries(
     Object.keys(store)
       // filter the object keys
@@ -91,10 +90,16 @@ const agePickerItems = (min, max) => {
   return item;
 };
 
-export const InitialConsultationStepOne = ({ navigation }) => {
+export const InitialConsultationStepOne = ({ navigation, route }) => {
+  const { editData } = route.params;
+
   useEffect(() => {
-    // queryBase.deleteTable("InitialConsultation");
-    queryBase.createTable("InitialConsultation", ICStoreInitialState); // Create table if not exists
+    editData &&
+      Object.keys(editData).forEach((key, index) => {
+        InitialConsultationStore.update((s) => {
+          s[key] = editData[key];
+        });
+      });
   }, []);
 
   const keysArr = [
@@ -114,9 +119,9 @@ export const InitialConsultationStepOne = ({ navigation }) => {
     keysArr,
     InitialConsultationStore.useState()
   );
-
   return (
     <Formik
+      enableReinitialize
       initialValues={initialValues}
       validationSchema={validationSchema}
       onSubmit={(values) => {

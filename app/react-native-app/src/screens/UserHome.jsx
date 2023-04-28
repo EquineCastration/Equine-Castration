@@ -3,9 +3,14 @@ import { SafeAreaView, View, Text } from "react-native";
 import { colors, font } from "style/style";
 import { resetInitialConsultationStore } from "store/InitialConsultationStore";
 import { useUser } from "contexts/User";
+import { useEffect } from "react";
+import { useIsFocused } from "@react-navigation/native";
 
 export const UserHome = ({ navigation }) => {
-  // should be loaded as screen to get navigation prop
+  const isFocused = useIsFocused(); // is screen focussed
+  useEffect(() => {
+    isFocused && resetInitialConsultationStore();
+  }, [isFocused]);
 
   const { user } = useUser();
 
@@ -84,12 +89,10 @@ export const UserHome = ({ navigation }) => {
                 bgColor={option.bgColor}
                 onPress={
                   option.navigate &&
-                  (() => {
+                  (() =>
                     navigation.navigate(option.navigateToParent, {
                       screen: option.navigate,
-                    });
-                    resetInitialConsultationStore(); // clear existing form data
-                  })
+                    }))
                 }
               />
             );

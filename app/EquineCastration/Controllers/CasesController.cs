@@ -84,10 +84,16 @@ public class CasesController : ControllerBase
     try
     {
       if (User.HasClaim(CustomClaimTypes.SitePermission, SitePermissionClaims.DeleteAllCases))
-        await _cases.Delete(id); 
-      
+      {
+        await _cases.Delete(id);
+        return NoContent();
+      }
+
       if (User.HasClaim(CustomClaimTypes.SitePermission, SitePermissionClaims.DeleteOwnCases))
+      {
         await _cases.DeleteAuthorCase(id, _users.GetUserId(User));
+        return NoContent();
+      }
       
       return BadRequest();
     }
