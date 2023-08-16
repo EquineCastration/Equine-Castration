@@ -11,8 +11,17 @@ import { InitialConsultationStepSix } from "screens/InitialConsultation/InitialC
 import { Confirmation } from "screens/InitialConsultation/Confirmation";
 import { headerOptions } from "./HomeStack";
 import { Ionicons } from "@expo/vector-icons";
+import { useIsFocused } from "@react-navigation/native";
+import { useEffect } from "react";
+import { resetInitialConsultationStore } from "store/InitialConsultationStore";
 
 export const InitialConsultationStack = ({ navigation }) => {
+  const isFocused = useIsFocused();
+
+  useEffect(() => {
+    !isFocused && resetInitialConsultationStore(); // reset store when user exits the stack
+  }, [isFocused]);
+
   return (
     <Stack.Navigator screenOptions={{ headerShown: false }}>
       <Stack.Group

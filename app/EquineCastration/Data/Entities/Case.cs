@@ -7,7 +7,7 @@ public class Case
   public int Id { get; set; }
   public string HorseName { get; set; } = string.Empty;
   public string ClientSurname { get; set; } = string.Empty;
-  public DateTime DateOfCastration { get; set; }
+  public DateTimeOffset DateOfCastration { get; set; }
   public bool IsLessThanTwo { get; set; }
   public int AgeAboveTwo { get; set; }
   public int Weight { get; set; }
