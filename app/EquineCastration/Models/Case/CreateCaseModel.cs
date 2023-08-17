@@ -37,7 +37,7 @@ public record CreateCaseModel
     {
       HorseName = HorseName,
       ClientSurname = ClientSurname,
-      DateOfCastration = DateTime.ParseExact(DateOfCastration, "dd/MM/yyyy", CultureInfo.InvariantCulture).ToUniversalTime(),
+      DateOfCastration = DateTimeOffset.ParseExact(DateOfCastration, "dd/MM/yyyy", CultureInfo.InvariantCulture).ToUniversalTime(),
       IsLessThanTwo = IsLessThanTwo,
       AgeAboveTwo = AgeAboveTwo,
       Weight = Weight,
