@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { ScrollView, View, Text } from "react-native";
 
 import { Formik } from "formik";
-import { boolean, object, string } from "yup";
+import { boolean, number, object, string } from "yup";
 
 import { accountRegistration } from "constants/account-registration";
 import {
@@ -21,6 +21,7 @@ import { validationSchema as pwdSchema } from "components/PasswordField";
 import { EmailField } from "components/EmailField";
 import { PasswordField } from "components/PasswordField";
 import { CheckBoxField } from "components/CheckBoxField";
+import { useUser } from "contexts/User";
 
 const Layout = ({ children, onSubmit, current, steptitle, total = 3 }) => {
   return (
@@ -151,6 +152,10 @@ export const RegistrationStepTwo = ({ navigation }) => {
         initialValues={initialValues}
         validationSchema={object().shape({
           institution: string().required("Name required"),
+          yearsQualified: number()
+            .typeError("Years qualified must be a number")
+            .positive("Years qualified must be positive")
+            .required("Years qualified required"),
         })}
         onSubmit={async (values) => {
           AccountRegistrationStore.update((s) => {
@@ -198,6 +203,7 @@ export const RegistrationStepTwo = ({ navigation }) => {
 export const RegistrationStepGDPR = ({ navigation }) => {
   const [feedback, setFeedback] = useState();
   const keysArr = ["gdprConfirmation", "isVeterinarian"];
+  const { signIn } = useUser();
 
   useEffect(() => {
     feedback &&
@@ -220,17 +226,14 @@ export const RegistrationStepGDPR = ({ navigation }) => {
 
   const handleRegistrationSubmit = async () => {
     try {
-      await register(data);
+      const res = await register(data);
       setFeedback({
         status: "success",
         message: "Thank you for registering!",
       });
 
       resetAccountRegistrationStore(); // reset registration store
-      navigation.reset({
-        index: 0,
-        routes: [{ name: "AccountLogin" }], // reset to Login screens
-      });
+      signIn(res?.data); // sign in user
     } catch (e) {
       const error = await e.response;
       switch (error?.status) {
