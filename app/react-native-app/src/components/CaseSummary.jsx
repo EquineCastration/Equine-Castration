@@ -12,15 +12,18 @@ export const CaseSummary = ({ data }) => {
         marginVertical: 15,
         paddingHorizontal: 15,
         borderRadius: 10,
-        backgroundColor: colors.primary[75],
+        backgroundColor: colors.ui.bg,
       }}
     >
       {Object.keys(data).map((item, index) => (
         <View
           key={index}
           style={{
-            marginVertical: 10,
+            marginVertical: 2,
+            paddingVertical: 10,
             flexDirection: "row",
+            borderBottomWidth: 1,
+            borderColor: colors.primary[100],
           }}
         >
           <Text
@@ -32,11 +35,10 @@ export const CaseSummary = ({ data }) => {
           <Text
             style={{
               fontWeight: 500,
-              fontSize: font.size.sm,
             }}
           >
             {Array.isArray(data[item])
-              ? `[${data[item].join(", ")}]`
+              ? `${data[item].join(", ")}`
               : data[item]}
           </Text>
         </View>
