@@ -27,7 +27,7 @@ export const CaseSummary = ({ data }) => {
     >
       {Object.keys(data).map(
         (item, index) =>
-          data[item].toString() && // if not empty string &&
+          data[item]?.toString() && // if not empty string &&
           data[item] !== 0 && ( // if not 0
             <View
               key={index}

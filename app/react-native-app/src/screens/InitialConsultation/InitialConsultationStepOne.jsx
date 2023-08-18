@@ -91,10 +91,16 @@ const agePickerItems = (min, max) => {
   return item;
 };
 
-export const InitialConsultationStepOne = ({ navigation }) => {
+export const InitialConsultationStepOne = ({ navigation, route }) => {
+  const { editData } = route.params;
+
   useEffect(() => {
-    // queryBase.deleteTable("InitialConsultation");
-    queryBase.createTable("InitialConsultation", ICStoreInitialState); // Create table if not exists
+    editData &&
+      Object.keys(editData).forEach((key, index) => {
+        InitialConsultationStore.update((s) => {
+          s[key] = editData[key];
+        });
+      });
   }, []);
 
   const keysArr = [

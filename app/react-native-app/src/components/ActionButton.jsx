@@ -6,6 +6,7 @@ export const ActionButton = ({
   iconName,
   title = "Action button",
   color = colors.ui.btnBg,
+  onPress,
   ...props
 }) => (
   <TouchableOpacity
@@ -19,6 +20,7 @@ export const ActionButton = ({
       width: "20%",
       ...props,
     }}
+    onPress={onPress}
   >
     <Ionicons name={iconName} size={18} color={color} />
     <Text

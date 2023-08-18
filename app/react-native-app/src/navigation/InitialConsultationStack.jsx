@@ -15,7 +15,8 @@ import { useIsFocused } from "@react-navigation/native";
 import { useEffect } from "react";
 import { resetInitialConsultationStore } from "store/InitialConsultationStore";
 
-export const InitialConsultationStack = ({ navigation }) => {
+export const InitialConsultationStack = ({ navigation, route }) => {
+  const editData = route.params?.editData ?? undefined; // are we editing a case?
   const isFocused = useIsFocused();
 
   useEffect(() => {
@@ -28,8 +29,12 @@ export const InitialConsultationStack = ({ navigation }) => {
         screenOptions={{
           headerBackground: () => (
             <ScreenHeader
-              title="Initial Consultation"
-              fontSize={font.size["2xl"]}
+              title={
+                editData
+                  ? `Editing case of ${route.params.editData.horseName}`
+                  : "Initial Consultation"
+              }
+              fontSize={editData ? font.size["xl"] : font.size["2xl"]}
             />
           ),
           ...headerOptions,
@@ -38,13 +43,18 @@ export const InitialConsultationStack = ({ navigation }) => {
         <Stack.Screen
           name="InitialConsultationStepOne"
           component={InitialConsultationStepOne}
+          initialParams={{ editData }}
           options={{
             headerLeft: () => (
               <Ionicons
-                name="menu-outline"
+                name={editData ? "arrow-back-outline" : "menu-outline"}
                 size={24}
                 color={colors.light}
-                onPress={() => navigation.openDrawer()}
+                onPress={() =>
+                  editData
+                    ? (resetInitialConsultationStore(), navigation.goBack())
+                    : navigation.openDrawer()
+                }
               />
             ),
           }}

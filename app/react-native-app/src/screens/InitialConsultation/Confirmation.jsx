@@ -13,7 +13,7 @@ export const Confirmation = ({ navigation }) => {
   const [feedback, setFeedback] = useState();
   const [isLoading, setIsLoading] = useState(false);
   const {
-    case: { create },
+    case: { create, edit },
   } = useBackendApi();
 
   useEffect(() => {
@@ -24,18 +24,20 @@ export const Confirmation = ({ navigation }) => {
       });
   }, [feedback]);
 
-  const handleInitialConsultationSubmit = async (navigation, data) => {
+  const handleInitialConsultationSubmit = async (data) => {
     setIsLoading(true);
     try {
-      await create(data);
+      data.id
+        ? await edit(data, data.id) // edit case if id exists
+        : await create(data); // create case if id does not exist
       setFeedback({
         status: "success",
-        message: "Case created successfully!",
+        message: `Case ${data.id ? "updated" : "created"} successfully!`,
       });
       InitialConsultationStore.replace(ICStoreInitialState);
       navigation.reset({
         index: 0,
-        routes: [{ name: "Home" }],
+        routes: [{ name: data.id ? "CaseList" : "UserHome" }],
       });
     } catch (e) {
       const error = await e.response;
@@ -64,9 +66,11 @@ export const Confirmation = ({ navigation }) => {
 
   return (
     <>
-      {isLoading ? <Spinner text="Creating new case." /> : null}
+      {isLoading ? (
+        <Spinner text={data.id ? "Updating " : "Creating new case."} />
+      ) : null}
       <Layout
-        onSubmit={() => handleInitialConsultationSubmit(navigation, data)}
+        onSubmit={() => handleInitialConsultationSubmit(data)}
         current={7}
         title="Confirm"
       >
