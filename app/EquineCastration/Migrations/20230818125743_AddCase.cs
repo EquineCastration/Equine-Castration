@@ -19,7 +19,7 @@ namespace EquineCastration.Migrations
                         .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
                     HorseName = table.Column<string>(type: "text", nullable: false),
                     ClientSurname = table.Column<string>(type: "text", nullable: false),
-                    DateOfCastration = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
+                    DateOfCastration = table.Column<DateTimeOffset>(type: "timestamp with time zone", nullable: false),
                     IsLessThanTwo = table.Column<bool>(type: "boolean", nullable: false),
                     AgeAboveTwo = table.Column<int>(type: "integer", nullable: false),
                     Weight = table.Column<int>(type: "integer", nullable: false),
