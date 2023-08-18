@@ -8,8 +8,11 @@ import { useBackendApi } from "contexts/BackendApi";
 import { useEffect, useState } from "react";
 import { Toast } from "react-native-toast-message/lib/src/Toast";
 import { Spinner } from "components/Spinner";
+import { Alert } from "react-native";
 
 export const Confirmation = ({ navigation }) => {
+  const data = InitialConsultationStore.useState();
+  const isEditing = data.id ?? false;
   const [feedback, setFeedback] = useState();
   const [isLoading, setIsLoading] = useState(false);
   const {
@@ -24,20 +27,33 @@ export const Confirmation = ({ navigation }) => {
       });
   }, [feedback]);
 
-  const handleInitialConsultationSubmit = async (data) => {
+  const confirmAlert = () =>
+    Alert.alert(
+      `Confirm ${isEditing ? "Edit" : "Create"}`,
+      `Would you like to ${isEditing ? "edit a" : "create a new"} case ?`,
+      [
+        {
+          text: "Cancel",
+          style: "cancel", // only applicable to ios
+        },
+        { text: "OK", onPress: () => handleInitialConsultationSubmit() },
+      ]
+    );
+
+  const handleInitialConsultationSubmit = async () => {
     setIsLoading(true);
     try {
-      data.id
+      isEditing
         ? await edit(data, data.id) // edit case if id exists
         : await create(data); // create case if id does not exist
       setFeedback({
         status: "success",
-        message: `Case ${data.id ? "updated" : "created"} successfully!`,
+        message: `Case ${isEditing ? "updated" : "created"} successfully!`,
       });
       InitialConsultationStore.replace(ICStoreInitialState);
       navigation.reset({
         index: 0,
-        routes: [{ name: data.id ? "CaseList" : "UserHome" }],
+        routes: [{ name: isEditing ? "CaseList" : "Home" }],
       });
     } catch (e) {
       const error = await e.response;
@@ -62,18 +78,12 @@ export const Confirmation = ({ navigation }) => {
     setIsLoading(false);
   };
 
-  const data = InitialConsultationStore.useState();
-
   return (
     <>
       {isLoading ? (
-        <Spinner text={data.id ? "Updating " : "Creating new case."} />
+        <Spinner text={isEditing ? "Updating " : "Creating new case."} />
       ) : null}
-      <Layout
-        onSubmit={() => handleInitialConsultationSubmit(data)}
-        current={7}
-        title="Confirm"
-      >
+      <Layout onSubmit={confirmAlert} current={7} title="Confirm">
         <CaseSummary data={data} />
       </Layout>
     </>
