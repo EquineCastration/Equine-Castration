@@ -1,6 +1,6 @@
 import { DefaultLayout } from "layout/DefaultLayout";
 import { CaseSummary } from "components/CaseSummary";
-import { ScrollView, View } from "react-native";
+import { ScrollView, View, Alert } from "react-native";
 import { colors } from "style/style";
 import { useUser } from "contexts/User";
 import { permissions } from "constants/site-permissions";
@@ -26,6 +26,19 @@ export const CaseDetail = ({ navigation, route }) => {
         text1: feedback.message,
       });
   }, [feedback]);
+
+  const deleteAlert = () =>
+    Alert.alert(
+      "Delete confirmation",
+      "Are you sure you want to delete the case?",
+      [
+        {
+          text: "Cancel",
+          style: "cancel", // only applicable to ios
+        },
+        { text: "OK", onPress: () => handleDelete(caseData.id) },
+      ]
+    );
 
   const handleDelete = async (caseId) => {
     setIsDeleting(true);
@@ -102,7 +115,7 @@ export const CaseDetail = ({ navigation, route }) => {
               title="Delete"
               iconName="trash-outline"
               color={colors.error}
-              onPress={() => handleDelete(caseData.id)}
+              onPress={deleteAlert}
             />
           )}
         </View>

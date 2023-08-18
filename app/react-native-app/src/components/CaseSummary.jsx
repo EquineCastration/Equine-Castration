@@ -18,10 +18,9 @@ export const CaseSummary = ({ data }) => {
     <View
       style={{
         flex: 1,
-        marginVertical: 15,
+        marginVertical: 5,
         paddingHorizontal: 15,
         borderRadius: 10,
-        backgroundColor: colors.primary[75],
       }}
     >
       {Object.keys(data).map(
@@ -31,7 +30,7 @@ export const CaseSummary = ({ data }) => {
             <View
               key={index}
               style={{
-                marginVertical: 2,
+                marginVertical: 5,
                 paddingVertical: 10,
                 flexDirection: "row",
                 borderBottomWidth: 1,
