@@ -13,7 +13,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace EquineCastration.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20230426161711_AddCase")]
+    [Migration("20230818125743_AddCase")]
     partial class AddCase
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -47,7 +47,7 @@ namespace EquineCastration.Migrations
                         .IsRequired()
                         .HasColumnType("text");
 
-                    b.Property<DateTime>("DateOfCastration")
+                    b.Property<DateTimeOffset>("DateOfCastration")
                         .HasColumnType("timestamp with time zone");
 
                     b.Property<List<string>>("Environment")

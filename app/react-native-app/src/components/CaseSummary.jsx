@@ -21,8 +21,7 @@ export const CaseSummary = ({ data }) => {
         marginVertical: 15,
         paddingHorizontal: 15,
         borderRadius: 10,
-        backgroundColor: colors.ui.bg,
-        width: "100%",
+        backgroundColor: colors.primary[75],
       }}
     >
       {Object.keys(data).map(
