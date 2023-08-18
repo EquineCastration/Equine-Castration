@@ -45,7 +45,7 @@ namespace EquineCastration.Migrations
                         .IsRequired()
                         .HasColumnType("text");
 
-                    b.Property<DateTime>("DateOfCastration")
+                    b.Property<DateTimeOffset>("DateOfCastration")
                         .HasColumnType("timestamp with time zone");
 
                     b.Property<List<string>>("Environment")

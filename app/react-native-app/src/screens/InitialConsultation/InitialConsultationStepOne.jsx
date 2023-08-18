@@ -117,6 +117,7 @@ export const InitialConsultationStepOne = ({ navigation }) => {
 
   return (
     <Formik
+      enableReinitialize
       initialValues={initialValues}
       validationSchema={validationSchema}
       onSubmit={(values) => {
