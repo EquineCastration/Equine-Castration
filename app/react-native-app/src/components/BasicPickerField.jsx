@@ -19,7 +19,6 @@ export const BasicPickerField = ({
     <View
       style={{
         marginVertical: 8,
-        backgroundColor: colors.ui.bg,
         paddingHorizontal: 8,
         borderRadius: 8,
       }}
@@ -28,7 +27,7 @@ export const BasicPickerField = ({
         <Text
           style={{
             marginBottom: 5,
-            fontSize: font.size.normal,
+            fontSize: font.size.md,
             color: labelColor,
           }}
         >
@@ -60,7 +59,7 @@ const fieldStyle = {
   borderWidth: 1,
   borderRadius: 5,
   borderColor: colors.ui.border,
-  fontSize: font.size.normal,
+  fontSize: font.size.md,
   height: 115,
   flexWrap: "wrap",
 };

@@ -24,6 +24,7 @@ public record CreateCaseModel
   public List<string> Environment { get; set; } = new();
   public string EnvironmentOther { get; set; } = string.Empty;
   public string Location { get; set; } = string.Empty;
+  public string LocationOther { get; set; } = string.Empty;
   public string PatientCleanliness { get; set; } = string.Empty;
   public string PatientCleanlinessOther { get; set; } = string.Empty;
   public string EnvironmentCleanliness { get; set; } = string.Empty;
@@ -54,6 +55,7 @@ public record CreateCaseModel
       Environment = Environment,
       EnvironmentOther = EnvironmentOther,
       Location = Location,
+      LocationOther = LocationOther,
       PatientCleanliness = PatientCleanliness,
       PatientCleanlinessOther = PatientCleanlinessOther,
       EnvironmentCleanliness = EnvironmentCleanliness,

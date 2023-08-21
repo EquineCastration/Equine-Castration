@@ -8,7 +8,6 @@ export const InputField = ({
   name,
   label,
   labelAlign = "left",
-  bgColor = colors.ui.bg,
   placeholder = label,
   labelColor = colors.primary[700],
   inputBorderColor = colors.primary[200],
@@ -24,7 +23,6 @@ export const InputField = ({
     <View
       style={{
         marginVertical: 8,
-        backgroundColor: bgColor,
         paddingHorizontal: 8,
         borderRadius: 8,
       }}
@@ -34,7 +32,7 @@ export const InputField = ({
           style={{
             textAlign: labelAlign,
             marginBottom: 5,
-            fontSize: font.size.normal,
+            fontSize: font.size.md,
             color: labelColor,
           }}
         >
@@ -53,12 +51,13 @@ export const InputField = ({
             style={{
               flex: 1,
               backgroundColor: colors.light,
-              borderWidth: 1,
-              borderRadius: 5,
-              padding: 5,
-              borderColor: isFocused
+              borderBottomWidth: 1,
+              paddingHorizontal: 5,
+              paddingVertical: 12,
+              borderBottomColor: isFocused
                 ? inputActiveBorderColor
                 : inputBorderColor,
+              fontSize: font.size.normal,
             }}
             onChangeText={field.onChange(field.name)}
             value={field.value.toString()}

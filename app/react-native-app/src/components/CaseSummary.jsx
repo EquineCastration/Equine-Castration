@@ -54,6 +54,7 @@ export const CaseSummary = ({ data }) => {
                   fontWeight: 500,
                   flexWrap: "wrap",
                   flex: 1,
+                  fontSize: font.size.normal,
                 }}
               >
                 {formatValue(item)}

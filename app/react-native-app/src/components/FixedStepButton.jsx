@@ -21,7 +21,7 @@ export const FixedStepButton = ({
       <BasicTouchableOpacity
         onPress={onPress}
         title={title}
-        paddingVertical={3}
+        paddingVertical={7}
       />
       <ProgressBar total={total} current={current} color={colors.ui.btnBg} />
     </View>

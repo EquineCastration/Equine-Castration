@@ -24,7 +24,6 @@ export const DatePickerField = ({
     <TouchableOpacity
       style={{
         marginVertical: 8,
-        backgroundColor: colors.ui.bg,
         paddingHorizontal: 8,
         borderRadius: 8,
       }}
@@ -34,7 +33,7 @@ export const DatePickerField = ({
         <Text
           style={{
             marginVertical: 2,
-            fontSize: font.size.normal,
+            fontSize: font.size.md,
             color: labelColor,
           }}
         >
@@ -46,11 +45,12 @@ export const DatePickerField = ({
           value={field.value}
           style={{
             backgroundColor: colors.light,
-            borderWidth: 1,
+            borderBottomWidth: 1,
             borderRadius: 5,
-            padding: 5,
-            borderColor: inputBorderColor,
-            marginVertical: 10,
+            paddingHorizontal: 5,
+            paddingVertical: 12,
+            borderBottomColor: inputBorderColor,
+            fontSize: font.size.normal,
           }}
         />
         <DateTimePickerModal
