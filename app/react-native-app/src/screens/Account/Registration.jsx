@@ -103,6 +103,11 @@ export const RegistrationStepOne = ({ navigation }) => {
                 gap: 20,
               }}
             >
+              <CheckBoxField
+                label={fields.isVeterinarian.label}
+                name="isVeterinarian"
+                bgColor={colors.light}
+              />
               <InputField
                 label={fields.fullName.label}
                 name="fullName"
@@ -119,11 +124,6 @@ export const RegistrationStepOne = ({ navigation }) => {
                 label={fields.password.label}
                 name="password"
                 labelAlign="center"
-                bgColor={colors.light}
-              />
-              <CheckBoxField
-                label={fields.isVeterinarian.label}
-                name="isVeterinarian"
                 bgColor={colors.light}
               />
             </View>

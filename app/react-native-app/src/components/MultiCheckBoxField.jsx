@@ -28,7 +28,6 @@ export const MultiCheckBoxField = ({
     <View
       style={{
         marginVertical: 8,
-        backgroundColor: colors.ui.bg,
         paddingHorizontal: 8,
         borderRadius: 8,
       }}
@@ -37,7 +36,7 @@ export const MultiCheckBoxField = ({
         <Text
           style={{
             marginBottom: 5,
-            fontSize: font.size.normal,
+            fontSize: font.size.md,
             color: labelColor,
           }}
         >
@@ -63,21 +62,21 @@ export const MultiCheckBoxField = ({
                 style={{
                   flexDirection: "row",
                   alignItems: "center",
-                  marginHorizontal: 10,
-                  marginVertical: 2,
+                  margin: 12,
                 }}
               >
                 <Checkbox
-                  style={{ width: 15, height: 15 }}
+                  style={{ width: 22, height: 22 }}
                   value={selected.includes(item)}
                   onValueChange={() => handleChange(item)}
                 />
                 <Text
                   style={{
                     marginVertical: 2,
-                    fontSize: font.size.sm,
+                    fontSize: font.size.md,
                     color: labelColor,
                     marginLeft: 7,
+                    fontWeight: 300,
                   }}
                 >
                   {item}

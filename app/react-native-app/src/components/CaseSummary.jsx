@@ -18,21 +18,19 @@ export const CaseSummary = ({ data }) => {
     <View
       style={{
         flex: 1,
-        marginVertical: 15,
+        marginVertical: 5,
         paddingHorizontal: 15,
         borderRadius: 10,
-        backgroundColor: colors.ui.bg,
-        width: "100%",
       }}
     >
       {Object.keys(data).map(
         (item, index) =>
-          data[item].toString() && // if not empty string &&
+          data[item]?.toString() && // if not empty string &&
           data[item] !== 0 && ( // if not 0
             <View
               key={index}
               style={{
-                marginVertical: 2,
+                marginVertical: 5,
                 paddingVertical: 10,
                 flexDirection: "row",
                 borderBottomWidth: 1,
@@ -56,6 +54,7 @@ export const CaseSummary = ({ data }) => {
                   fontWeight: 500,
                   flexWrap: "wrap",
                   flex: 1,
+                  fontSize: font.size.normal,
                 }}
               >
                 {formatValue(item)}

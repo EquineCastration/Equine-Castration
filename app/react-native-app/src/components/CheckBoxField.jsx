@@ -8,7 +8,7 @@ export const CheckBoxField = ({
   label,
   labelColor = colors.primary[700],
   disabled = false,
-  bgColor = colors.ui.bg,
+  borderColor = colors.primary[200],
   ...props
 }) => {
   const [field, meta, helpers] = useField(name);
@@ -21,9 +21,10 @@ export const CheckBoxField = ({
     <View
       style={{
         marginVertical: 8,
-        backgroundColor: bgColor,
-        paddingHorizontal: 8,
+        padding: 8,
         borderRadius: 8,
+        borderBottomWidth: 1,
+        borderBottomColor: borderColor,
       }}
     >
       <View
@@ -35,7 +36,7 @@ export const CheckBoxField = ({
       >
         <Checkbox
           disabled={disabled}
-          style={{ width: 18, height: 18 }}
+          style={{ width: 22, height: 22 }}
           value={field.value}
           onValueChange={handleChange}
           {...props}
@@ -43,7 +44,7 @@ export const CheckBoxField = ({
         <Text
           style={{
             marginVertical: 2,
-            fontSize: font.size["normal"],
+            fontSize: font.size.md,
             color: labelColor,
             marginLeft: 7,
           }}
