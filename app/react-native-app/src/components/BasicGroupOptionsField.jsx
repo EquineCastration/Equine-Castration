@@ -10,7 +10,7 @@ export const BasicGroupOptionsField = ({
   borderColor = colors.primary[200],
   selectecBgColor = colors.secondary[700],
   selectedColor = colors.light,
-  paddingVertical = 3,
+  paddingVertical = 10,
 }) => {
   const [field, meta, helpers] = useField(name);
 
@@ -29,16 +29,17 @@ export const BasicGroupOptionsField = ({
     <View
       style={{
         marginVertical: 8,
-        backgroundColor: colors.ui.bg,
         paddingHorizontal: 8,
         borderRadius: 8,
+        borderBottomWidth: 1,
+        borderBottomColor: borderColor,
       }}
     >
       <View style={{ marginVertical: 10 }}>
         <Text
           style={{
             marginBottom: 5,
-            fontSize: font.size.normal,
+            fontSize: font.size.md,
             color: labelColor,
           }}
         >
@@ -47,7 +48,6 @@ export const BasicGroupOptionsField = ({
         <View
           style={{
             flexDirection: "row",
-            justifyContent: "center",
             alignItems: "center",
             flexWrap: "wrap",
           }}
@@ -61,17 +61,17 @@ export const BasicGroupOptionsField = ({
                   justifyContent: "center",
                   alignItems: "center",
                   paddingVertical: paddingVertical,
+                  paddingHorizontal: 5,
                   backgroundColor:
                     field.value === option ? selectecBgColor : "transparent", // if value matches with option then apply highlight
-                  marginHorizontal: 4,
-                  marginVertical: 4,
+                  margin: 10,
                   ...style.border,
                 }}
                 onPress={() => handleValueChange(option)}
               >
                 <Text
                   style={{
-                    fontSize: font.size.sm,
+                    fontSize: font.size.normal,
                     fontWeight: 400,
                     color: field.value === option ? selectedColor : labelColor, // if value matches with option then apply highlight
                     marginHorizontal: 10,

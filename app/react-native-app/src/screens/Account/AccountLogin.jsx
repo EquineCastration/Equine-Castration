@@ -113,7 +113,7 @@ export const AccountLogin = ({ navigation }) => {
                 <BasicTouchableOpacity
                   title="Sign In"
                   btnWidth="60%"
-                  paddingVertical={5}
+                  paddingVertical={10}
                   onPress={() => handleSubmit()}
                 />
               </View>
