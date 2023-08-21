@@ -67,12 +67,15 @@ public class CaseService
   public async Task<CaseModel> Edit(int caseId, CreateCaseModel caseUpdate)
   {
     var entity = await _db.Cases
-                   .AsNoTracking()
                    .Include(x => x.Author)
                    .Where(x => x.Id == caseId)
                    .SingleOrDefaultAsync()
                  ?? throw new KeyNotFoundException();
-    _db.Entry(entity).CurrentValues.SetValues(caseUpdate);
+
+    var update = caseUpdate.ToEntity(entity.Author); // create update entity. For now, we keep the author the same
+    update.Id = entity.Id; // set id to id of original entity
+    _db.Entry(entity).CurrentValues.SetValues(update); 
+
     await _db.SaveChangesAsync();
     return new CaseModel(entity);
   }
@@ -80,12 +83,15 @@ public class CaseService
   public async Task<CaseModel> EditAuthorCase(int caseId, CreateCaseModel caseUpdate, string userId)
   {
     var entity = await _db.Cases
-                   .AsNoTracking()
                    .Include(x => x.Author)
                    .Where(x => x.Id == caseId && x.Author.Id==userId)
                    .SingleOrDefaultAsync()
                  ?? throw new KeyNotFoundException();
-    _db.Entry(entity).CurrentValues.SetValues(caseUpdate);
+
+    var update = caseUpdate.ToEntity(entity.Author);
+    update.Id = entity.Id;
+    _db.Entry(entity).CurrentValues.SetValues(update); 
+
     await _db.SaveChangesAsync();
     return new CaseModel(entity);
   }

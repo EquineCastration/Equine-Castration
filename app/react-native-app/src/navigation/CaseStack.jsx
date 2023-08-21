@@ -5,6 +5,7 @@ import { CaseDetail } from "screens/CaseDetail";
 import { CaseList } from "screens/CaseList";
 import { headerOptions } from "./HomeStack";
 import { Ionicons } from "@expo/vector-icons";
+import { InitialConsultationStack } from "./InitialConsultationStack";
 
 export const CaseStack = ({ navigation }) => {
   return (
@@ -40,6 +41,10 @@ export const CaseStack = ({ navigation }) => {
           ),
           ...headerOptions,
         })}
+      />
+      <Stack.Screen
+        name="EditInitialConsultation"
+        component={InitialConsultationStack}
       />
     </Stack.Navigator>
   );
