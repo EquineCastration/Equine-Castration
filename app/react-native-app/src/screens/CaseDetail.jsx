@@ -1,14 +1,14 @@
 import { DefaultLayout } from "layout/DefaultLayout";
 import { CaseSummary } from "components/CaseSummary";
+import { ActionButton } from "components/ActionButton";
+import { Spinner } from "components/Spinner";
 import { ScrollView, View, Alert } from "react-native";
+import { useState, useEffect } from "react";
 import { colors } from "style/style";
 import { useUser } from "contexts/User";
-import { permissions } from "constants/site-permissions";
 import { useBackendApi } from "contexts/BackendApi";
-import { ActionButton } from "components/ActionButton";
+import { permissions } from "constants/site-permissions";
 import { Toast } from "react-native-toast-message/lib/src/Toast";
-import { useState, useEffect } from "react";
-import { Spinner } from "components/Spinner";
 
 export const CaseDetail = ({ navigation, route }) => {
   const { caseData } = route.params;
@@ -62,6 +62,7 @@ export const CaseDetail = ({ navigation, route }) => {
     setIsDeleting(false);
   };
 
+  // permissions
   const canDelete = user.permissions.some((permission) =>
     [permissions.DeleteAllCases, permissions.DeleteOwnCases].includes(
       permission

@@ -16,7 +16,7 @@ import { useEffect } from "react";
 import { resetInitialConsultationStore } from "store/InitialConsultationStore";
 
 export const InitialConsultationStack = ({ navigation, route }) => {
-  const editData = route.params?.editData ?? undefined; // are we editing a case?
+  const editData = route.params?.editData ?? undefined; // do we have data for editing ?
   const isFocused = useIsFocused();
 
   useEffect(() => {
@@ -31,7 +31,7 @@ export const InitialConsultationStack = ({ navigation, route }) => {
             <ScreenHeader
               title={
                 editData
-                  ? `Editing case of ${route.params.editData.horseName}`
+                  ? `Editing case of ${route.params.editData.horseName}` // horse name as title
                   : "Initial Consultation"
               }
               fontSize={editData ? font.size["xl"] : font.size["2xl"]}
