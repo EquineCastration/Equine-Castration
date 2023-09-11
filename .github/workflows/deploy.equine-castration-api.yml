@@ -1,0 +1,76 @@
+name: Build and deploy Equine Castration api
+
+on:
+  workflow_dispatch:
+
+env:
+  CI_build-config: release
+  CI_dotnet-version: 6.0.x
+  CI_project: ./app/EquineCastration/EquineCastration.csproj
+  CI_dotnet-artifact: equine-castration-api
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v2
+      - uses: actions/setup-dotnet@v1
+        with:
+          dotnet-version: ${{ env.CI_dotnet-version }}
+
+      - name: dotnet build
+        run: >-
+          dotnet build
+          ${{ env.CI_project }}
+          -c ${{ env.CI_build-config }}
+
+      - name: dotnet publish
+        run: >-
+          dotnet publish
+          -c ${{ env.CI_build-config }}
+          -o ${{ env.DOTNET_ROOT }}/app
+
+      - name: Upload .net api artifact for deployment job
+        uses: actions/upload-artifact@v2
+        with:
+          name: ${{ env.CI_dotnet-artifact }}
+          path: ${{ env.DOTNET_ROOT }}/app
+
+      - name: Restore repo dotnet tools
+        run: dotnet tool restore
+
+      - name: Generate EF migration scripts
+        run: >-
+          dotnet ef migrations script
+          -o ${{ env.DOTNET_ROOT}}/sql/migration-script.sql
+          --project ${{ env.CI_project }}
+          --idempotent
+          --context ApplicationDbContext
+
+      - name: Apply migrations script
+        uses: Azure/sql-action@v2
+        with:
+          connection-string: ${{ secrets.DB_CONNECTION_STRING }}
+          path: ${{env.DOTNET_ROOT}}/sql/migration-script.sql
+
+  deploy:
+    runs-on: ubuntu-latest
+    needs: build
+    environment:
+      name: "equine-castration/dev"
+      url: ${{ steps.deploy-to-webapp.outputs.webapp-url }}
+
+    steps:
+      - name: Download artifact from build job
+        uses: actions/download-artifact@v2
+        with:
+          name: ${{ env.CI_dotnet-artifact }}
+
+      - name: Deploy to Azure Web App
+        id: deploy-to-webapp
+        uses: azure/webapps-deploy@v2
+        with:
+          app-name: "dev-equinecastration"
+          publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE }}
+          package: .
