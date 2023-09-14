@@ -4,8 +4,6 @@ using EquineCastration.Extensions;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using EquineCastration.Data;
-using EquineCastration.Data.Entities;
-
 using EquineCastration.Config;
 using EquineCastration.Services;
 using EquineCastration.Constants;
@@ -55,7 +53,7 @@ b.Services
   .AddAuthorization(AuthConfiguration.AuthOptions)
   .Configure<RegistrationOptions>(b.Configuration.GetSection("Registration"))
   .Configure<UserAccountOptions>(b.Configuration.GetSection("UserAccounts"))
-
+  
   .AddEmailSender(b.Configuration)
 
   .AddTransient<UserService>()
@@ -64,6 +62,9 @@ b.Services
   .AddTransient<CaseService>();
 
 b.Services.AddSwaggerGen();
+
+b.Configuration
+  .GetSection("AppRequestHeader").Bind(Configs.AppRequestHeaderOptions);
 
 #endregion
 
@@ -84,6 +85,7 @@ using (var scope = app.Services.CreateScope())
   var config = scope.ServiceProvider
     .GetRequiredService<IConfiguration>();
 
+  
   var seeder = new DataSeeder(db, roles, registrationRule);
 
   await seeder.SeedRoles();
