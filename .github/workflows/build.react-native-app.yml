@@ -14,6 +14,8 @@ env:
   CI_package: react-native-app
   Platform: android
   Profile: preview
+  API_URL: ${{ secrets.API_URL }}
+  EQUINE_CASTRATION_IDENTIFIER: ${{ secrets.EQUINE_CASTRATION_IDENTIFIER }}
 
 jobs:
   build:
@@ -47,6 +49,8 @@ jobs:
           mkdir -p android/keystores
           echo ${{ secrets.RELEASE_KEYSTORE_BASE64 }} | base64 -d > android/keystores/release.keystore
           echo ${{ secrets.CREDENTIALS_JSON_BASE64 }} | base64 -d > credentials.json
+          echo "LOCAL_PUBLIC_API=${API_URL}" >> .env
+          echo "EQUINE_CASTRATION_IDENTIFIER=${EQUINE_CASTRATION_IDENTIFIER}" >> .env
           eas build --local \
             --non-interactive \
             --output=./app-preview-build.apk \

@@ -65,6 +65,8 @@ b.Services
 
 b.Services.AddSwaggerGen();
 
+b.Configuration
+  .GetSection("AppRequestHeader").Bind(Configs.AppRequestHeaderOptions);
 #endregion
 
 var app = b.Build();
