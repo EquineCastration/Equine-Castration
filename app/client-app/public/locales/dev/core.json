@@ -1,0 +1,99 @@
+{
+  "name": "English (Dev)",
+  "feedback": {
+    "saved": "Saved",
+    "loading": "Loading",
+    "error": "An unknown error has occurred.",
+    "error_title": "Something went wrong",
+    "invalidForm": "There was an issue with your form submission. Please check for errors and try again.",
+    "sendEmailFailed": "An error occurred trying to send an email.",
+    "error_404": "The requested page could not be found.",
+    "error_403": "You don't have access to this page.",
+    "emptyState": "Looks like there's nothing here!",
+    "account": {
+      "resendConfirm_title": "Request a new confirmation link",
+      "resendConfirm_link": "Send me a new confirmation link via email",
+      "invalidResendLink": "Your resend link is invalid. Please try to get a new one, or contact support.",
+      "unconfirmed": "Your account email address has not been confirmed."
+    }
+  },
+  "fields": {
+    "email": "Email Address",
+    "email_placeholder": "name@example.com",
+    "email_checkreminder": "Please check to ensure your email address is correct.",
+    "password": "Password",
+    "proposal": {
+      "title": "Proposal Title"
+    }
+  },
+  "validation": {
+    "fullname_required": "Please enter your name.",
+    "email_required": "Please enter your email address.",
+    "email_valid": "Please enter a valid email address.",
+    "password_required": "Please enter a password.",
+    "password_minLength": "Passwords must be at least {{minLength}} characters.",
+    "password_digit": "Passwords must have at least one digit ('0' - '9').",
+    "password_uppercase": "Passwords must have at least one uppercase character ('A' - 'Z').",
+    "password_lowercase": "Passwords must have at least one lowercase character ('a' - 'z').",
+    "password_special": "Passwords must have at least one non alphanumeric character."
+  },
+  "buttons": {
+    "brand": "Equine Castration",
+    "about": "About",
+    "home": "Home",
+    "cancel": "Cancel"
+  },
+  "home": {
+    "heading": "Welcome to Equine Castration,"
+  },
+  "confirm": {
+    "feedback": {
+      "busy": "Please wait while we confirm your account",
+      "success": "Your account is confirmed.",
+      "error": "An error occurred trying to confirm your account.",
+      "invalidLink": "Your confirmation link is invalid, or the token has expired."
+    }
+  },
+  "resendConfirm": {
+    "feedback": {
+      "busy": "Sending account confirmation link via email",
+      "success_title": "Account confirmation link sent",
+      "success_message": "We've sent you an email to confirm your account. Please follow the link in the email."
+    }
+  },
+  "requestPasswordReset": {
+    "heading": "Request a password reset",
+    "buttons": {
+      "submit": "Send me a reset link"
+    },
+    "feedback": {
+      "success": "If there is an user account associated with that email address, we'll send an email with instructions on how to reset your password."
+    }
+  },
+  "resendPasswordReset": {
+    "feedback": {
+      "busy": "Sending password reset link via email",
+      "success_title": "Password reset link sent",
+      "success_message": "We've sent you an email with instructions on how to reset your password. Please follow the link in the email."
+    }
+  },
+  "resetPassword": {
+    "heading": "Reset your password",
+    "buttons": {
+      "submit": "Reset password"
+    },
+    "feedback": {
+      "success": "Your password has been changed.",
+      "loggedIn": "You have been logged in.",
+      "invalidLink": "The password reset failed. Please request a new reset link, or contact support."
+    }
+  },
+  "confirmEmailChange": {
+    "feedback": {
+      "busy": "Please wait while we confirm your email change",
+      "success": "Your email has been updated and you have been logged in.",
+      "error": "An error occurred trying to update your email.",
+      "invalidLink": "Your email change link is invalid, or the token has expired."
+    }
+  }
+}
