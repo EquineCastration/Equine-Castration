@@ -2,7 +2,10 @@ import { getAccountApi } from "api/account";
 import { getRegistrationRulesApi } from "api/registrationRules";
 import { getCaseApi } from "api/case";
 import { createContext, useCallback, useContext, useMemo } from "react";
-import { LOCAL_PUBLIC_API } from "react-native-dotenv";
+import {
+  LOCAL_PUBLIC_API,
+  EQUINE_CASTRATION_IDENTIFIER,
+} from "react-native-dotenv";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
 import axios from "axios";
@@ -65,6 +68,9 @@ export const BackendApiProvider = ({ children }) => {
       const cookieHeaderValue = cookies.filter((cookie) => cookie).join("; ");
       config.headers["Cookie"] = cookieHeaderValue; // add them to the request headers
     }
+
+    config.headers["X-Equine-Castration-Identifier"] =
+      EQUINE_CASTRATION_IDENTIFIER; // will be used to identify requests from the app
     return config;
   });
 
