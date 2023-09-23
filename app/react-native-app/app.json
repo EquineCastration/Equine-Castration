@@ -2,14 +2,14 @@
   "expo": {
     "name": "Equine Castration",
     "slug": "equine-castration",
-    "version": "1.0.0",
+    "version": "1.0.0-alpha.1",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
     "userInterfaceStyle": "automatic",
     "splash": {
       "image": "./assets/splash.png",
       "resizeMode": "contain",
-      "backgroundColor": "#ffffff"
+      "backgroundColor": "#32afb5"
     },
     "assetBundlePatterns": ["**/*"],
     "ios": {

@@ -8,8 +8,7 @@ import { Account } from "./Account";
 const IndexRedirect = () => {
   const navigate = useNavigate();
   useEffect(() => {
-    const targetPath = "/about";
-    navigate(targetPath, { replace: true });
+    navigate("/about", { replace: true });
   }, []);
   return null;
 };

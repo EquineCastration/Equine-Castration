@@ -13,7 +13,15 @@
     </PropertyGroup>
 
     <PropertyGroup>
+      <SpaRoot>../client-app/</SpaRoot>
       <SpaDist>../client-app/dist/</SpaDist>
+
+      <SpaProxyServerUrl>http://localhost:45577</SpaProxyServerUrl>
+      <SpaProxyLaunchCommand>pnpm dev</SpaProxyLaunchCommand>
+
+      <TypeScriptCompileBlocked>true</TypeScriptCompileBlocked>
+      <TypeScriptToolsVersion>Latest</TypeScriptToolsVersion>
+      <UserSecretsId>85E159E7-09F7-43D1-9237-7100DCB8191F</UserSecretsId>
     </PropertyGroup>
 
     <ItemGroup>
@@ -22,6 +30,7 @@
       <PackageReference Include="JetBrains.Annotations" Version="2022.1.0" />
       <PackageReference Include="Microsoft.ApplicationInsights.AspNetCore" Version="2.21.0" />
       <PackageReference Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" Version="6.0.6" />
+      <PackageReference Include="Microsoft.AspNetCore.SpaProxy" Version="6.0.6" />
       <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="6.0.6">
         <PrivateAssets>all</PrivateAssets>
         <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>

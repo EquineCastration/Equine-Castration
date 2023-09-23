@@ -1,6 +1,6 @@
 import { ChakraProvider, Flex, Spinner } from "@chakra-ui/react";
 import { StrictMode, Suspense } from "react";
-import ReactDOM from "react-dom";
+import { createRoot } from "react-dom/client";
 import { theme } from "./themes/theme";
 import "config/i18n";
 import { BrowserRouter } from "react-router-dom";
@@ -8,7 +8,10 @@ import { Root } from "./routes/Root";
 import { ErrorBoundary } from "./components/ErrorBoundary";
 import { BackendApiProvider } from "./contexts/BackendApi";
 
-ReactDOM.render(
+const container = document.getElementById("root");
+const root = createRoot(container);
+
+root.render(
   <StrictMode>
     <ChakraProvider theme={theme}>
       <BrowserRouter>
@@ -27,6 +30,5 @@ ReactDOM.render(
         </ErrorBoundary>
       </BrowserRouter>
     </ChakraProvider>
-  </StrictMode>,
-  document.getElementById("root")
+  </StrictMode>
 );

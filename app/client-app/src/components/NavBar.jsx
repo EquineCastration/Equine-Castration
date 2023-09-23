@@ -1,4 +1,4 @@
-import { Flex, Heading } from "@chakra-ui/react";
+import { Flex, HStack, Heading, Image } from "@chakra-ui/react";
 import { useTranslation } from "react-i18next";
 import { Link } from "react-router-dom";
 
@@ -6,9 +6,16 @@ const BrandLink = () => {
   const { t } = useTranslation();
   return (
     <Link to="/">
-      <Heading p={2} size="lg">
-        {t("buttons.brand")}
-      </Heading>
+      <HStack>
+        <Image
+          h="71px"
+          src="/assets/eq_logo.jpg"
+          alt="Equine Castration logo"
+        />
+        <Heading p={2} size="md">
+          {t("buttons.brand")}
+        </Heading>
+      </HStack>
     </Link>
   );
 };
@@ -18,9 +25,8 @@ export const NavBar = () => (
     px={4}
     boxShadow="section-h"
     zIndex={1000}
-    bgGradient="radial(circle 400px at top left, cyan.600, blue.900)"
+    bgGradient="radial(circle 1200px at top left, #32afb5, blue.900)"
     color="white"
-    justify="center"
   >
     <BrandLink />
   </Flex>

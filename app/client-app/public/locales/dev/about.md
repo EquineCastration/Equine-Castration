@@ -4,4 +4,4 @@
 
 Lorem Ipsum Etc
 
-More information can be found at: <url here>
+More information . . . .

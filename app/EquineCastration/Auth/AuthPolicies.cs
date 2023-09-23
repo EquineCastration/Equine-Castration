@@ -1,13 +1,16 @@
 using System.Text.RegularExpressions;
+using EquineCastration.Config;
 using Microsoft.AspNetCore.Authorization;
 
 namespace EquineCastration.Auth;
 
 public static class AuthPolicies
 {
+  private static readonly AppRequestHeaderOptions _appRequestHeader = Configs.AppRequestHeaderOptions;
   public static AuthorizationPolicy IsClientApp
     => new AuthorizationPolicyBuilder()
-        .RequireAssertion(IsSameHost)
+        .RequireAssertion(c=> 
+          IsSameHost(c) || HasValidIdentifier(c))
         .Build();
 
   public static AuthorizationPolicy IsAuthenticatedUser
@@ -97,4 +100,14 @@ public static class AuthPolicies
 
       return requestHost == referringHost;
     };
+ 
+ private static Func<AuthorizationHandlerContext, bool> HasValidIdentifier =>
+   context =>
+   {
+     if (!_appRequestHeader.CheckHeader) return true;
+     var request = ((DefaultHttpContext?)context.Resource)?.Request;
+     var identifier = request?.Headers["X-Equine-Castration-Identifier"].ToString();
+     if (identifier is null) return false;
+     return identifier == _appRequestHeader.AppIdentifier;
+   };
 }
