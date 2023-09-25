@@ -1,2 +1,3 @@
 packages:
   - app/react-native-app
+  - app/client-app

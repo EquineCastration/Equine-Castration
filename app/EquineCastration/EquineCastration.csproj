@@ -12,12 +12,25 @@
         <ImplicitUsings>enable</ImplicitUsings>
     </PropertyGroup>
 
+    <PropertyGroup>
+      <SpaRoot>../client-app/</SpaRoot>
+      <SpaDist>../client-app/dist/</SpaDist>
+
+      <SpaProxyServerUrl>http://localhost:45577</SpaProxyServerUrl>
+      <SpaProxyLaunchCommand>pnpm dev</SpaProxyLaunchCommand>
+
+      <TypeScriptCompileBlocked>true</TypeScriptCompileBlocked>
+      <TypeScriptToolsVersion>Latest</TypeScriptToolsVersion>
+      <UserSecretsId>85E159E7-09F7-43D1-9237-7100DCB8191F</UserSecretsId>
+    </PropertyGroup>
+
     <ItemGroup>
       <PackageReference Include="ClacksMiddlware" Version="2.1.0" />
       <PackageReference Include="Flurl" Version="3.0.7" />
       <PackageReference Include="JetBrains.Annotations" Version="2022.1.0" />
       <PackageReference Include="Microsoft.ApplicationInsights.AspNetCore" Version="2.21.0" />
       <PackageReference Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" Version="6.0.6" />
+      <PackageReference Include="Microsoft.AspNetCore.SpaProxy" Version="6.0.6" />
       <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="6.0.6">
         <PrivateAssets>all</PrivateAssets>
         <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
@@ -32,5 +45,22 @@
     <ItemGroup>
       <Folder Include="Migrations" />
     </ItemGroup>
+
+    <Target Name="PublishIncludeBuiltSpa" AfterTargets="ComputeFilesToPublish">
+      <!--
+        Unlike the template, before publishing we expect the JS resources
+        to have been built in production mode externally e.g. in CI
+      -->
+  
+      <!-- During Publish, we include the built files in the publish output -->
+      <ItemGroup>
+        <DistFiles Include="$(SpaDist)**" />
+        <ResolvedFileToPublish Include="@(DistFiles->'%(FullPath)')" Exclude="@(ResolvedFileToPublish)">
+          <RelativePath>wwwroot\%(RecursiveDir)%(FileName)%(Extension)</RelativePath>
+          <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+          <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+        </ResolvedFileToPublish>
+      </ItemGroup>
+    </Target>
 
 </Project>

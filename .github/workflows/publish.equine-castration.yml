@@ -22,6 +22,9 @@ env:
   CI_migration-output-filename: migrate-equine-castration-db
   CI_dotnet-output: equine-castration
 
+  CI_node-version: "16"
+  CI_client-package: "client-app"
+
   DOTNET_CLI_TELEMETRY_OPTOUT: true
   DOTNET_NOLOGO: true
 
@@ -50,9 +53,34 @@ jobs:
         with:
           project: ${{ env.CI_app-project }}
 
+  # publish the web frontend
+  publish-web-frontend:
+    needs: [init]
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v3
+      - uses: pnpm/action-setup@v2.0.1
+        with:
+          version: 8
+      - uses: actions/setup-node@v2
+        with:
+          node-version: ${{ env.CI_node-version }}
+          cache: pnpm
+
+      - run: pnpm i --frozen-lockfile --filter ${{ env.CI_client-package }}
+
+      - run: pnpm --filter ${{ env.CI_client-package }} build
+
+      # upload the published artifact
+      - uses: actions/upload-artifact@v3
+        with:
+          name: web-frontend
+          path: ./app/client-app/dist
+
   # publish the dotnet app
   publish-equine-castration:
-    needs: [init]
+    needs: [init, publish-web-frontend]
     runs-on: ubuntu-latest
 
     steps:
@@ -62,6 +90,11 @@ jobs:
       - uses: actions/setup-dotnet@v3
         with:
           dotnet-version: ${{ env.CI_dotnet-version }}
+
+      - uses: actions/download-artifact@v3
+        with:
+          name: web-frontend
+          path: ./app/client-app/dist
 
       - name: dotnet publish
         run: >-
@@ -79,7 +112,7 @@ jobs:
 
   # Publish platform native EF Core migrations bundles
   publish-migrations:
-    needs: [init]
+    needs: [init, publish-equine-castration]
     runs-on: ubuntu-latest
 
     strategy:
