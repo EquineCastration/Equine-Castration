@@ -20,7 +20,7 @@ env:
   EQUINE_CASTRATION_IDENTIFIER: ${{ secrets.EQUINE_CASTRATION_IDENTIFIER }}
 
 jobs:
-  build:
+  build-android-preview:
     runs-on: ubuntu-latest
 
     steps:

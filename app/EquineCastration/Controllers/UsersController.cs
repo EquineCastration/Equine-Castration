@@ -17,7 +17,7 @@ using Microsoft.Extensions.Options;
 namespace EquineCastration.Controllers;
 
 [ApiController]
-[Authorize (nameof(AuthPolicies.CanManageUsers))]
+[Authorize]
 [Route("api/[controller]")]
 public class UsersController : ControllerBase
 {
@@ -48,6 +48,7 @@ public class UsersController : ControllerBase
   /// Get users list
   /// </summary>
   /// <returns>users list with their associated roles</returns>
+  [Authorize (nameof(AuthPolicies.CanManageUsers))]
   [HttpGet]
   public async Task<List<UserModel>> List()
   {
@@ -75,6 +76,7 @@ public class UsersController : ControllerBase
   /// </summary>
   /// <param name="id">user id</param>
   /// <returns>user matching the id</returns>
+  [Authorize (nameof(AuthPolicies.CanManageUsers))]
   [HttpGet("{id}")]
   public async Task<UserModel> Get(string id)
   {
@@ -96,6 +98,7 @@ public class UsersController : ControllerBase
   /// </summary>
   /// <param name="userModel"></param>
   /// <param name="id"></param>
+  [Authorize (nameof(AuthPolicies.CanManageUsers))]
   [HttpPut("userRoles/{id}")]
   public async Task<IActionResult> SetUserRoles (string id, [FromBody] UserModel userModel)
   {
@@ -122,6 +125,7 @@ public class UsersController : ControllerBase
   /// </summary>
   /// <param name="userModel"></param>
   /// <param name="id"></param>
+  [Authorize (nameof(AuthPolicies.CanManageUsers))]
   [HttpPut("userEmail/{id}")]
   public async Task<IActionResult> ChangeEmail (string id, UserModel userModel)
   {
@@ -155,6 +159,10 @@ public class UsersController : ControllerBase
   [HttpDelete("{id}")]
   public async Task<IActionResult> Delete (string id, [FromBody] UserModel userModel)
   {
+    if (!User.HasClaim(CustomClaimTypes.SitePermission, SitePermissionClaims.ManageUsers) &&
+        _users.GetUserId(User) != id) return BadRequest();
+    
+    // allow account deletion if user is admin or deleting their own account
     var user = await _users.FindByIdAsync(id);
     if (user is null) return NotFound();
     await _users.DeleteAsync(user);
