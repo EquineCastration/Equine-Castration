@@ -1,7 +1,6 @@
 name: Build Equine Castration Android preview build
 
 on:
-  push: { branches: [deployment-test] }
   workflow_dispatch:
   pull_request:
     branches: [main]

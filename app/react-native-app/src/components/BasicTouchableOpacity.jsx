@@ -4,14 +4,18 @@ import { font, colors } from "style/style";
 
 export const BasicTouchableOpacity = ({
   title,
-  onPress,
   color = colors.light,
-  bgColor = colors.ui.btnBg,
   icon, // only accepts ionicons
+  iconSize = 24,
+  fontWeight = 400,
+  fontSize = font.size.md,
+  onPress,
+  bgColor = colors.ui.btnBg,
   btnWidth = "100%",
   paddingVertical = 8,
   borderRadius = 10,
-  fontWeight = 400,
+  transparent = false,
+  ...props
 }) => {
   return (
     <TouchableOpacity
@@ -22,15 +26,16 @@ export const BasicTouchableOpacity = ({
         justifyContent: "center",
         alignItems: "center",
         paddingVertical,
-        backgroundColor: bgColor,
+        backgroundColor: !transparent && bgColor,
         borderRadius,
+        ...props,
       }}
       onPress={onPress}
     >
-      <Ionicons name={icon} size={24} color={color} />
+      <Ionicons name={icon} size={iconSize} color={color} />
       <Text
         style={{
-          fontSize: font.size.md,
+          fontSize,
           fontWeight,
           color,
           marginHorizontal: 10,
