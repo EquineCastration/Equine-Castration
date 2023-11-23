@@ -37,9 +37,6 @@ export const getUserApi = ({ api }) => ({
       json: culture,
     }),
 
-  // Delete user and email delete update if true
-  delete: ({ user }) =>
-    api.delete(`users/${user.id}`, {
-      json: user,
-    }),
+  // Delete User's Account and all their cases
+  delete: () => api.delete("user/me"),
 });

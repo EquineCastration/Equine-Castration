@@ -3,6 +3,7 @@ import { SafeAreaView, View, Text } from "react-native";
 import { colors, font } from "style/style";
 import { resetInitialConsultationStore } from "store/InitialConsultationStore";
 import { useUser } from "contexts/User";
+import { permissions } from "constants/site-permissions";
 
 export const UserHome = ({ navigation }) => {
   // should be loaded as screen to get navigation prop
@@ -16,6 +17,7 @@ export const UserHome = ({ navigation }) => {
       navigate: "InitialConsultationStepOne", // screen name
       icon: "ios-brush-outline", // only accepts ionicons
       bgColor: colors.primary[800],
+      visible: user?.permissions.includes(permissions.CreateCases),
     },
     {
       title: "View Cases",
@@ -23,16 +25,19 @@ export const UserHome = ({ navigation }) => {
       navigate: "CaseList", // screen name
       icon: "documents-outline", // only accepts ionicons
       bgColor: colors.secondary[800],
+      visible: user?.permissions.includes(permissions.ListEligibleCases),
     },
     {
       title: "Follow up",
       bgColor: colors.patra[900],
       icon: "expand-outline",
+      visible: true,
     },
     {
       title: "Review",
       bgColor: colors.kanaka[900],
       icon: "file-tray-full-outline",
+      visible: true,
     },
   ];
   return (
@@ -76,22 +81,24 @@ export const UserHome = ({ navigation }) => {
         {initialsOptions &&
           initialsOptions.map((option, index) => {
             return (
-              <BasicTouchableOpacity
-                paddingVertical={11}
-                key={index}
-                title={option.title}
-                icon={option.icon}
-                bgColor={option.bgColor}
-                onPress={
-                  option.navigate &&
-                  (() => {
-                    navigation.navigate(option.navigateToParent, {
-                      screen: option.navigate,
-                    });
-                    resetInitialConsultationStore(); // clear existing form data
-                  })
-                }
-              />
+              option.visible && (
+                <BasicTouchableOpacity
+                  paddingVertical={11}
+                  key={index}
+                  title={option.title}
+                  icon={option.icon}
+                  bgColor={option.bgColor}
+                  onPress={
+                    option.navigate &&
+                    (() => {
+                      navigation.navigate(option.navigateToParent, {
+                        screen: option.navigate,
+                      });
+                      resetInitialConsultationStore(); // clear existing form data
+                    })
+                  }
+                />
+              )
             );
           })}
       </View>

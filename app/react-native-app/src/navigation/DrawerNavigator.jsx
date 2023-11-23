@@ -16,6 +16,8 @@ import { useBackendApi } from "contexts/BackendApi";
 import { useState, useEffect } from "react";
 import { Spinner } from "components/Spinner";
 import { BasicTouchableOpacity } from "components/BasicTouchableOpacity";
+import { permissions } from "constants/site-permissions";
+import { set } from "react-native-reanimated";
 
 const Drawer = createDrawerNavigator();
 
@@ -42,7 +44,10 @@ const AccountItem = ({ ...props }) => (
 
 export const DrawerNavigator = () => {
   const [isLoading, setIsLoading] = useState(false);
+  const [loadingText, setIsLoadingText] = useState();
   const [feedback, setFeedback] = useState();
+
+  const { user, signOut } = useUser();
 
   useEffect(() => {
     feedback &&
@@ -55,20 +60,19 @@ export const DrawerNavigator = () => {
   const DrawerContent = (props) => {
     const {
       account: { logout },
-      users: { deleteUser },
+      users: { delete: deleteMe },
     } = useBackendApi();
-    const { user, signOut } = useUser();
 
     const handleAccountDeletion = async () => {
       try {
         setIsLoading(true);
-        user.sendUpdateEmail = true;
-        const response = async (user) => await deleteUser(user);
+        setIsLoadingText("Deleting account");
+        const response = await deleteMe();
 
         if (response && response.status === 204) {
           setFeedback({
             status: "success",
-            message: `Account deleted successfully!`,
+            message: "Account deleted successfully!",
           });
 
           await logout();
@@ -149,6 +153,7 @@ export const DrawerNavigator = () => {
                   text: "OK",
                   onPress: async () => {
                     setIsLoading(true);
+                    setIsLoadingText("Signing out");
                     await logout();
                     await AsyncStorage.clear();
                     signOut();
@@ -165,8 +170,8 @@ export const DrawerNavigator = () => {
             color={colors.error}
             onPress={() => {
               Alert.alert(
-                "Account delete confirmation",
                 "Do you want to delete your account?",
+                "This action will permanently delete your account and all associated cases",
                 [
                   {
                     text: "Cancel",
@@ -187,7 +192,7 @@ export const DrawerNavigator = () => {
 
   return (
     <>
-      {isLoading ? <Spinner text="Signing out" /> : null}
+      {isLoading ? <Spinner text={loadingText} /> : null}
       <Drawer.Navigator
         screenOptions={{
           headerShown: false,
@@ -202,11 +207,14 @@ export const DrawerNavigator = () => {
         drawerContent={(props) => <DrawerContent {...props} />}
       >
         <Drawer.Screen name="Home" component={HomeStack} />
-        <Drawer.Screen
-          name="InitialConsultation"
-          component={InitialConsultationStack}
-          options={{ title: "Create Case" }}
-        />
+
+        {user?.permissions.includes(permissions.CreateCases) && (
+          <Drawer.Screen
+            name="InitialConsultation"
+            component={InitialConsultationStack}
+            options={{ title: "Create Case" }}
+          />
+        )}
         <Drawer.Screen
           name="Cases"
           component={CaseStack}
