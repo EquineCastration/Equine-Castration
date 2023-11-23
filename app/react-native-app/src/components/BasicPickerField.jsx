@@ -8,6 +8,7 @@ export const BasicPickerField = ({
   label,
   pickerItems,
   labelColor = colors.primary[700],
+  borderColor = colors.primary[200],
   numberOfLines,
 }) => {
   const [field, meta, helpers] = useField(name);
@@ -21,6 +22,8 @@ export const BasicPickerField = ({
         marginVertical: 8,
         paddingHorizontal: 8,
         borderRadius: 8,
+        borderBottomWidth: 1,
+        borderBottomColor: borderColor,
       }}
     >
       <View style={{ marginVertical: 10 }}>
