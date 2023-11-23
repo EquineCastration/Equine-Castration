@@ -55,5 +55,5 @@ jobs:
       - name: 📱 Upload binary
         uses: actions/upload-artifact@v2
         with:
-          name: ${{ env.Output }}
+          name: ${{ env.Output }}.apk
           path: app/react-native-app/${{ env.Output }}.apk

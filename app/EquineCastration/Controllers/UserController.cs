@@ -3,9 +3,9 @@ using System.Text.Json;
 using EquineCastration.Auth;
 using EquineCastration.Data.Entities.Identity;
 using EquineCastration.Models.Emails;
+using EquineCastration.Services.EmailServices;
 using EquineCastration.Models.User;
 using EquineCastration.Services;
-using EquineCastration.Services.EmailServices;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -13,27 +13,27 @@ using Microsoft.AspNetCore.Mvc;
 namespace EquineCastration.Controllers;
 
 [ApiController]
-[Authorize]
 [Route("api/[controller]")]
+[Authorize]
 public class UserController : ControllerBase
 {
   private readonly UserManager<ApplicationUser> _users;
   private readonly SignInManager<ApplicationUser> _signIn;
-  private readonly AccountEmailService _accountEmail;
   private readonly UserService _user;
+  private readonly AccountEmailService _accountEmail;
   private readonly CaseService _cases;
 
   public UserController(
     UserManager<ApplicationUser> users,
     SignInManager<ApplicationUser> signIn,
-    AccountEmailService accountEmail,
     UserService user,
+    AccountEmailService accountEmail,
     CaseService cases)
   {
     _users = users;
     _signIn = signIn;
-    _accountEmail = accountEmail;
     _user = user;
+    _accountEmail = accountEmail;
     _cases = cases;
   }
 
@@ -72,7 +72,7 @@ public class UserController : ControllerBase
   }
   
   /// <summary>
-  /// Delete cases authored by the user and their account
+  /// Delete user account and all their authored cases
   /// </summary>
   [HttpDelete("me")]
   public async Task<IActionResult> Delete ()

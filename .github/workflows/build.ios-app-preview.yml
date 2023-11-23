@@ -1,7 +1,6 @@
 name: Build Equine Castration ios preview build
 
 on:
-  push: { branches: [deployment-test] }
   workflow_dispatch:
   pull_request:
     branches: [main]
@@ -56,5 +55,5 @@ jobs:
       - name: 📱 Upload binary
         uses: actions/upload-artifact@v2
         with:
-          name: ${{ env.Output }}
+          name: ${{ env.Output }}.app
           path: app/react-native-app/${{ env.Output }}.app

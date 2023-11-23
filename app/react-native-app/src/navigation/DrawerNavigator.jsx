@@ -17,7 +17,6 @@ import { useState, useEffect } from "react";
 import { Spinner } from "components/Spinner";
 import { BasicTouchableOpacity } from "components/BasicTouchableOpacity";
 import { permissions } from "constants/site-permissions";
-import { set } from "react-native-reanimated";
 
 const Drawer = createDrawerNavigator();
 
