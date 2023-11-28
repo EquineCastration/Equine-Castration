@@ -1,4 +1,4 @@
-import { View, Text, TouchableOpacity, StyleSheet } from "react-native";
+import { View, Text, StyleSheet, Alert } from "react-native";
 import {
   createDrawerNavigator,
   DrawerContentScrollView,
@@ -6,14 +6,17 @@ import {
 } from "@react-navigation/drawer";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { useUser } from "contexts/User";
+import Toast from "react-native-toast-message";
 
 import { HomeStack } from "./HomeStack";
 import { font, colors } from "style/style";
 import { InitialConsultationStack } from "./InitialConsultationStack";
 import { CaseStack } from "./CaseStack";
 import { useBackendApi } from "contexts/BackendApi";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Spinner } from "components/Spinner";
+import { BasicTouchableOpacity } from "components/BasicTouchableOpacity";
+import { permissions } from "constants/site-permissions";
 
 const Drawer = createDrawerNavigator();
 
@@ -25,14 +28,69 @@ const styles = StyleSheet.create({
   },
 });
 
+const AccountItem = ({ ...props }) => (
+  <BasicTouchableOpacity
+    iconSize={17}
+    color={colors.primary[800]}
+    fontSize={font.size["sm"]}
+    fontWeight={500}
+    transparent
+    justifyContent="flex-start"
+    paddingVertical={2}
+    {...props}
+  />
+);
+
 export const DrawerNavigator = () => {
   const [isLoading, setIsLoading] = useState(false);
+  const [loadingText, setIsLoadingText] = useState();
+  const [feedback, setFeedback] = useState();
+
+  const { user, signOut } = useUser();
+
+  useEffect(() => {
+    feedback &&
+      Toast.show({
+        type: feedback.status,
+        text1: feedback.message,
+      });
+  }, [feedback]);
 
   const DrawerContent = (props) => {
     const {
       account: { logout },
+      users: { delete: deleteMe },
     } = useBackendApi();
-    const { user, signOut } = useUser();
+
+    const handleAccountDeletion = async () => {
+      try {
+        setIsLoading(true);
+        setIsLoadingText("Deleting account");
+        const response = await deleteMe();
+
+        if (response && response.status === 204) {
+          setFeedback({
+            status: "success",
+            message: "Account deleted successfully!",
+          });
+
+          await logout();
+          await AsyncStorage.clear();
+          signOut();
+        }
+      } catch (e) {
+        console.log(e);
+        switch (e?.response?.status) {
+          default:
+            setFeedback({
+              status: "error",
+              message: "An unknown error has occurred.",
+            });
+        }
+      }
+      setIsLoading(false);
+    };
+
     return (
       <View style={{ flex: 1 }}>
         <DrawerContentScrollView {...props}>
@@ -68,44 +126,72 @@ export const DrawerNavigator = () => {
           </View>
           <DrawerItemList {...props} />
         </DrawerContentScrollView>
-
-        <TouchableOpacity
+        <View
           style={{
             position: "absolute",
             right: 0,
             left: 0,
-            bottom: 50,
+            bottom: 5,
             backgroundColor: colors.ui.bg,
-            padding: 20,
-          }}
-          onPress={async () => {
-            setIsLoading(true);
-            await logout();
-            await AsyncStorage.clear();
-            signOut();
-            setIsLoading(false);
+            paddingVertical: 10,
+            paddingHorizontal: 20,
+            gap: 5,
           }}
         >
-          <Text
-            style={[
-              styles.drawerLabel,
-              {
-                fontWeight: 400,
-                fontSize: font.size["normal"],
-                color: colors.primary[800],
-              },
-            ]}
-          >
-            Sign Out
-          </Text>
-        </TouchableOpacity>
+          <AccountItem
+            title="Sign Out"
+            icon="log-out-outline"
+            fontSize={font.size["normal"]}
+            onPress={() => {
+              Alert.alert("Sign out confirmation", "Do you want to sign out?", [
+                {
+                  text: "Cancel",
+                  style: "cancel", // only applicable to ios
+                },
+                {
+                  text: "OK",
+                  onPress: async () => {
+                    setIsLoading(true);
+                    setIsLoadingText("Signing out");
+                    await logout();
+                    await AsyncStorage.clear();
+                    signOut();
+                    setIsLoading(false);
+                  },
+                },
+              ]);
+            }}
+          />
+
+          <AccountItem
+            title="Delete Account"
+            icon="trash-outline"
+            color={colors.error}
+            onPress={() => {
+              Alert.alert(
+                "Do you want to delete your account?",
+                "This action will permanently delete your account and all associated cases",
+                [
+                  {
+                    text: "Cancel",
+                    style: "cancel",
+                  },
+                  {
+                    text: "OK",
+                    onPress: () => handleAccountDeletion(),
+                  },
+                ]
+              );
+            }}
+          />
+        </View>
       </View>
     );
   };
 
   return (
     <>
-      {isLoading ? <Spinner text="Signing out" /> : null}
+      {isLoading ? <Spinner text={loadingText} /> : null}
       <Drawer.Navigator
         screenOptions={{
           headerShown: false,
@@ -120,11 +206,14 @@ export const DrawerNavigator = () => {
         drawerContent={(props) => <DrawerContent {...props} />}
       >
         <Drawer.Screen name="Home" component={HomeStack} />
-        <Drawer.Screen
-          name="InitialConsultation"
-          component={InitialConsultationStack}
-          options={{ title: "Create Case" }}
-        />
+
+        {user?.permissions.includes(permissions.CreateCases) && (
+          <Drawer.Screen
+            name="InitialConsultation"
+            component={InitialConsultationStack}
+            options={{ title: "Create Case" }}
+          />
+        )}
         <Drawer.Screen
           name="Cases"
           component={CaseStack}

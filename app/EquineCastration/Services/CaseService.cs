@@ -99,7 +99,6 @@ public class CaseService
   public async Task Delete(int caseId)
   {
     var entity = await _db.Cases
-                   .AsNoTracking()
                    .Include(x => x.Author)
                    .Where(x => x.Id == caseId)
                    .SingleOrDefaultAsync()
@@ -111,12 +110,22 @@ public class CaseService
   public async Task DeleteAuthorCase(int caseId, string userId)
   {
     var entity = await _db.Cases
-                   .AsNoTracking()
                    .Include(x => x.Author)
                    .Where(x => x.Id == caseId && x.Author.Id==userId)
                    .SingleOrDefaultAsync()
                  ?? throw new KeyNotFoundException();
     _db.Cases.Remove(entity);
+    await _db.SaveChangesAsync();
+  }
+  
+  public async Task DeleteAuthorAllCases(string userId)
+  {
+    var entity = await _db.Cases
+                   .Include(x => x.Author)
+                   .Where(x=>x.Author.Id==userId)
+                   .ToListAsync()
+                 ?? throw new KeyNotFoundException();
+    _db.Cases.RemoveRange(entity);
     await _db.SaveChangesAsync();
   }
 }

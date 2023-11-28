@@ -1,4 +1,4 @@
-name: Build Equine Castration React-Native app preview
+name: Build Equine Castration ios preview build
 
 on:
   workflow_dispatch:
@@ -12,21 +12,22 @@ env:
   # Configure these
   CI_node-version: "16"
   CI_package: react-native-app
-  Platform: android
+  Platform: ios
   Profile: preview
+  Output: ios-preview-build
   API_URL: ${{ secrets.API_URL }}
   EQUINE_CASTRATION_IDENTIFIER: ${{ secrets.EQUINE_CASTRATION_IDENTIFIER }}
 
 jobs:
-  build:
-    runs-on: ubuntu-latest
+  build-ios-preview:
+    runs-on: macos-latest
 
     steps:
       - uses: actions/checkout@v3
       - uses: pnpm/action-setup@v2.0.1
         with:
-          version: 8
-      - uses: actions/setup-node@v2
+          version: 6.30.0
+      - uses: actions/setup-node@v3
         with:
           node-version: ${{ env.CI_node-version }}
           cache: pnpm
@@ -38,27 +39,21 @@ jobs:
           expo-version: latest
           eas-version: latest
 
-      - name: Setup EAS local builds
-        run: yarn global add eas-cli-local-build-plugin
-
       - run: pnpm i --frozen-lockfile --filter ${{ env.CI_package }}
 
       - name: Build app preview
         working-directory: app/react-native-app
         run: |
-          mkdir -p android/keystores
-          echo ${{ secrets.RELEASE_KEYSTORE_BASE64 }} | base64 -d > android/keystores/release.keystore
-          echo ${{ secrets.CREDENTIALS_JSON_BASE64 }} | base64 -d > credentials.json
-          echo "LOCAL_PUBLIC_API=${API_URL}" >> .env
+          echo "LOCAL_PUBLIC_API=${API_URL}" > .env
           echo "EQUINE_CASTRATION_IDENTIFIER=${EQUINE_CASTRATION_IDENTIFIER}" >> .env
           eas build --local \
             --non-interactive \
-            --output=./app-preview-build.apk \
+            --output=./${{ env.Output }}.app \
             --platform=${{ env.Platform }} \
             --profile=${{ env.Profile }}
 
       - name: 📱 Upload binary
         uses: actions/upload-artifact@v2
         with:
-          name: app-${{ env.Platform }}
-          path: app/react-native-app/app-preview-build.apk
+          name: ${{ env.Output }}.app
+          path: app/react-native-app/${{ env.Output }}.app

@@ -5,8 +5,15 @@
   "build": {
     "preview": {
       "android": {
-        "credentialsSource": "local",
         "buildType": "apk"
+      },
+      "ios": {
+        "simulator": true
+      }
+    },
+    "production": {
+      "android": {
+        "buildType": "app-bundle"
       }
     }
   },

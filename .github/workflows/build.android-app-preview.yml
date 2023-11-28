@@ -1,0 +1,59 @@
+name: Build Equine Castration Android preview build
+
+on:
+  workflow_dispatch:
+  pull_request:
+    branches: [main]
+    paths:
+      - app/react-native-app/**
+      - .github/workflows/build.react-native-app.yml
+
+env:
+  # Configure these
+  CI_node-version: "16"
+  CI_package: react-native-app
+  Platform: android
+  Profile: preview
+  Output: android-preview-build
+  API_URL: ${{ secrets.API_URL }}
+  EQUINE_CASTRATION_IDENTIFIER: ${{ secrets.EQUINE_CASTRATION_IDENTIFIER }}
+
+jobs:
+  build-android-preview:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v3
+      - uses: pnpm/action-setup@v2.0.1
+        with:
+          version: 6.30.0
+      - uses: actions/setup-node@v3
+        with:
+          node-version: ${{ env.CI_node-version }}
+          cache: pnpm
+
+      - name: Setup Expo and EAS
+        uses: expo/expo-github-action@v7
+        with:
+          token: ${{ secrets.EXPO_TOKEN }}
+          expo-version: latest
+          eas-version: latest
+
+      - run: pnpm i --frozen-lockfile --filter ${{ env.CI_package }}
+
+      - name: Build app preview
+        working-directory: app/react-native-app
+        run: |
+          echo "LOCAL_PUBLIC_API=${API_URL}" > .env
+          echo "EQUINE_CASTRATION_IDENTIFIER=${EQUINE_CASTRATION_IDENTIFIER}" >> .env
+          eas build --local \
+            --non-interactive \
+            --output=./${{ env.Output }}.apk \
+            --platform=${{ env.Platform }} \
+            --profile=${{ env.Profile }}
+
+      - name: 📱 Upload binary
+        uses: actions/upload-artifact@v2
+        with:
+          name: ${{ env.Output }}.apk
+          path: app/react-native-app/${{ env.Output }}.apk

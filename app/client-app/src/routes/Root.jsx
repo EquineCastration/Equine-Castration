@@ -19,6 +19,10 @@ export const Root = () => {
       <Route path="/" element={<DefaultLayout />}>
         <Route index element={<IndexRedirect />} />
         <Route path="about" element={<ContentPage contentKey={"about"} />} />
+        <Route
+          path="privacy-policy"
+          element={<ContentPage contentKey={"privacy-policy"} />}
+        />
         <Route path="account/*" element={<Account />} />
         <Route path="*" element={<NotFound />} />
       </Route>

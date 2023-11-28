@@ -29,7 +29,6 @@ export const MultiCheckBoxField = ({
       style={{
         marginVertical: 8,
         paddingHorizontal: 8,
-        borderRadius: 8,
       }}
     >
       <View style={{ marginVertical: 10 }}>
@@ -47,7 +46,6 @@ export const MultiCheckBoxField = ({
           style={{
             marginVertical: 5,
             flexDirection: "row",
-            justifyContent: "center",
             alignItems: "center",
             flexWrap: "wrap",
             borderRadius: 5,
@@ -73,7 +71,7 @@ export const MultiCheckBoxField = ({
                 <Text
                   style={{
                     marginVertical: 2,
-                    fontSize: font.size.md,
+                    fontSize: font.size.normal,
                     color: labelColor,
                     marginLeft: 7,
                     fontWeight: 300,

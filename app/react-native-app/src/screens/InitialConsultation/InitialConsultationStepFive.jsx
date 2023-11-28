@@ -4,7 +4,7 @@ import { Formik } from "formik";
 import { object, string, array, min } from "yup";
 
 import { InputField } from "components/InputField";
-import { MultiCheckBoxField } from "components/MultiCheckBoxField";
+import { MultiSelectField } from "components/MultiSelectField";
 import { initialConsultation } from "constants/initial-consultation";
 
 import { InitialConsultationStore } from "store/InitialConsultationStore";
@@ -84,10 +84,13 @@ export const InitialConsultationStepFive = ({ navigation }) => {
             }}
           >
             <View>
-              <MultiCheckBoxField
+              <MultiSelectField
                 name="environment"
                 label={fields.environment.label}
-                items={fields.environment.options}
+                items={fields.environment.options.map((env) => ({
+                  id: env,
+                  name: env,
+                }))}
               />
               {values?.environment.includes("Other") && (
                 <InputField

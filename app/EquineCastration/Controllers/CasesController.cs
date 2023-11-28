@@ -9,6 +9,7 @@ using Microsoft.AspNetCore.Mvc;
 namespace EquineCastration.Controllers;
 
 [ApiController]
+[Authorize]
 [Route("api/[controller]")]
 public class CasesController : ControllerBase
 {

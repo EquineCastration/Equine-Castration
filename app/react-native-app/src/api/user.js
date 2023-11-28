@@ -36,4 +36,7 @@ export const getUserApi = ({ api }) => ({
     api.put("user/uiCulture", {
       json: culture,
     }),
+
+  // Delete User's Account and all their cases
+  delete: () => api.delete("user/me"),
 });
