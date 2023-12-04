@@ -291,7 +291,7 @@ export const RegistrationStepGDPR = ({ navigation }) => {
           <Layout
             onSubmit={() => handleSubmit()}
             current={values.isVeterinarian ? 3 : 2}
-            total={values.IsVeterinarian ? 3 : 2}
+            total={values.IsVeterinarian ? 3 : 3}
             title="Complete registration"
           >
             <View
