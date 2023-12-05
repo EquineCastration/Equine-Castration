@@ -1,8 +1,9 @@
-import { View, ScrollView } from "react-native";
+import { View } from "react-native";
 import { useEffect } from "react";
 
 import { Formik } from "formik";
 import { object, string, boolean } from "yup";
+import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
 
 import { DefaultLayout } from "layout/DefaultLayout";
 import { DatePickerField } from "components/DatePickerField";
@@ -15,7 +16,6 @@ import {
   InitialConsultationStore,
   ICStoreInitialState,
 } from "store/InitialConsultationStore";
-import { queryBase } from "db/queries/base";
 import { initialConsultation } from "constants/initial-consultation";
 
 const validationSchema = object().shape({
@@ -40,15 +40,7 @@ const validationSchema = object().shape({
 export const Layout = ({ children, onSubmit, current, title }) => {
   return (
     <DefaultLayout>
-      <ScrollView
-        style={{
-          marginVertical: 2,
-          marginHorizontal: 5,
-          paddingHorizontal: 5,
-        }}
-      >
-        {children}
-      </ScrollView>
+      <KeyboardAwareScrollView>{children}</KeyboardAwareScrollView>
       <View
         style={{
           marginHorizontal: 10,

@@ -2,6 +2,7 @@ import { View, SafeAreaView, Text } from "react-native";
 import { BgGradient } from "components/BgGradient";
 import { colors, font } from "style/style";
 import { BasicBackButton } from "components/BasicBackButton";
+import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
 
 export const AccountLayout = ({
   children,
@@ -59,7 +60,7 @@ export const AccountLayout = ({
           borderRadius: 20,
         }}
       >
-        {children}
+        <KeyboardAwareScrollView>{children}</KeyboardAwareScrollView>
       </View>
     </SafeAreaView>
   );
