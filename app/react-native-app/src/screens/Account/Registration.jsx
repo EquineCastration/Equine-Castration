@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { ScrollView, View, Text } from "react-native";
+import { View, Text } from "react-native";
 
 import { Formik } from "formik";
 import { boolean, number, object, string } from "yup";
@@ -26,13 +26,7 @@ import { useUser } from "contexts/User";
 const Layout = ({ children, onSubmit, current, steptitle, total = 3 }) => {
   return (
     <>
-      <ScrollView
-        style={{
-          marginVertical: 2,
-        }}
-      >
-        {children}
-      </ScrollView>
+      {children}
       <View
         style={{
           marginHorizontal: 10,
@@ -291,7 +285,7 @@ export const RegistrationStepGDPR = ({ navigation }) => {
           <Layout
             onSubmit={() => handleSubmit()}
             current={values.isVeterinarian ? 3 : 2}
-            total={values.IsVeterinarian ? 3 : 2}
+            total={values.IsVeterinarian ? 3 : 3}
             title="Complete registration"
           >
             <View

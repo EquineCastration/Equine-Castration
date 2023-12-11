@@ -27,18 +27,19 @@ export const UserHome = ({ navigation }) => {
       bgColor: colors.secondary[800],
       visible: user?.permissions.includes(permissions.ListEligibleCases),
     },
-    {
-      title: "Follow up",
-      bgColor: colors.patra[900],
-      icon: "expand-outline",
-      visible: true,
-    },
-    {
-      title: "Review",
-      bgColor: colors.kanaka[900],
-      icon: "file-tray-full-outline",
-      visible: true,
-    },
+    // TODO: to be implemented in future
+    // {
+    //   title: "Follow up",
+    //   bgColor: colors.patra[900],
+    //   icon: "expand-outline",
+    //   visible: true,
+    // },
+    // {
+    //   title: "Review",
+    //   bgColor: colors.kanaka[900],
+    //   icon: "file-tray-full-outline",
+    //   visible: true,
+    // },
   ];
   return (
     <SafeAreaView
