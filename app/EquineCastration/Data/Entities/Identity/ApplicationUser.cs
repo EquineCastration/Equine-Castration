@@ -11,11 +11,8 @@ public class ApplicationUser : IdentityUser
   public string UICulture { get; set; } = string.Empty;
   
   [PersonalData]
-  public string Institution { get; set; } = string.Empty;
+  public Veterinarian? Veterinarian { get; set; }
   
   [PersonalData]
-  public bool IsAmbulatory { get; set; }
-  
-  [PersonalData]
-  public int? YearsQualified { get; set; }
+  public Owner? Owner { get; set; }
 }
