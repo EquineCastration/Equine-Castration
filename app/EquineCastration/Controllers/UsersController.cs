@@ -155,7 +155,10 @@ public class UsersController : ControllerBase
   [HttpDelete("{id}")]
   public async Task<IActionResult> Delete (string id, [FromBody] UserModel userModel)
   {
-    var user = await _users.FindByIdAsync(id);
+    var user = await _users.Users
+      .Include(x => x.Veterinarian)
+      .Include(x => x.Owner)
+      .FirstOrDefaultAsync(x => x.Id == _users.GetUserId(User));
     if (user is null) return NotFound();
     await _users.DeleteAsync(user);
     if (userModel.SendUpdateEmail) // Check if send update email is true

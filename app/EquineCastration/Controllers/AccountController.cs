@@ -14,6 +14,7 @@ using EquineCastration.Models.User;
 using EquineCastration.Services;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 
 namespace EquineCastration.Controllers;
 
@@ -73,8 +74,11 @@ public class AccountController : ControllerBase
 
     if (ModelState.IsValid) // Actual success route
     {
-      var user = await _users.FindByEmailAsync(model.Email);
-      
+      var user = await _users.Users
+        .Include(x=>x.Veterinarian)
+        .Include(x=>x.Owner)
+        .FirstOrDefaultAsync(x => x.Email == model.Email);
+
       // check if user exist. If yes, then mostly likely user email is not confirmed and 
       // some fields are incomplete, such as full name and password might have not been set.
       if (user is not null) 
@@ -85,9 +89,9 @@ public class AccountController : ControllerBase
         
         if (model.IsVeterinarian) // if vet
         {
-          user.Institution = model.Institution;
-          user.IsAmbulatory = model.IsAmbulatory;
-          user.YearsQualified = model.YearsQualified;
+          user.Veterinarian.Institution = model.Institution;
+          user.Veterinarian.IsAmbulatory = model.IsAmbulatory;
+          user.Veterinarian.YearsQualified = model.YearsQualified;
         }
         
         await _users.UpdateAsync(user); // update user
@@ -112,9 +116,12 @@ public class AccountController : ControllerBase
 
       if (model.IsVeterinarian) // if vet
       {
-        newUser.Institution = model.Institution;
-        newUser.IsAmbulatory = model.IsAmbulatory;
-        newUser.YearsQualified = model.YearsQualified;
+        newUser.Veterinarian = new Veterinarian
+        {
+          Institution = model.Institution,
+          IsAmbulatory = model.IsAmbulatory,
+          YearsQualified = model.YearsQualified
+        };
       }
       
       var result = await _users.CreateAsync(newUser, model.Password);

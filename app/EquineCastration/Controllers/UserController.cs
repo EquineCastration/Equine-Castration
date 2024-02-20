@@ -9,6 +9,7 @@ using EquineCastration.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 
 namespace EquineCastration.Controllers;
 
@@ -77,7 +78,10 @@ public class UserController : ControllerBase
   [HttpDelete("me")]
   public async Task<IActionResult> Delete ()
   {
-    var user = await _users.FindByIdAsync(_users.GetUserId(User));
+    var user = await _users.Users
+      .Include(x => x.Veterinarian)
+      .Include(x => x.Owner)
+      .FirstOrDefaultAsync(x => x.Id == _users.GetUserId(User));
     if (user is null) return NotFound();
 
     await _cases.DeleteAuthorAllCases(user.Id);
