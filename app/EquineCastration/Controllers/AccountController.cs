@@ -123,6 +123,12 @@ public class AccountController : ControllerBase
           YearsQualified = model.YearsQualified
         };
       }
+      else 
+      {
+        var existingOwner = await _db.Owners.FirstOrDefaultAsync(x => x.Email == model.Email);
+
+        newUser.Owner = existingOwner ?? new Owner { Email = model.Email }; // use existing owner or create new owner
+      }
       
       var result = await _users.CreateAsync(newUser, model.Password);
       if (result.Succeeded)
