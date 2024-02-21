@@ -4,7 +4,7 @@ namespace EquineCastration.Data.Entities.Identity;
 
 public class Veterinarian
 {
-  public int Id { get; set; }
+  public string Id { get; set; } = "Vet_" + Guid.NewGuid();
   public string? ApplicationUserId { get; set; }
   
   [PersonalData]
