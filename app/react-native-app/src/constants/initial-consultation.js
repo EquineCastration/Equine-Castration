@@ -15,6 +15,10 @@ export const initialConsultation = {
       label: "Client surname",
       defaultValue: "",
     },
+    clientEmail: {
+      label: "Client email",
+      defaultValue: "",
+    },
     dateOfCastration: {
       label: "Date of castration",
       defaultValue: "",
