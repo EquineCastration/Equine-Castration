@@ -59,7 +59,7 @@ public class UsersController : ControllerBase
       {
         Id = x.Id,
         FullName = x.FullName,
-        Email = x.Email,
+        Email = x.Email ?? string.Empty,
         EmailConfirmed = x.EmailConfirmed,
         Roles = new List<string>(roles), // Assign list of roles
       };
@@ -85,7 +85,7 @@ public class UsersController : ControllerBase
     {
       Id = userFound.Id,
       FullName = userFound.FullName,
-      Email = userFound.Email,
+      Email = userFound.Email ?? string.Empty,
       EmailConfirmed = userFound.EmailConfirmed,
       Roles = new List<string>(roles) // Assign list of roles
     };

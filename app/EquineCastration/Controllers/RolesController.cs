@@ -23,7 +23,7 @@ public class RolesController : ControllerBase
   public async Task<ActionResult<List<Role>>> List()
   {
     var rolesList = await _role.Roles.ToListAsync();
-    return rolesList.ConvertAll<Role>(x => new Role{Id = x.Id, Name = x.NormalizedName});
+    return rolesList.ConvertAll<Role>(x => new Role{Id = x.Id, Name = x.NormalizedName ?? string.Empty});
   }
 
   [HttpGet("{roleId}")]
@@ -31,6 +31,6 @@ public class RolesController : ControllerBase
   {
     var role = await _role.FindByIdAsync(roleId);
     if (role is null) throw new KeyNotFoundException();
-    return new Role { Id = role.Id, Name = role.NormalizedName };
+    return new Role { Id = role.Id, Name = role.NormalizedName ?? string.Empty };
   }
 }
