@@ -4,7 +4,8 @@ public record CaseModel
 {
   public int Id { get; set; }
   public string HorseName { get; set; } = string.Empty;
-  public string ClientSurname { get; set; } = string.Empty;
+  public string? ClientSurname { get; set; }
+  public string ClientEmail { get; set; } = string.Empty;
   public string DateOfCastration { get; set; } = string.Empty;
   public bool IsLessThanTwo { get; set; }
   public int AgeAboveTwo { get; set; }
@@ -33,8 +34,9 @@ public record CaseModel
   public CaseModel(Data.Entities.Case entity)
   {
     Id = entity.Id;
-    HorseName = entity.HorseName;
-    ClientSurname = entity.ClientSurname;
+    HorseName = entity.Horse.Name;
+    ClientSurname = entity.Owner?.ApplicationUser?.FullName;
+    ClientEmail = entity.Owner.Email;
     DateOfCastration = entity.DateOfCastration.ToString("dd/MM/yyyy");
     IsLessThanTwo = entity.IsLessThanTwo;
     AgeAboveTwo = entity.AgeAboveTwo;

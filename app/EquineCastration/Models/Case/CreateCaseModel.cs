@@ -1,4 +1,5 @@
 using System.Globalization;
+using EquineCastration.Data.Entities;
 using EquineCastration.Data.Entities.Identity;
 
 namespace EquineCastration.Models.Case;
@@ -6,7 +7,7 @@ namespace EquineCastration.Models.Case;
 public record CreateCaseModel
   {
   public string HorseName { get; set; } = string.Empty;
-  public string ClientSurname { get; set; } = string.Empty;
+  public string ClientEmail { get; set; } = string.Empty;
   public string DateOfCastration { get; set; } = string.Empty;
   public bool IsLessThanTwo { get; set; }
   public int AgeAboveTwo { get; set; }
@@ -31,13 +32,16 @@ public record CreateCaseModel
   public string EnvironmentCleanlinessOther { get; set; } = string.Empty;
   public string PatientCompliance { get; set; } = string.Empty;
   public string PatientComplianceOther { get; set; } = string.Empty;
+  public string DischargeDate { get; set; } = string.Empty;
+  public bool Deceased { get; set; }
+  public bool InviteOwner { get; set; }
   
 
-  public Data.Entities.Case ToEntity(ApplicationUser author)
+  public Data.Entities.Case ToEntity(Veterinarian author, Horse horse, Owner owner)
     => new()
     {
-      HorseName = HorseName,
-      ClientSurname = ClientSurname,
+      Horse = horse,
+      Owner = owner,
       DateOfCastration = new DateTimeOffset(DateTime.ParseExact(DateOfCastration, "dd/MM/yyyy", CultureInfo.InvariantCulture), TimeSpan.Zero),
       IsLessThanTwo = IsLessThanTwo,
       AgeAboveTwo = AgeAboveTwo,
@@ -62,6 +66,9 @@ public record CreateCaseModel
       EnvironmentCleanlinessOther = EnvironmentCleanlinessOther,
       PatientCompliance = PatientCompliance,
       PatientComplianceOther = PatientComplianceOther,
+      DischargeDate = new DateTimeOffset(DateTimeOffset.Now.Date, TimeSpan.Zero), // TODO: assign actual discharge date
+      Deceased = Deceased,
+      InviteOwner = InviteOwner,
       Author = author
     };
   }

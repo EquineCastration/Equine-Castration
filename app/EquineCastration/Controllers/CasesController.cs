@@ -23,35 +23,33 @@ public class CasesController : ControllerBase
 
   }
 
+  [Authorize(nameof(AuthPolicies.CanListOwnCases))]
   [HttpGet]
-  public async Task<List<CaseModel>> List()
+  public async Task<ActionResult<List<CaseModel>>> List()
   {
-    if (User.HasClaim(CustomClaimTypes.SitePermission, SitePermissionClaims.ListAllCases))
-      return await _cases.ListAll();
-    
-    return await _cases.List(_users.GetUserId(User));
+    var userId = _users.GetUserId(User);
+    if (userId is null) return Forbid();
+    return Ok(await _cases.List(userId));
   }
-  
   
   [Authorize(nameof(AuthPolicies.CanCreateCases))]
   [HttpPost]
   public async Task<ActionResult> Create(CreateCaseModel model)
   {
-    return Ok(await _cases.Create(model, _users.GetUserId(User)));
+    var userId = _users.GetUserId(User);
+    if (userId is null) return Forbid();
+    return Ok(await _cases.Create(model, userId));
   }
   
+  [Authorize(nameof(AuthPolicies.CanViewOwnCases))]
   [HttpGet("{id}")]
   public async Task<ActionResult> Get(int id)
   {
     try
     {
-      if (User.HasClaim(CustomClaimTypes.SitePermission, SitePermissionClaims.ViewAllCases))
-        return Ok(await _cases.Get(id));
-      
-      if (User.HasClaim(CustomClaimTypes.SitePermission, SitePermissionClaims.ViewOwnCases))
-        return Ok(await _cases.GetAuthorCase(_users.GetUserId(User), id));
-
-      return BadRequest();
+      var userId = _users.GetUserId(User);
+      if (userId is null) return Forbid();
+      return Ok(await _cases.GetAuthorCase(userId, id));
     }
     catch (KeyNotFoundException)
     {
@@ -59,44 +57,32 @@ public class CasesController : ControllerBase
     }
   }
   
+  [Authorize(nameof(AuthPolicies.CanViewOwnCases))]
   [HttpPut("{id}")]
   public async Task<ActionResult> Edit(int id, [FromBody] CreateCaseModel caseUpdate)
   {
     try
     {
-      if (User.HasClaim(CustomClaimTypes.SitePermission, SitePermissionClaims.EditAllCases))
-        return Ok(await _cases.Edit(id, caseUpdate));
-
-      if (User.HasClaim(CustomClaimTypes.SitePermission, SitePermissionClaims.EditOwnCases))
-        return Ok(await _cases.EditAuthorCase(id, caseUpdate, _users.GetUserId(User)));
-      
-      return BadRequest();
+      var userId = _users.GetUserId(User);
+      if (userId is null) return Forbid();
+      return Ok(await _cases.EditAuthorCase(id, caseUpdate, userId));
     }
     catch (KeyNotFoundException)
     {
       return NotFound();
     }
-    
   }
 
+  [Authorize(nameof(AuthPolicies.CanDeleteOwnCases))]
   [HttpDelete("{id}")]
   public async Task<ActionResult> Delete(int id)
   {
     try
     {
-      if (User.HasClaim(CustomClaimTypes.SitePermission, SitePermissionClaims.DeleteAllCases))
-      {
-        await _cases.Delete(id);
-        return NoContent();
-      }
-
-      if (User.HasClaim(CustomClaimTypes.SitePermission, SitePermissionClaims.DeleteOwnCases))
-      {
-        await _cases.DeleteAuthorCase(id, _users.GetUserId(User));
-        return NoContent();
-      }
-      
-      return BadRequest();
+      var userId = _users.GetUserId(User);
+      if (userId is null) return Forbid();
+      await _cases.DeleteAuthorCase(id, userId);
+      return Ok();
     }
     catch (KeyNotFoundException)
     {
