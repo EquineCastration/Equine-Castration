@@ -18,7 +18,7 @@ on:
 env:
   run-id: ${{ github.event.inputs.publish-run-id }}
   bundleExecutable_migration: migrate-equine-castration-db # CI_migration-output-filename from the publish workflow
-  dotnet-version: 6.0.x # dotnet version to use
+  dotnet-version: 8.0.x # dotnet version to use
   az-app-service: dev-equinecastration # name of the app service to deploy to
 
   migration-artifact: ${{ github.event.inputs.publish-migration-artifact }}
