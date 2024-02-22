@@ -35,7 +35,7 @@ public record CaseModel
   {
     Id = entity.Id;
     HorseName = entity.Horse.Name;
-    ClientSurname = entity.Owner?.ApplicationUser?.FullName;
+    ClientSurname = entity.Owner.ApplicationUser?.FullName;
     ClientEmail = entity.Owner.Email;
     DateOfCastration = entity.DateOfCastration.ToString("dd/MM/yyyy");
     IsLessThanTwo = entity.IsLessThanTwo;

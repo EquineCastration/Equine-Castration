@@ -40,7 +40,7 @@ public class TokenIssuingService
   {
     var link = await GenerateAccountConfirmationLink(user);
     await _accountEmail.SendAccountConfirmation(
-        new EmailAddress(user.Email) { Name = user.FullName },
+        new EmailAddress(user.Email ?? throw new InvalidOperationException("Email cannot be null")) { Name = user.FullName },
         link: link.EmailConfirmationLink,
         resendLink: (ClientRoutes.ResendConfirm +
             $"?vm={new { UserId = user.Id }.ObjectToBase64UrlJson()}")
@@ -71,7 +71,7 @@ public class TokenIssuingService
   {
     var link = await GeneratePasswordResetLink(user);
     await _accountEmail.SendPasswordReset(
-        new EmailAddress(user.Email) { Name = user.FullName },
+        new EmailAddress(user.Email ?? throw new InvalidOperationException("Email cannot be null")) { Name = user.FullName },
         link: link.PasswordResetLink,
         resendLink: (ClientRoutes.ResendResetPassword +
             $"?vm={new { UserId = user.Id }.ObjectToBase64UrlJson()}")

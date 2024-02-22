@@ -1,8 +1,6 @@
 using EquineCastration.Auth;
 using EquineCastration.Config;
-using EquineCastration.Data.Entities;
 using EquineCastration.Data.Entities.Identity;
-using EquineCastration.Models.Account;
 using EquineCastration.Models.Account.Email;
 using EquineCastration.Models.Emails;
 using EquineCastration.Models.User;
@@ -76,9 +74,12 @@ public class UsersController : ControllerBase
   /// <param name="id">user id</param>
   /// <returns>user matching the id</returns>
   [HttpGet("{id}")]
-  public async Task<UserModel> Get(string id)
+  public async Task<ActionResult> Get(string id)
   {
     var userFound = await _users.FindByIdAsync(id);
+    
+    if (userFound is null) return NotFound(); 
+    
     var roles = await _users.GetRolesAsync(userFound); // Get user roles
     var user = new UserModel
     {
@@ -88,7 +89,7 @@ public class UsersController : ControllerBase
       EmailConfirmed = userFound.EmailConfirmed,
       Roles = new List<string>(roles) // Assign list of roles
     };
-    return user; // return user
+    return Ok(user); // return user
   }
   
   /// <summary>

@@ -1,8 +1,6 @@
 using System.Text.Json;
 using EquineCastration.Auth;
-using EquineCastration.Config;
 using EquineCastration.Data;
-using EquineCastration.Data.Entities;
 using EquineCastration.Data.Entities.Identity;
 using EquineCastration.Extensions;
 using EquineCastration.Models.Account.Email;
@@ -87,8 +85,8 @@ public class AccountController : ControllerBase
         user.PasswordHash = hashedPassword; // update password
         user.FullName = model.FullName; // update user full name
         
-        if (model.IsVeterinarian) // if vet
-        {
+        if (model.IsVeterinarian && user.Veterinarian is not null) // if vet
+        { 
           user.Veterinarian.Institution = model.Institution;
           user.Veterinarian.IsAmbulatory = model.IsAmbulatory;
           user.Veterinarian.YearsQualified = model.YearsQualified;

@@ -23,7 +23,7 @@ public class RolesController : ControllerBase
   public async Task<ActionResult<List<Role>>> List()
   {
     var rolesList = await _role.Roles.ToListAsync();
-    return rolesList.ConvertAll<Models.Role>(x => new Role{Id = x.Id, Name = x.NormalizedName});
+    return rolesList.ConvertAll<Role>(x => new Role{Id = x.Id, Name = x.NormalizedName});
   }
 
   [HttpGet("{roleId}")]
