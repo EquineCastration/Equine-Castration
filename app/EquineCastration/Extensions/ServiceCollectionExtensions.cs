@@ -25,6 +25,7 @@ namespace EquineCastration.Extensions
               .AddTransient<TokenIssuingService>()
               .AddTransient<RazorViewService>()
               .AddTransient<AccountEmailService>()
+              .AddTransient<DischargeEmailService>()
               .TryAddSingleton<IActionContextAccessor, ActionContextAccessor>();
 
       if (useSendGrid) s.AddTransient<IEmailSender, SendGridEmailSender>();
