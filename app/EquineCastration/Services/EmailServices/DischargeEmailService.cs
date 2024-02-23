@@ -26,8 +26,8 @@ public class DischargeEmailService
         horseName,
         dischargeDate,
         veterinarianName,
-        _download.AppStoreLink,
-        _download.GooglePlayStoreLink
+        _download.iOS,
+        _download.Android
       ));
   
   public async Task SendDischarge(EmailAddress to, string horseName, string dischargeDate,
@@ -40,7 +40,7 @@ public class DischargeEmailService
         horseName,
         dischargeDate,
         veterinarianName,
-        _download.AppStoreLink,
-        _download.GooglePlayStoreLink
+        _download.iOS,
+        _download.Android
       ));
 }
