@@ -100,15 +100,18 @@ public class CaseService
     var entity = newCase.ToEntity(author, horse, owner);
     await _db.Cases.AddAsync(entity);
     await _db.SaveChangesAsync();
+
+    if (!entity.Deceased) // send email only if the horse is not deceased
+    {
+      var isOwnerNew = await _users.FindByEmailAsync(owner.Email) is null; // Check if the owner is registered
     
-    var isOwnerNew = await _users.FindByEmailAsync(owner.Email) is null; // Check if the owner is registered
-    
-    // Send discharge email based on whether the owner is registered or not
-    await (isOwnerNew
-      ? _dischargeEmail.SendDischargeWithRegistrationRequest(new EmailAddress(owner.Email),
-        newCase.HorseName, newCase.DischargeDate, author.ApplicationUser.FullName)
-      : _dischargeEmail.SendDischarge(new EmailAddress(owner.Email),
-        newCase.HorseName, newCase.DischargeDate, author.ApplicationUser.FullName));
+      // email type whether the owner is registered or not
+      await (isOwnerNew
+        ? _dischargeEmail.SendDischargeWithRegistrationRequest(new EmailAddress(owner.Email),
+          newCase.HorseName, newCase.DischargeDate, author.ApplicationUser.FullName)
+        : _dischargeEmail.SendDischarge(new EmailAddress(owner.Email),
+          newCase.HorseName, newCase.DischargeDate, author.ApplicationUser.FullName));
+    }
 
     return await Get(entity.Id);
   }
