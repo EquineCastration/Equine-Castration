@@ -134,22 +134,26 @@ public class CaseService
   public async Task DeleteAuthorCase(int caseId, string userId)
   {
     var entity = await _db.Cases
-                   .Include(x => x.Author)
+                   .Include(x=>x.Horse)
                    .Where(x => x.Id == caseId && x.Author.ApplicationUserId == userId)
                    .SingleOrDefaultAsync()
                  ?? throw new KeyNotFoundException();
-    _db.Cases.Remove(entity);
+    
+    _db.Cases.Remove(entity); 
+    _db.Horses.Remove(entity.Horse);
+    
     await _db.SaveChangesAsync();
   }
 
   public async Task DeleteAuthorAllCases(string userId)
   {
     var entity = await _db.Cases
-                   .Include(x => x.Author)
-                   .Where(x => x.Author.ApplicationUserId == userId)
-                   .ToListAsync()
-                 ?? throw new KeyNotFoundException();
+      .Include(x => x.Horse)
+      .Where(x => x.Author.ApplicationUserId == userId)
+      .ToListAsync();
+    
     _db.Cases.RemoveRange(entity);
+    _db.Horses.RemoveRange(entity.Select(x=>x.Horse));
     await _db.SaveChangesAsync();
   }
 }
