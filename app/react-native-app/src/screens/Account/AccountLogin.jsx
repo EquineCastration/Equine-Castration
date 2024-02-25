@@ -96,7 +96,9 @@ export const AccountLogin = ({ navigation }) => {
                 bgColor={colors.light}
               />
 
-              <TouchableOpacity>
+              <TouchableOpacity
+                onPress={() => navigation.navigate("RequestPasswordReset")}
+              >
                 <Text
                   style={{
                     textAlign: "center",

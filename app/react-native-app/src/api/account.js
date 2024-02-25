@@ -57,8 +57,8 @@ export const getAccountApi = ({ api }) => ({
    * @returns
    */
   requestPasswordReset: (userIdOrEmail) =>
-    api.post("account/password/reset", {
-      json: userIdOrEmail,
+    api.post("account/password/reset", JSON.stringify(userIdOrEmail), {
+      headers: { "Content-Type": "application/json" },
     }),
 
   /**

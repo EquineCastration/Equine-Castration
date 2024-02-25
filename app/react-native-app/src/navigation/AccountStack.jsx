@@ -5,6 +5,7 @@ import {
   RegistrationStepTwo,
   RegistrationStepGDPR,
 } from "screens/Account/Registration";
+import { RequestPasswordReset } from "screens/Account/RequestPasswordReset";
 
 export const AccountStack = () => {
   return (
@@ -25,6 +26,11 @@ export const AccountStack = () => {
           component={RegistrationStepGDPR}
         />
       </Stack.Group>
+
+      <Stack.Screen
+        name="RequestPasswordReset"
+        component={RequestPasswordReset}
+      />
     </Stack.Navigator>
   );
 };
