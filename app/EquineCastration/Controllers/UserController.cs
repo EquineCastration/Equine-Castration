@@ -9,6 +9,7 @@ using EquineCastration.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 
 namespace EquineCastration.Controllers;
 
@@ -48,22 +49,25 @@ public class UserController : ControllerBase
   public async Task<IActionResult> SetUICulture([FromBody] string culture)
   {
     try
-    {
-      var user = await _users.FindByNameAsync(User.Identity?.Name);
+    {   
+      if (User.Identity?.Name == null) return NoContent();
+      var user = await _users.FindByNameAsync(User.Identity.Name);
+      if (user is not null)
+      {
+        // Save it
+        await _user.SetUICulture(user.Id, culture);
 
-      // Save it
-      await _user.SetUICulture(user.Id, culture);
+        // Sign In again to reset user cookie
+        await _signIn.SignInAsync(user, false);
 
-      // Sign In again to reset user cookie
-      await _signIn.SignInAsync(user, false);
+        var profile = await _user.BuildProfile(user);
 
-      var profile = await _user.BuildProfile(user);
-
-      // Write a basic Profile Cookie for JS
-      HttpContext.Response.Cookies.Append(
-        AuthConfiguration.ProfileCookieName,
-        JsonSerializer.Serialize((BaseUserProfileModel)profile),
-        AuthConfiguration.ProfileCookieOptions);
+        // Write a basic Profile Cookie for JS
+        HttpContext.Response.Cookies.Append(
+          AuthConfiguration.ProfileCookieName,
+          JsonSerializer.Serialize((BaseUserProfileModel)profile),
+          AuthConfiguration.ProfileCookieOptions);
+      }
     }
     catch (KeyNotFoundException) { return NotFound(); }
     catch (CultureNotFoundException) { return BadRequest(); }
@@ -77,12 +81,16 @@ public class UserController : ControllerBase
   [HttpDelete("me")]
   public async Task<IActionResult> Delete ()
   {
-    var user = await _users.FindByIdAsync(_users.GetUserId(User));
+    var user = await _users.Users
+      .Include(x => x.Veterinarian)
+      .Include(x => x.Owner)
+      .FirstOrDefaultAsync(x => x.Id == _users.GetUserId(User));
     if (user is null) return NotFound();
 
     await _cases.DeleteAuthorAllCases(user.Id);
     await _users.DeleteAsync(user);
-    await _accountEmail.SendDeleteUpdate(new EmailAddress(user.Email){ Name = user.FullName });
+    if (user.Email is not null) 
+      await _accountEmail.SendDeleteUpdate(new EmailAddress(user.Email) { Name = user.FullName });
     return NoContent();
   }
 }

@@ -15,7 +15,7 @@ on:
 
 env:
   CI_app-project: ./app/EquineCastration/EquineCastration.csproj
-  CI_dotnet-version: 6.0.x
+  CI_dotnet-version: 8.0.x
   CI_build-config: ${{ github.event.inputs.build-config || 'release' }}
   CI_publish-dir: publish
 

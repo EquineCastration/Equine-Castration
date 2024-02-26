@@ -1,8 +1,6 @@
 using System.Text.Json;
 using EquineCastration.Auth;
-using EquineCastration.Config;
 using EquineCastration.Data;
-using EquineCastration.Data.Entities;
 using EquineCastration.Data.Entities.Identity;
 using EquineCastration.Extensions;
 using EquineCastration.Models.Account.Email;
@@ -14,6 +12,7 @@ using EquineCastration.Models.User;
 using EquineCastration.Services;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 
 namespace EquineCastration.Controllers;
 
@@ -73,8 +72,11 @@ public class AccountController : ControllerBase
 
     if (ModelState.IsValid) // Actual success route
     {
-      var user = await _users.FindByEmailAsync(model.Email);
-      
+      var user = await _users.Users
+        .Include(x=>x.Veterinarian)
+        .Include(x=>x.Owner)
+        .FirstOrDefaultAsync(x => x.Email == model.Email);
+
       // check if user exist. If yes, then mostly likely user email is not confirmed and 
       // some fields are incomplete, such as full name and password might have not been set.
       if (user is not null) 
@@ -83,11 +85,11 @@ public class AccountController : ControllerBase
         user.PasswordHash = hashedPassword; // update password
         user.FullName = model.FullName; // update user full name
         
-        if (model.IsVeterinarian) // if vet
-        {
-          user.Institution = model.Institution;
-          user.IsAmbulatory = model.IsAmbulatory;
-          user.YearsQualified = model.YearsQualified;
+        if (model.IsVeterinarian && user.Veterinarian is not null) // if vet
+        { 
+          user.Veterinarian.Institution = model.Institution;
+          user.Veterinarian.IsAmbulatory = model.IsAmbulatory;
+          user.Veterinarian.YearsQualified = model.YearsQualified;
         }
         
         await _users.UpdateAsync(user); // update user
@@ -112,9 +114,18 @@ public class AccountController : ControllerBase
 
       if (model.IsVeterinarian) // if vet
       {
-        newUser.Institution = model.Institution;
-        newUser.IsAmbulatory = model.IsAmbulatory;
-        newUser.YearsQualified = model.YearsQualified;
+        newUser.Veterinarian = new Veterinarian
+        {
+          Institution = model.Institution,
+          IsAmbulatory = model.IsAmbulatory,
+          YearsQualified = model.YearsQualified
+        };
+      }
+      else 
+      {
+        var existingOwner = await _db.Owners.FirstOrDefaultAsync(x => x.Email == model.Email);
+
+        newUser.Owner = existingOwner ?? new Owner { Email = model.Email }; // use existing owner or create new owner
       }
       
       var result = await _users.CreateAsync(newUser, model.Password);

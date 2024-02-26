@@ -1,8 +1,6 @@
 using EquineCastration.Auth;
 using EquineCastration.Config;
-using EquineCastration.Data.Entities;
 using EquineCastration.Data.Entities.Identity;
-using EquineCastration.Models.Account;
 using EquineCastration.Models.Account.Email;
 using EquineCastration.Models.Emails;
 using EquineCastration.Models.User;
@@ -61,7 +59,7 @@ public class UsersController : ControllerBase
       {
         Id = x.Id,
         FullName = x.FullName,
-        Email = x.Email,
+        Email = x.Email ?? string.Empty,
         EmailConfirmed = x.EmailConfirmed,
         Roles = new List<string>(roles), // Assign list of roles
       };
@@ -76,19 +74,22 @@ public class UsersController : ControllerBase
   /// <param name="id">user id</param>
   /// <returns>user matching the id</returns>
   [HttpGet("{id}")]
-  public async Task<UserModel> Get(string id)
+  public async Task<ActionResult> Get(string id)
   {
     var userFound = await _users.FindByIdAsync(id);
+    
+    if (userFound is null) return NotFound(); 
+    
     var roles = await _users.GetRolesAsync(userFound); // Get user roles
     var user = new UserModel
     {
       Id = userFound.Id,
       FullName = userFound.FullName,
-      Email = userFound.Email,
+      Email = userFound.Email ?? string.Empty,
       EmailConfirmed = userFound.EmailConfirmed,
       Roles = new List<string>(roles) // Assign list of roles
     };
-    return user; // return user
+    return Ok(user); // return user
   }
   
   /// <summary>
@@ -155,7 +156,10 @@ public class UsersController : ControllerBase
   [HttpDelete("{id}")]
   public async Task<IActionResult> Delete (string id, [FromBody] UserModel userModel)
   {
-    var user = await _users.FindByIdAsync(id);
+    var user = await _users.Users
+      .Include(x => x.Veterinarian)
+      .Include(x => x.Owner)
+      .FirstOrDefaultAsync(x => x.Id == _users.GetUserId(User));
     if (user is null) return NotFound();
     await _users.DeleteAsync(user);
     if (userModel.SendUpdateEmail) // Check if send update email is true

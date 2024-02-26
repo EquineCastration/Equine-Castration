@@ -24,31 +24,7 @@ public static class AuthPolicies
       .Combine(IsAuthenticatedUser)
       .RequireClaim(CustomClaimTypes.SitePermission, SitePermissionClaims.ManageUsers)
       .Build();
- 
- public static AuthorizationPolicy CanViewAllCases
-   => new AuthorizationPolicyBuilder()
-     .Combine(IsAuthenticatedUser)
-     .RequireClaim(CustomClaimTypes.SitePermission, SitePermissionClaims.ViewAllCases)
-     .Build();
- 
- public static AuthorizationPolicy CanListAllCases
-   => new AuthorizationPolicyBuilder()
-     .Combine(IsAuthenticatedUser)
-     .RequireClaim(CustomClaimTypes.SitePermission, SitePermissionClaims.ListAllCases)
-     .Build();
- 
- public static AuthorizationPolicy CanEditAllCases
-   => new AuthorizationPolicyBuilder()
-     .Combine(IsAuthenticatedUser)
-     .RequireClaim(CustomClaimTypes.SitePermission, SitePermissionClaims.EditAllCases)
-     .Build();
- 
- public static AuthorizationPolicy CanDeleteAllCases
-   => new AuthorizationPolicyBuilder()
-     .Combine(IsAuthenticatedUser)
-     .RequireClaim(CustomClaimTypes.SitePermission, SitePermissionClaims.DeleteAllCases)
-     .Build();
- 
+
  public static AuthorizationPolicy CanCreateCases
    => new AuthorizationPolicyBuilder()
      .Combine(IsAuthenticatedUser)

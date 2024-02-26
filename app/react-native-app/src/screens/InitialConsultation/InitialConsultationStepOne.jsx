@@ -20,7 +20,7 @@ import { initialConsultation } from "constants/initial-consultation";
 
 const validationSchema = object().shape({
   horseName: string().required("Horse name required"),
-  clientSurname: string().required("Client surname required"),
+  clientEmail: string().required("Client surname required"),
   dateOfCastration: string().required("Date of castration required"),
   isLessThanTwo: boolean(),
   // TO DO: could be an issue with Picker component of BasicPicker unable to handle numbers.
@@ -97,7 +97,7 @@ export const InitialConsultationStepOne = ({ navigation, route }) => {
 
   const keysArr = [
     "horseName",
-    "clientSurname",
+    "clientEmail",
     "dateOfCastration",
     "isLessThanTwo",
     "ageAboveTwo",
@@ -125,7 +125,7 @@ export const InitialConsultationStepOne = ({ navigation, route }) => {
         // this allow user to navigate back and forth between the screens/forms
         InitialConsultationStore.update((s) => {
           s.horseName = values.horseName;
-          s.clientSurname = values.clientSurname;
+          s.clientEmail = values.clientEmail;
           s.dateOfCastration = values.dateOfCastration;
           s.isLessThanTwo = values.isLessThanTwo;
           !values.isLessThanTwo && (s.ageAboveTwo = values.ageAboveTwo);
@@ -142,10 +142,7 @@ export const InitialConsultationStepOne = ({ navigation, route }) => {
           >
             <View>
               <InputField label={fields.horseName.label} name="horseName" />
-              <InputField
-                label={fields.clientSurname.label}
-                name="clientSurname"
-              />
+              <InputField label={fields.clientEmail.label} name="clientEmail" />
               <DatePickerField
                 name="dateOfCastration"
                 label={fields.dateOfCastration.label}
