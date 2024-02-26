@@ -1,0 +1,18 @@
+@inject IOptions<BaseEmailSenderOptions> _config
+@model DischargeEmailModel
+
+@{
+  ViewBag.Subject = $"{@_config.Value.ServiceName} Notification: Horse Discharged";
+}
+
+<p>Dear @Model!.RecipientName,</p>
+
+<p>Your horse @Model.HorseName was discharged on @Model.DischargeDate</p>
+
+<p>Case information and followup surveys (if consented to) can be found in the Equine Castration mobile app. </p>
+
+<p>The app can be downloaded on the <a href="@Model.AppStoreLink">App Store</a> or <a href="@Model.PlayStoreLink">Play Store</a>.</p>
+
+Many thanks,
+
+@Model.VeterinarianName
