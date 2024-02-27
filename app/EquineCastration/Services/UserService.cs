@@ -72,7 +72,8 @@ public class UserService
       profileClaims[ClaimTypes.Email],
       profileClaims[CustomClaimTypes.FullName],
       profileClaims.GetValueOrDefault(CustomClaimTypes.UICulture) ?? CultureInfo.CurrentCulture.Name,
-      user.Claims.Where(x => x.Type == CustomClaimTypes.SitePermission).Select(x=>x.Value).ToList()
+      user.Claims.Where(x => x.Type == CustomClaimTypes.SitePermission).Select(x=>x.Value).ToList(),
+      user.Claims.Where(x => x.Type == ClaimTypes.Role).Select(x=>x.Value).ToList()
     );
 
     return Task.FromResult(profile);
