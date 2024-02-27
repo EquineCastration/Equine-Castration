@@ -217,11 +217,7 @@ export const DrawerNavigator = () => {
         <Drawer.Screen
           name="Cases"
           component={CaseStack}
-          options={{
-            title: user?.roles.includes(roles.Veterinarian)
-              ? "View Cases"
-              : "View My Horses",
-          }}
+          options={{ title: "View Horses Cases" }}
         />
       </Drawer.Navigator>
     </>

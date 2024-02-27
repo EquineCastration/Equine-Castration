@@ -31,7 +31,7 @@ public class CaseService
       .Include(x => x.Horse)
       .Include(x => x.Owner)
       .ThenInclude(x => x.ApplicationUser)
-      .Where(x => x.Author.ApplicationUserId == userId)
+      .Where(x => x.Author.ApplicationUserId == userId || x.Owner.ApplicationUserId == userId)
       .ToListAsync();
     return list.ConvertAll<CaseModel>(x => new CaseModel(x));
   }

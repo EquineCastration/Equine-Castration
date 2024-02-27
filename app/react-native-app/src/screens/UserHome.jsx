@@ -20,7 +20,7 @@ export const UserHome = ({ navigation }) => {
       visible: user?.permissions.includes(permissions.CreateCases),
     },
     {
-      title: "View Cases",
+      title: "View Horses Cases",
       navigateToParent: "Cases",
       navigate: "CaseList", // screen name
       icon: "documents-outline", // only accepts ionicons

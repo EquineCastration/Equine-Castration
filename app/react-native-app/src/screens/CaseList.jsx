@@ -10,6 +10,7 @@ import { colors, font } from "style/style";
 import { DefaultLayout } from "layout/DefaultLayout";
 import { useCaseList } from "api/case";
 import { useIsFocused } from "@react-navigation/native";
+import { FontAwesome5 } from "@expo/vector-icons";
 
 export const CaseList = ({ navigation }) => {
   const { data: caseList, mutate } = useCaseList();
@@ -44,37 +45,35 @@ export const CaseList = ({ navigation }) => {
             }
             data={caseList}
           >
-            <View
-              style={{
-                flexDirection: "row",
-                alignItems: "center",
-              }}
-            >
-              <Text style={[style.listLabel, { flex: 1 }]}>
-                {item.horseName}
-              </Text>
-              <Text
-                style={[
-                  style.listLabel,
-                  {
-                    fontWeight: "300",
-                    fontStyle: "italic",
-                    fontSize: font.size["sm"],
-                  },
-                ]}
-              >
-                Owner: {item.clientSurname}
-              </Text>
-            </View>
+            <Text style={[style.listLabel]}>
+              <FontAwesome5 name="horse-head" size={18} /> {item.horseName}
+            </Text>
+
             <Text
               style={[
                 style.listLabel,
                 {
                   fontSize: font.size["sm"],
+                  marginVertical: 3,
                 },
               ]}
             >
-              Castration date: {item.dateOfCastration}
+              <FontAwesome5 name="calendar-alt" size={13} /> Castration date:{" "}
+              {item.dateOfCastration}
+            </Text>
+            <Text
+              style={[
+                style.listLabel,
+                {
+                  fontWeight: "300",
+                  fontStyle: "italic",
+                  fontSize: font.size["sm"],
+                  textAlign: "right",
+                },
+              ]}
+            >
+              <FontAwesome5 name="user-alt" size={13} /> Owner:{" "}
+              {item.clientSurname}
             </Text>
           </ListItem>
         )}

@@ -4,7 +4,7 @@ import { font, colors } from "style/style";
 import { CaseDetail } from "screens/CaseDetail";
 import { CaseList } from "screens/CaseList";
 import { headerOptions } from "./HomeStack";
-import { Ionicons } from "@expo/vector-icons";
+import { FontAwesome5, Ionicons } from "@expo/vector-icons";
 import { InitialConsultationStack } from "./InitialConsultationStack";
 
 export const CaseStack = ({ navigation }) => {
@@ -34,9 +34,10 @@ export const CaseStack = ({ navigation }) => {
         options={({ route }) => ({
           headerBackground: () => (
             <ScreenHeader
-              title={`Case detail of ${route.params.caseData.horseName}`}
+              title={`${route.params.caseData.horseName} - Case detail`}
               fontSize={font.size.md}
               fontWeight={400}
+              icon={<FontAwesome5 name="horse-head" size={18} />}
             />
           ),
           ...headerOptions,
