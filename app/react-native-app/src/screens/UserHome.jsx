@@ -25,7 +25,7 @@ export const UserHome = ({ navigation }) => {
       navigate: "CaseList", // screen name
       icon: "documents-outline", // only accepts ionicons
       bgColor: colors.secondary[800],
-      visible: user?.permissions.includes(permissions.ListEligibleCases),
+      visible: user?.permissions.includes(permissions.ListOwnCases),
     },
     // TODO: to be implemented in future
     // {
