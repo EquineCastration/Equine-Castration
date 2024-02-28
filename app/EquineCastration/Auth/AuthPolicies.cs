@@ -49,6 +49,24 @@ public static class AuthPolicies
      .RequireClaim(CustomClaimTypes.SitePermission, SitePermissionClaims.DeleteOwnCases)
      .Build();
  
+ public static AuthorizationPolicy CanCreateCaseSurveys
+   => new AuthorizationPolicyBuilder()
+     .Combine(IsAuthenticatedUser)
+     .RequireClaim(CustomClaimTypes.SitePermission, SitePermissionClaims.CreateCaseSurveys)
+     .Build();
+ 
+ public static AuthorizationPolicy CanListOwnCaseSurveys
+   => new AuthorizationPolicyBuilder()
+     .Combine(IsAuthenticatedUser)
+     .RequireClaim(CustomClaimTypes.SitePermission, SitePermissionClaims.ListOwnCaseSurveys)
+     .Build();
+ 
+ public static AuthorizationPolicy CanViewOwnCaseSurveys
+   => new AuthorizationPolicyBuilder()
+     .Combine(IsAuthenticatedUser)
+     .RequireClaim(CustomClaimTypes.SitePermission, SitePermissionClaims.ViewOwnCaseSurveys)
+     .Build();
+ 
  
  private static readonly Func<AuthorizationHandlerContext, bool> IsSameHost =
     context =>

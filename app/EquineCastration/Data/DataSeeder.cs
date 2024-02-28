@@ -65,6 +65,9 @@ public class DataSeeder
       (CustomClaimTypes.SitePermission, SitePermissionClaims.DeleteOwnCases),
       (CustomClaimTypes.SitePermission, SitePermissionClaims.ListOwnCases),
       (CustomClaimTypes.SitePermission, SitePermissionClaims.ViewOwnCases),
+      
+      (CustomClaimTypes.SitePermission, SitePermissionClaims.ListOwnCaseSurveys),
+      (CustomClaimTypes.SitePermission, SitePermissionClaims.ViewOwnCaseSurveys),
     });
     
     // Horse owner
@@ -72,6 +75,10 @@ public class DataSeeder
     {
       (CustomClaimTypes.SitePermission, SitePermissionClaims.ListOwnCases),
       (CustomClaimTypes.SitePermission, SitePermissionClaims.ViewOwnCases),
+      
+      (CustomClaimTypes.SitePermission, SitePermissionClaims.CreateCaseSurveys),
+      (CustomClaimTypes.SitePermission, SitePermissionClaims.ListOwnCaseSurveys),
+      (CustomClaimTypes.SitePermission, SitePermissionClaims.ViewOwnCaseSurveys),
     });
     
   }

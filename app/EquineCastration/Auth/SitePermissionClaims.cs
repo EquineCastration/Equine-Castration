@@ -9,4 +9,8 @@ public class SitePermissionClaims
   public const string ViewOwnCases = "ViewOwnCases";
   public const string DeleteOwnCases = "DeleteOwnCases";
   public const string EditOwnCases = "EditOwnCases";
+  
+  public const string CreateCaseSurveys = "CreateCaseSurveys";
+  public const string ListOwnCaseSurveys = "ListOwnCaseSurveys";
+  public const string ViewOwnCaseSurveys = "ViewOwnCaseSurveys";
 }
