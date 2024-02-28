@@ -62,7 +62,8 @@ b.Services
   .AddTransient<UserService>()
   .AddTransient<FeatureFlagService>()
   .AddTransient<RegistrationRuleService>()
-  .AddTransient<CaseService>();
+  .AddTransient<CaseService>()
+  .AddTransient<SurveyService>();
 
 b.Services.AddSwaggerGen();
 
