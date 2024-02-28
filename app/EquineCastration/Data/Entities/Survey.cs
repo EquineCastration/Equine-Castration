@@ -4,7 +4,6 @@ public class Survey
 {
   public int Id { get; set; }
   public SurveyType SurveyType { get; set; }
-  public Horse Horse { get; set; } = null!;
   public Case Case { get; set; } = null!;
   public DateTimeOffset SurveyCompletion { get; set; } = DateTimeOffset.Now;
 
