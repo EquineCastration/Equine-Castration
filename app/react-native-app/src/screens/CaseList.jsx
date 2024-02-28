@@ -39,11 +39,10 @@ export const CaseList = ({ navigation }) => {
         renderItem={({ item }) => (
           <ListItem
             onPress={() =>
-              navigation.navigate("CaseDetail", {
+              navigation.navigate("CaseOverview", {
                 caseData: item,
               })
             }
-            data={caseList}
           >
             <Text style={[style.listLabel]}>
               <FontAwesome5 name="horse-head" size={18} /> {item.horseName}

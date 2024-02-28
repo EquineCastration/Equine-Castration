@@ -16,7 +16,7 @@ import { useBackendApi } from "contexts/BackendApi";
 import { useState, useEffect } from "react";
 import { Spinner } from "components/Spinner";
 import { BasicTouchableOpacity } from "components/BasicTouchableOpacity";
-import { roles } from "constants/site-roles";
+import { permissions } from "constants/site-permissions";
 
 const Drawer = createDrawerNavigator();
 
@@ -207,7 +207,7 @@ export const DrawerNavigator = () => {
       >
         <Drawer.Screen name="Home" component={HomeStack} />
 
-        {user?.roles.includes(roles.Veterinarian) && (
+        {user?.permissions.includes(permissions.CreateCases) && (
           <Drawer.Screen
             name="InitialConsultation"
             component={InitialConsultationStack}
@@ -217,7 +217,7 @@ export const DrawerNavigator = () => {
         <Drawer.Screen
           name="Cases"
           component={CaseStack}
-          options={{ title: "View Horses Cases" }}
+          options={{ title: "View Cases" }}
         />
       </Drawer.Navigator>
     </>
