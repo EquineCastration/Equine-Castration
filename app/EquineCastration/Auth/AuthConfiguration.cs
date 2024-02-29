@@ -67,6 +67,7 @@ public static class AuthConfiguration
       b.AddPolicy(nameof(AuthPolicies.CanCreateCaseSurveys), AuthPolicies.CanCreateCaseSurveys);
       b.AddPolicy(nameof(AuthPolicies.CanListOwnCaseSurveys), AuthPolicies.CanListOwnCaseSurveys);
       b.AddPolicy(nameof(AuthPolicies.CanViewOwnCaseSurveys), AuthPolicies.CanViewOwnCaseSurveys);
+      b.AddPolicy(nameof(AuthPolicies.CanGetEligibleSurveyType), AuthPolicies.CanGetEligibleSurveyType);
     };
 
 

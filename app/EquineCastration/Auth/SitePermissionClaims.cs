@@ -13,4 +13,5 @@ public class SitePermissionClaims
   public const string CreateCaseSurveys = "CreateCaseSurveys";
   public const string ListOwnCaseSurveys = "ListOwnCaseSurveys";
   public const string ViewOwnCaseSurveys = "ViewOwnCaseSurveys";
+  public const string GetEligibleSurveyType = "GetEligibleSurveyType";
 }

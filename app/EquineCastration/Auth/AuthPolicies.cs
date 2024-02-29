@@ -67,6 +67,11 @@ public static class AuthPolicies
      .RequireClaim(CustomClaimTypes.SitePermission, SitePermissionClaims.ViewOwnCaseSurveys)
      .Build();
  
+ public static AuthorizationPolicy CanGetEligibleSurveyType
+   => new AuthorizationPolicyBuilder()
+     .Combine(IsAuthenticatedUser)
+     .RequireClaim(CustomClaimTypes.SitePermission, SitePermissionClaims.GetEligibleSurveyType)
+     .Build();
  
  private static readonly Func<AuthorizationHandlerContext, bool> IsSameHost =
     context =>

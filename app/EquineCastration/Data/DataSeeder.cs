@@ -79,6 +79,7 @@ public class DataSeeder
       (CustomClaimTypes.SitePermission, SitePermissionClaims.CreateCaseSurveys),
       (CustomClaimTypes.SitePermission, SitePermissionClaims.ListOwnCaseSurveys),
       (CustomClaimTypes.SitePermission, SitePermissionClaims.ViewOwnCaseSurveys),
+      (CustomClaimTypes.SitePermission, SitePermissionClaims.GetEligibleSurveyType),
     });
     
   }
@@ -122,7 +123,7 @@ public class DataSeeder
   {
     var inputList = new List<CreateSurveyTypeModel>
     {
-      new CreateSurveyTypeModel (SurveyTypes.PostDayOne),
+      new CreateSurveyTypeModel (SurveyTypes.PostTwentyFourHours),
       new CreateSurveyTypeModel (SurveyTypes.PostDayThree),
       new CreateSurveyTypeModel (SurveyTypes.PostDayFive),
       new CreateSurveyTypeModel (SurveyTypes.PostDaySeven),
