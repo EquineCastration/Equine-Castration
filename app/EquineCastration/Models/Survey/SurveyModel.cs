@@ -2,14 +2,14 @@ namespace EquineCastration.Models.Survey;
 
 public class BaseSurveyModel
 {
-  public bool HasReturnedToNormalBehaviour { get; set; }
+  public bool? HasReturnedToNormalBehaviour { get; set; }
   public string? IsStiffOrLame { get; set; }
   public string? HasWoundDischarge { get; set; }
   public string? HasWoundDischargeOther { get; set; }
-  public bool IsProtrudingFromSurgicalSite { get; set; }
+  public bool? IsProtrudingFromSurgicalSite { get; set; }
   public string? HasSwellingAtSurgicalSite { get; set; }
   public string? HasSwellingAtSurgicalSiteOther { get; set; }
-  public int PictogramPainScore { get; set; }
+  public int? PictogramPainScore { get; set; }
   public string RequiredVetOrComplications { get; set; } = string.Empty;
   public string FurtherInformation { get; set; } = string.Empty;
 

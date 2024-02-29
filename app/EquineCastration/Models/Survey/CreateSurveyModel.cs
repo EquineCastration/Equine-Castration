@@ -5,8 +5,7 @@ namespace EquineCastration.Models.Survey;
 public class CreateSurveyModel : BaseSurveyModel
 {
   public int CaseId { get; set; }
-  public string SurveyType { get; set; } = string.Empty;
-  public string HorseOwnership { get; set; } = string.Empty;
+  public int SurveyTypeId { get; set; }
   
   public Data.Entities.Survey ToEntity(SurveyType surveyType, Data.Entities.Case surveyCase)
     => new()
