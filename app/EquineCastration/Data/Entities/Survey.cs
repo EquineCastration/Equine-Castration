@@ -12,7 +12,7 @@ public class Survey
   /// <summary>
   /// Has your horse returned to normal eating and drinking behaviours?
   /// </summary>
-  public bool HasReturnedToNormalBehaviour { get; set; }
+  public bool? HasReturnedToNormalBehaviour { get; set; }
   
   /// <summary>
   /// Does your horse appear stiff or lame?
@@ -33,7 +33,7 @@ public class Survey
   /// Applies to 24hrs post-surgery AND days 3, 5, 7 and 14)
   /// Using the pictograms below, what is the total pain score for your horse?
   /// </summary>
-  public int PictogramPainScore { get; set; }
+  public int? PictogramPainScore { get; set; }
   
   #endregion
   
@@ -52,7 +52,7 @@ public class Survey
   /// <summary>
   /// Is there anything protruding from the surgical site?
   /// </summary>
-  public bool IsProtrudingFromSurgicalSite { get; set; }
+  public bool? IsProtrudingFromSurgicalSite { get; set; }
   
   #endregion
   
@@ -86,7 +86,7 @@ public class Survey
   /// <summary>
   /// Has your horse returned to his normal self?
   /// </summary>
-  public bool HasReturnedToNormalSelf { get; set; }
+  public bool? HasReturnedToNormalSelf { get; set; }
   
   /// <summary>
   /// Did your horse have any complications from two weeks postoperatively to now?
@@ -102,12 +102,12 @@ public class Survey
   /// <summary>
   /// Is there any swelling present at the surgical sites?
   /// </summary>
-  public bool HasSwellingPresentAtSurgicalSite { get; set; }
+  public bool? HasSwellingPresentAtSurgicalSite { get; set; }
   
   /// <summary>
   /// Is there any discharge coming from the surgical sites?
   /// </summary>
-  public bool HasAnyDischarge { get; set; }
+  public bool? HasAnyDischarge { get; set; }
   
   #endregion
   
