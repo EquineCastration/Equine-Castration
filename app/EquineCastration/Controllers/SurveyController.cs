@@ -22,6 +22,11 @@ public class SurveyController : ControllerBase
     _survey = survey;
   }
 
+  /// <summary>
+  /// List all surveys for a case.
+  /// </summary>
+  /// <param name="caseId"> Id of the case </param>
+  /// <returns></returns>
   [Authorize(nameof(AuthPolicies.CanListOwnCaseSurveys))]
   [HttpGet("ListByCase/{caseId}")]
   public async Task<ActionResult> List(int caseId)
