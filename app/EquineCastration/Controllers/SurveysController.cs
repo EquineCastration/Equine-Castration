@@ -11,12 +11,12 @@ namespace EquineCastration.Controllers;
 [ApiController]
 [Route("api/[controller]")]
 [Authorize]
-public class SurveyController : ControllerBase
+public class SurveysController : ControllerBase
 {
   private readonly UserManager<ApplicationUser> _users;
   private SurveyService _survey;
 
-  public SurveyController(UserManager<ApplicationUser> users, SurveyService survey)
+  public SurveysController(UserManager<ApplicationUser> users, SurveyService survey)
   {
     _users = users;
     _survey = survey;
