@@ -11,7 +11,7 @@ export default defineConfig(({ mode }) => {
 
   switch (mode) {
     case "development": {
-      const proxyTarget = "http://localhost:7735";
+      const proxyTarget = "http://localhost:5735";
       return {
         ...config,
         server: {

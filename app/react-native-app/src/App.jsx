@@ -1,4 +1,4 @@
-import { BackendApiProvider } from "contexts/BackendApi";
+import { BackendApiProvider } from "contexts/BackendApiProvider";
 import { BackendConfigProvider } from "contexts/Config";
 import Toast from "react-native-toast-message";
 import { toastConfig } from "style/style";
