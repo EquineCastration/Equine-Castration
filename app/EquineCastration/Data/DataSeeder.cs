@@ -53,20 +53,6 @@ public class DataSeeder
 
   public async Task SeedRoles()
   {
-    // TODO populate as claims are made - 
-
-    // Admin
-    await SeedRole(Roles.Admin, new()
-    {
-      (CustomClaimTypes.SitePermission, SitePermissionClaims.ManageUsers),
-      
-      (CustomClaimTypes.SitePermission, SitePermissionClaims.CreateCases),
-      (CustomClaimTypes.SitePermission, SitePermissionClaims.EditAllCases),
-      (CustomClaimTypes.SitePermission, SitePermissionClaims.DeleteAllCases),
-      (CustomClaimTypes.SitePermission, SitePermissionClaims.ListAllCases),
-      (CustomClaimTypes.SitePermission, SitePermissionClaims.ViewAllCases),
-    });
-    
     // Vet
     await SeedRole(Roles.Veterinarian, new()
     {
@@ -75,15 +61,13 @@ public class DataSeeder
       (CustomClaimTypes.SitePermission, SitePermissionClaims.DeleteOwnCases),
       (CustomClaimTypes.SitePermission, SitePermissionClaims.ListOwnCases),
       (CustomClaimTypes.SitePermission, SitePermissionClaims.ViewOwnCases),
-      (CustomClaimTypes.SitePermission, SitePermissionClaims.ListEligibleCases),
-      (CustomClaimTypes.SitePermission, SitePermissionClaims.ViewEligibleCases),
     });
     
     // Horse owner
     await SeedRole(Roles.HorseOwner, new()
     {
-      (CustomClaimTypes.SitePermission, SitePermissionClaims.ListEligibleCases),
-      (CustomClaimTypes.SitePermission, SitePermissionClaims.ViewEligibleCases),
+      (CustomClaimTypes.SitePermission, SitePermissionClaims.ListOwnCases),
+      (CustomClaimTypes.SitePermission, SitePermissionClaims.ViewOwnCases),
     });
     
   }

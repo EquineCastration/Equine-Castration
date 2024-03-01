@@ -64,13 +64,11 @@ export const CaseDetail = ({ navigation, route }) => {
 
   // permissions
   const canDelete = user.permissions.some((permission) =>
-    [permissions.DeleteAllCases, permissions.DeleteOwnCases].includes(
-      permission
-    )
+    [permissions.DeleteOwnCases].includes(permission)
   );
 
   const canEdit = user.permissions.some((permission) =>
-    [permissions.EditAllCases, permissions.EditOwnCases].includes(permission)
+    [permissions.EditOwnCases].includes(permission)
   );
 
   const ButtonAction = ({ title, iconName, color, onPress }) => (

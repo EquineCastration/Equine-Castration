@@ -4,8 +4,9 @@ import { font, colors } from "style/style";
 import { CaseDetail } from "screens/CaseDetail";
 import { CaseList } from "screens/CaseList";
 import { headerOptions } from "./HomeStack";
-import { Ionicons } from "@expo/vector-icons";
+import { FontAwesome5, Ionicons } from "@expo/vector-icons";
 import { InitialConsultationStack } from "./InitialConsultationStack";
+import { CaseOverview } from "screens/CaseOverview";
 
 export const CaseStack = ({ navigation }) => {
   return (
@@ -15,7 +16,7 @@ export const CaseStack = ({ navigation }) => {
         component={CaseList}
         options={{
           headerBackground: () => (
-            <ScreenHeader title="Caselist" fontSize={font.size["xl"]} />
+            <ScreenHeader title="Cases" fontSize={font.size["xl"]} />
           ),
           ...headerOptions,
           headerLeft: () => (
@@ -29,14 +30,30 @@ export const CaseStack = ({ navigation }) => {
         }}
       />
       <Stack.Screen
+        name="CaseOverview"
+        component={CaseOverview}
+        options={({ route }) => ({
+          headerBackground: () => (
+            <ScreenHeader
+              title={`${route.params.caseData.horseName} - Case Overview`}
+              fontSize={font.size.md}
+              fontWeight={400}
+              icon={<FontAwesome5 name="horse-head" size={18} />}
+            />
+          ),
+          ...headerOptions,
+        })}
+      />
+      <Stack.Screen
         name="CaseDetail"
         component={CaseDetail}
         options={({ route }) => ({
           headerBackground: () => (
             <ScreenHeader
-              title={`Case detail of ${route.params.caseData.horseName}`}
+              title={`${route.params.caseData.horseName} - Case detail`}
               fontSize={font.size.md}
               fontWeight={400}
+              icon={<FontAwesome5 name="horse-head" size={18} />}
             />
           ),
           ...headerOptions,

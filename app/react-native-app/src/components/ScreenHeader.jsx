@@ -7,6 +7,7 @@ export const ScreenHeader = ({
   color = colors.primary[50],
   fontWeight = 300,
   fontSize = font.size["4xl"],
+  icon,
 }) => (
   <BgGradient>
     <Text
@@ -17,7 +18,7 @@ export const ScreenHeader = ({
         marginBottom: 10,
       }}
     >
-      {title}
+      {icon} {title}
     </Text>
   </BgGradient>
 );
