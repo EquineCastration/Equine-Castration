@@ -32,7 +32,6 @@ export const RequestPasswordReset = () => {
   } = useBackendApi();
 
   const handlePwdResetRequest = async ({ email }) => {
-    console.log("email", email);
     setIsLoading(true);
     try {
       await requestPasswordReset(email);
@@ -42,7 +41,6 @@ export const RequestPasswordReset = () => {
           "If there is an user account associated with that email address, we'll send an email with instructions on how to reset your password.",
       });
     } catch (e) {
-      console.error(e);
       setFeedback({
         status: "error",
         message: "An unknown error has occurred.",
