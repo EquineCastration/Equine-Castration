@@ -63,6 +63,11 @@ public static class AuthConfiguration
       b.AddPolicy(nameof(AuthPolicies.CanViewOwnCases), AuthPolicies.CanViewOwnCases);
       b.AddPolicy(nameof(AuthPolicies.CanListOwnCases), AuthPolicies.CanListOwnCases);
       b.AddPolicy(nameof(AuthPolicies.CanDeleteOwnCases), AuthPolicies.CanDeleteOwnCases);
+      
+      b.AddPolicy(nameof(AuthPolicies.CanCreateCaseSurveys), AuthPolicies.CanCreateCaseSurveys);
+      b.AddPolicy(nameof(AuthPolicies.CanListOwnCaseSurveys), AuthPolicies.CanListOwnCaseSurveys);
+      b.AddPolicy(nameof(AuthPolicies.CanViewOwnCaseSurveys), AuthPolicies.CanViewOwnCaseSurveys);
+      b.AddPolicy(nameof(AuthPolicies.CanGetEligibleSurveyType), AuthPolicies.CanGetEligibleSurveyType);
     };
 
 

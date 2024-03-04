@@ -1,9 +1,13 @@
 using System.Security.Claims;
 using EquineCastration.Auth;
+using EquineCastration.Constants;
+using EquineCastration.Data.Entities;
 using EquineCastration.Models;
 using EquineCastration.Models.RegistrationRule;
+using EquineCastration.Models.Survey;
 using EquineCastration.Services;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
 
 namespace EquineCastration.Data;
 
@@ -61,6 +65,9 @@ public class DataSeeder
       (CustomClaimTypes.SitePermission, SitePermissionClaims.DeleteOwnCases),
       (CustomClaimTypes.SitePermission, SitePermissionClaims.ListOwnCases),
       (CustomClaimTypes.SitePermission, SitePermissionClaims.ViewOwnCases),
+      
+      (CustomClaimTypes.SitePermission, SitePermissionClaims.ListOwnCaseSurveys),
+      (CustomClaimTypes.SitePermission, SitePermissionClaims.ViewOwnCaseSurveys),
     });
     
     // Horse owner
@@ -68,6 +75,11 @@ public class DataSeeder
     {
       (CustomClaimTypes.SitePermission, SitePermissionClaims.ListOwnCases),
       (CustomClaimTypes.SitePermission, SitePermissionClaims.ViewOwnCases),
+      
+      (CustomClaimTypes.SitePermission, SitePermissionClaims.CreateCaseSurveys),
+      (CustomClaimTypes.SitePermission, SitePermissionClaims.ListOwnCaseSurveys),
+      (CustomClaimTypes.SitePermission, SitePermissionClaims.ViewOwnCaseSurveys),
+      (CustomClaimTypes.SitePermission, SitePermissionClaims.GetEligibleSurveyType),
     });
     
   }
@@ -100,6 +112,35 @@ public class DataSeeder
         if (!string.IsNullOrWhiteSpace(value)) // only add value if not empty
           await _registrationRule.Create(new CreateRegistrationRuleModel(value, isBlocked));
 
+    }
+  }
+  
+  /// <summary>
+  /// Seeds the survey types
+  /// </summary>
+  /// <returns></returns>
+  public async Task SeedSurveyTypes()
+  {
+    var inputList = new List<CreateSurveyTypeModel>
+    {
+      new CreateSurveyTypeModel (SurveyTypes.PostTwentyFourHours),
+      new CreateSurveyTypeModel (SurveyTypes.PostDayThree),
+      new CreateSurveyTypeModel (SurveyTypes.PostDayFive),
+      new CreateSurveyTypeModel (SurveyTypes.PostDaySeven),
+      new CreateSurveyTypeModel (SurveyTypes.PostDayFourteen),
+      new CreateSurveyTypeModel (SurveyTypes.PostMonthThree),
+    };
+
+    foreach (var inputType in inputList)
+    {
+      var isExistingValue = await _db.SurveyTypes
+        .Where(x => EF.Functions.ILike(x.Name, inputType.Name))
+        .FirstOrDefaultAsync();
+
+      if (isExistingValue is not null) continue;
+      var entity = new SurveyType { Name = inputType.Name };
+      await _db.SurveyTypes.AddAsync(entity);
+      await _db.SaveChangesAsync();
     }
   }
 }

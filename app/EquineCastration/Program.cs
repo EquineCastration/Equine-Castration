@@ -62,7 +62,8 @@ b.Services
   .AddTransient<UserService>()
   .AddTransient<FeatureFlagService>()
   .AddTransient<RegistrationRuleService>()
-  .AddTransient<CaseService>();
+  .AddTransient<CaseService>()
+  .AddTransient<SurveyService>();
 
 b.Services.AddSwaggerGen();
 
@@ -91,6 +92,7 @@ using (var scope = app.Services.CreateScope())
 
   await seeder.SeedRoles();
   await seeder.SeedRegistrationRules(config);
+  await seeder.SeedSurveyTypes();
 }
 
 #region Configure Pipeline
