@@ -1,4 +1,3 @@
-using EquineCastration.Constants;
 using EquineCastration.Data;
 using EquineCastration.Models.Survey;
 using Microsoft.EntityFrameworkCore;
@@ -116,28 +115,21 @@ public class SurveyService
   
   private async Task<SurveyTypeModel?> GetEligibleSurveyTypeByDate(DateTimeOffset dischargeDate)
   {
-    var surveyTypeMap = new SortedDictionary<DateTimeOffset, string>
-    {
-      { dischargeDate.AddMonths(3), SurveyTypes.PostMonthThree },
-      { dischargeDate.AddDays(14), SurveyTypes.PostDayFourteen },
-      { dischargeDate.AddDays(7), SurveyTypes.PostDaySeven },
-      { dischargeDate.AddDays(5), SurveyTypes.PostDayFive },
-      { dischargeDate.AddDays(3), SurveyTypes.PostDayThree },
-      { dischargeDate.AddHours(24), SurveyTypes.PostTwentyFourHours }
-    };
+    var surveyTypeMap = new SortedDictionary<DateTimeOffset, string>();
+    var surveyTypes = await _db.SurveyTypes.AsNoTracking().ToListAsync();
+
+    foreach (var st in surveyTypes)
+      surveyTypeMap.Add(dischargeDate.AddDays(st.DaysAfterCase), st.Name);
     
     foreach (var kvp in surveyTypeMap.Reverse())
     {
       if (DateTimeOffset.UtcNow >= kvp.Key)
       {
-        var surveyType = await _db.SurveyTypes.AsNoTracking().SingleAsync(x => x.Name == kvp.Value) 
+        var surveyType = surveyTypes.Single(x => x.Name == kvp.Value) 
           ?? throw new InvalidOperationException("Survey type not found.");
         return new SurveyTypeModel(surveyType.Id, surveyType.Name);
       }
     }
     return null; // No eligible survey type
   }
-
-
-
 }
