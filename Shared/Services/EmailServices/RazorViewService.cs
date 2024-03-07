@@ -7,7 +7,7 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.AspNetCore.Mvc.ViewEngines;
 using Microsoft.AspNetCore.Mvc.ViewFeatures;
 
-namespace EquineCastration.Services.EmailServices
+namespace Shared.Services.EmailServices
 {
   public class RazorViewService
   {
@@ -47,7 +47,7 @@ namespace EquineCastration.Services.EmailServices
       where T : class
     {
       if (model is null) throw new ArgumentNullException(nameof(model));
-      
+
       var view = FindView(viewName);
 
       await using var output = new StringWriter();
@@ -90,7 +90,7 @@ namespace EquineCastration.Services.EmailServices
     {
       IEnumerable<string> searchedLocations = new List<string>();
 
-      foreach(var viewPath in GetLocalisedViewPaths(viewName))
+      foreach (var viewPath in GetLocalisedViewPaths(viewName))
       {
         var getViewResult = _razor.GetView(executingFilePath: null, viewPath: viewPath, isMainPage: true);
         if (getViewResult.Success)

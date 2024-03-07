@@ -1,7 +1,7 @@
 using EquineCastration.Models.Emails;
 using EquineCastration.Services.Contracts;
 
-namespace EquineCastration.Services.EmailServices;
+namespace Shared.Services.EmailServices;
 
 public class AccountEmailService
 {
@@ -39,7 +39,7 @@ public class AccountEmailService
             to.Name!,
             link,
             string.Empty));
-  
+
   public async Task SendUserInvite(EmailAddress to, string link)
     => await _emails.SendEmail(
       to,
@@ -49,7 +49,7 @@ public class AccountEmailService
         to.Name!,
         link,
         string.Empty));
-  
+
   public async Task SendDeleteUpdate(EmailAddress to)
     => await _emails.SendEmail(
       to,

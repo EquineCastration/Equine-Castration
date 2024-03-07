@@ -7,10 +7,10 @@ using EquineCastration.Models.Account.Email;
 using EquineCastration.Models.Account.Password;
 using EquineCastration.Models.Account.Token;
 using EquineCastration.Models.Emails;
-using EquineCastration.Services.EmailServices;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Infrastructure;
+using Shared.Services.EmailServices;
 
 namespace EquineCastration.Services;
 

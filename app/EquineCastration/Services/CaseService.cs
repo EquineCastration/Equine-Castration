@@ -3,9 +3,9 @@ using EquineCastration.Data.Entities;
 using EquineCastration.Data.Entities.Identity;
 using EquineCastration.Models.Case;
 using EquineCastration.Models.Emails;
-using EquineCastration.Services.EmailServices;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using Shared.Services.EmailServices;
 
 namespace EquineCastration.Services;
 

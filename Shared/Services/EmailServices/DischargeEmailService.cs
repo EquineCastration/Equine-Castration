@@ -3,7 +3,7 @@ using EquineCastration.Models.Emails;
 using EquineCastration.Services.Contracts;
 using Microsoft.Extensions.Options;
 
-namespace EquineCastration.Services.EmailServices;
+namespace Shared.Services.EmailServices;
 
 public class DischargeEmailService
 {
@@ -15,7 +15,7 @@ public class DischargeEmailService
     _emails = emails;
     _download = downloadOptions.Value;
   }
-  
+
   public async Task SendDischargeWithRegistrationRequest(EmailAddress to, string horseName, string dischargeDate,
     string veterinarianName)
     => await _emails.SendEmail(
@@ -29,7 +29,7 @@ public class DischargeEmailService
         _download.iOS,
         _download.Android
       ));
-  
+
   public async Task SendDischarge(EmailAddress to, string horseName, string dischargeDate,
     string veterinarianName)
     => await _emails.SendEmail(

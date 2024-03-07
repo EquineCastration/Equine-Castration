@@ -2,9 +2,11 @@ using EquineCastration.Config;
 using EquineCastration.Services;
 using EquineCastration.Services.Contracts;
 using EquineCastration.Services.EmailSender;
-using EquineCastration.Services.EmailServices;
 using Microsoft.AspNetCore.Mvc.Infrastructure;
+using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection.Extensions;
+using Shared.Services.EmailServices;
 
 namespace EquineCastration.Extensions
 {

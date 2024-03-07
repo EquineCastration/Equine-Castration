@@ -4,8 +4,6 @@ using EquineCastration.Extensions;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using EquineCastration.Data;
-using EquineCastration.Data.Entities;
-
 using EquineCastration.Config;
 using EquineCastration.Services;
 using EquineCastration.Constants;
@@ -55,8 +53,9 @@ b.Services
   .AddAuthorization(AuthConfiguration.AuthOptions)
   .Configure<RegistrationOptions>(b.Configuration.GetSection("Registration"))
   .Configure<UserAccountOptions>(b.Configuration.GetSection("UserAccounts"))
-  .Configure<AppDownloadOptions>(b.Configuration.GetSection("AppDownloadUrl"))
+  .Configure<AppDownloadOptions>(b.Configuration.GetSection("AppDownloadUrl"));
 
+b.Services
   .AddEmailSender(b.Configuration)
 
   .AddTransient<UserService>()

@@ -1,11 +1,12 @@
 using EquineCastration.Config;
 using EquineCastration.Models.Emails;
 using EquineCastration.Services.Contracts;
-using EquineCastration.Services.EmailServices;
 using MailKit.Net.Smtp;
 using MailKit.Security;
+using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using MimeKit;
+using Shared.Services.EmailServices;
 
 namespace EquineCastration.Services.EmailSender;
 

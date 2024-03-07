@@ -5,12 +5,12 @@ using EquineCastration.Models.Account.Email;
 using EquineCastration.Models.Emails;
 using EquineCastration.Models.User;
 using EquineCastration.Services;
-using EquineCastration.Services.EmailServices;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
+using Shared.Services.EmailServices;
 
 namespace EquineCastration.Controllers;
 

@@ -3,13 +3,13 @@ using System.Text.Json;
 using EquineCastration.Auth;
 using EquineCastration.Data.Entities.Identity;
 using EquineCastration.Models.Emails;
-using EquineCastration.Services.EmailServices;
 using EquineCastration.Models.User;
 using EquineCastration.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Shared.Services.EmailServices;
 
 namespace EquineCastration.Controllers;
 
