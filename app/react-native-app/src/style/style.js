@@ -1,5 +1,3 @@
-import { BaseToast, ErrorToast } from "react-native-toast-message";
-
 export const font = {
   size: {
     xs: 12,
@@ -73,28 +71,4 @@ export const colors = {
     btnBg: "#246980",
     bgTransparent: "rgba(248, 248, 248, 0.8)", // transparent bg
   },
-};
-
-export const toastConfig = {
-  success: (props) => (
-    <BaseToast
-      {...props}
-      style={{ borderLeftColor: colors.patra[700] }}
-      text1Style={{
-        fontSize: font.size["sm"],
-        fontWeight: 300,
-      }}
-      text1NumberOfLines={2}
-    />
-  ),
-  error: (props) => (
-    <ErrorToast
-      {...props}
-      text1Style={{
-        fontSize: font.size["sm"],
-        fontWeight: 300,
-      }}
-      text1NumberOfLines={2}
-    />
-  ),
 };
