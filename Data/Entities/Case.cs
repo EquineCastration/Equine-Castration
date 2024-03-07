@@ -5,8 +5,6 @@ namespace EquineCastration.Data.Entities;
 public class Case
 {
   public int Id { get; set; }
-  public Horse Horse { get; set; } = null!;
-  public Owner Owner { get; set; } = null!;
   public DateTimeOffset DateOfCastration { get; set; }
   public bool IsLessThanTwo { get; set; }
   public int AgeAboveTwo { get; set; }
@@ -34,5 +32,10 @@ public class Case
   public DateTimeOffset DischargeDate { get; set; }
   public bool Deceased { get; set; }
   public bool InviteOwner { get; set; }
+
+  //Navigation Properties
   public Veterinarian Author { get; set; } = null!;
+  public Horse Horse { get; set; } = null!;
+  public Owner Owner { get; set; } = null!;
+  public List<Survey> Surveys { get; set; } = new List<Survey>();
 }
