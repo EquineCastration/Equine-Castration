@@ -40,13 +40,13 @@ export const SliderField = ({
           helpers.setValue(value);
         }}
         theme={{
-          minimumTrackTintColor: colorScheme.button,
-          maximumTrackTintColor: colorScheme.textDim,
-          bubbleBackgroundColor: colorScheme.button,
+          minimumTrackTintColor: colorScheme?.button,
+          maximumTrackTintColor: colorScheme?.textDim,
+          bubbleBackgroundColor: colorScheme?.button,
         }}
         {...props}
       />
-      <Text preset="formLabel" style={{ color: colorScheme.button }}>
+      <Text preset="formLabel" style={{ color: colorScheme?.button }}>
         {field.value}
       </Text>
       {meta.touched && meta.error ? <FormError error={meta.error} /> : null}

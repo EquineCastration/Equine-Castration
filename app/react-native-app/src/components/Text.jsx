@@ -9,7 +9,7 @@ import { typography } from "style";
  */
 
 export const Text = (props) => {
-  const { colors } = useStyle();
+  const { colors: colorScheme } = useStyle();
   const { weight, size, text, children, style: styleOverride, ...rest } = props;
 
   const content = text || children;
@@ -26,7 +26,7 @@ export const Text = (props) => {
   const baseStyle = [
     sizeStyles.sm,
     fontWeightStyles.medium,
-    { color: colors?.text },
+    { color: colorScheme?.text },
   ];
 
   const presets = {

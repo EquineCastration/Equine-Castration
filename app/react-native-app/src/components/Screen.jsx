@@ -7,10 +7,13 @@ import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view
  */
 
 export const Screen = ({ children, style }) => {
-  const { colors } = useStyle();
+  const { colors: colorScheme } = useStyle();
   return (
     <SafeAreaView
-      style={[container, { backgroundColor: colors?.background, ...style }]}
+      style={[
+        container,
+        { backgroundColor: colorScheme?.background, ...style },
+      ]}
     >
       <KeyboardAwareScrollView>{children}</KeyboardAwareScrollView>
     </SafeAreaView>
