@@ -69,7 +69,7 @@ const EligibleSurveyType = ({
 }) => (
   <ListItem
     onPress={() =>
-      navigation.navigate("CreateSurvey", {
+      navigation.navigate("SurveyForm", {
         caseId,
         surveyType, // { id, name }
       })
@@ -161,8 +161,10 @@ const CaseDetail = ({ navigation, caseData }) => (
 const CaseSurvey = ({ navigation, caseSurveyData }) => (
   <ListItem
     onPress={() =>
-      navigation.navigate("CaseSurveyDetail", {
-        caseSurveyData,
+      navigation.navigate("SurveyForm", {
+        caseId: caseSurveyData?.caseId,
+        surveyType: caseSurveyData?.surveyType,
+        surveyData: caseSurveyData,
       })
     }
     borderLeftWidth={5}
@@ -176,7 +178,9 @@ const CaseSurvey = ({ navigation, caseSurveyData }) => (
         marginRight={4}
       />
 
-      <Text style={style.listLabel}>Survey - {caseSurveyData?.surveyType}</Text>
+      <Text style={style.listLabel}>
+        Survey - {caseSurveyData?.surveyType?.name}
+      </Text>
     </View>
     <View style={{ flexDirection: "row", alignItems: "center" }}>
       <FontAwesome5

@@ -65,7 +65,7 @@ export const CaseStack = ({ navigation }) => {
         component={InitialConsultationStack}
       />
       <Stack.Screen
-        name="CreateSurvey"
+        name="SurveyForm"
         component={SurveyForm}
         options={({ route }) => ({
           headerBackground: () => (
