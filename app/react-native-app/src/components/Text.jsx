@@ -2,6 +2,12 @@ import { useStyle } from "contexts/StyleProvider";
 import { Text as RNText } from "react-native";
 import { typography } from "style";
 
+/**
+ * Text component for displaying text. Has presets for different text styles.
+ * @example
+ * <Text preset="heading">Heading text</Text>
+ */
+
 export const Text = (props) => {
   const { colors } = useStyle();
   const { weight, size, text, children, style: styleOverride, ...rest } = props;
