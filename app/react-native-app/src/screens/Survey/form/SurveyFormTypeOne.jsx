@@ -1,5 +1,9 @@
-import { GroupCheckBoxField, InputField, ToggleField } from "components/forms";
-import { SliderField } from "components/forms/SliderField";
+import {
+  GroupCheckBoxField,
+  InputField,
+  ToggleField,
+  SliderField,
+} from "components/forms";
 import { View } from "react-native";
 
 /**

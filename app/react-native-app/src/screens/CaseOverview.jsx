@@ -8,11 +8,13 @@ import {
 import { colors, font } from "style/style";
 import { DefaultLayout } from "layout/DefaultLayout";
 import { FontAwesome, FontAwesome5 } from "@expo/vector-icons";
-import { useUser } from "contexts/User";
+import { useEligibleSurveyType, useSurveyList } from "api/survey";
 
 export const CaseOverview = ({ navigation, route }) => {
   const { caseData } = route.params;
-  const { user } = useUser();
+
+  const { data: eligibleSurveyType } = useEligibleSurveyType(caseData.id);
+  const { data: surveyList } = useSurveyList(caseData.id);
 
   return (
     <DefaultLayout>
@@ -23,73 +25,17 @@ export const CaseOverview = ({ navigation, route }) => {
           marginHorizontal: 5,
           paddingHorizontal: 5,
         }}
-        ListHeaderComponent={() => (
-          <ListItem
-            onPress={() =>
-              navigation.navigate("CaseDetail", {
-                caseData,
-              })
-            }
-            marginBottom={12}
-          >
-            <Text style={[style.listLabel]}>
-              <FontAwesome5 name="horse-head" size={18} /> View Case Detail
-            </Text>
-          </ListItem>
-        )}
-        ListFooterComponent={() => (
-          <ListItem
-            onPress={() =>
-              navigation.navigate("CreateSurvey", {
-                surveyType: "",
-                // TODO: Will be based on the case discharge date. (1, 3, 5, 7 and so on.)
-                // For e.g. if the case was discharged for more than 24 hours and less than 3 days, then the survey type will be "1".
-              })
-            }
-            marginBottom={12}
-          >
-            <Text style={[style.listLabel]}>
-              <FontAwesome name="wpforms" size={18} /> Post-surgery survey
-            </Text>
-            <Text
-              style={[
-                style.listLabel,
-                {
-                  fontSize: font.size["sm"],
-                  marginVertical: 3,
-                },
-              ]}
-            >
-              <FontAwesome5 name="clock" size={13} /> days/weeks/months
-            </Text>
-          </ListItem>
-        )}
-        data={[]} // TODO: Insert case survey data if available.
+        ListHeaderComponent={<CaseDetail {...{ navigation, caseData }} />}
+        ListFooterComponent={() =>
+          eligibleSurveyType && (
+            <EligibleSurveyType
+              {...{ eligibleSurveyType, navigation, caseId: caseData.id }}
+            />
+          )
+        }
+        data={surveyList}
         renderItem={({ item }) => (
-          <ListItem
-            onPress={() =>
-              navigation.navigate("CaseSurvey", {
-                caseSurveyData: item,
-              })
-            }
-          >
-            <Text style={[style.listLabel]}>
-              <FontAwesome name="wpforms" size={18} /> Survey title
-            </Text>
-
-            <Text
-              style={[
-                style.listLabel,
-                {
-                  fontSize: font.size["sm"],
-                  marginVertical: 3,
-                },
-              ]}
-            >
-              <FontAwesome5 name="calendar-alt" size={13} /> Survey completed
-              date: {item.dateOfCastration}
-            </Text>
-          </ListItem>
+          <CaseSurvey {...{ navigation, caseSurveyData: item }} />
         )}
       />
     </DefaultLayout>
@@ -106,6 +52,7 @@ export const ListItem = ({ children, onPress, ...p }) => {
           borderRadius: 10,
           backgroundColor: colors.ui.bg,
           padding: 15,
+          marginBottom: 12,
           ...p,
         }}
       >
@@ -114,6 +61,143 @@ export const ListItem = ({ children, onPress, ...p }) => {
     </TouchableOpacity>
   );
 };
+
+const EligibleSurveyType = ({
+  caseId,
+  eligibleSurveyType: { surveyType, postOpDays },
+  navigation,
+}) => (
+  <ListItem
+    onPress={() =>
+      navigation.navigate("CreateSurvey", {
+        caseId,
+        surveyType, // { id, name }
+      })
+    }
+    borderLeftWidth={5}
+    borderColor={colors.kanaka[600]}
+  >
+    <View
+      style={{
+        flexDirection: "row",
+        alignItems: "center",
+      }}
+    >
+      <View>
+        <View style={{ flexDirection: "row", alignItems: "center" }}>
+          <FontAwesome
+            name="wpforms"
+            size={18}
+            color={colors.primary[600]}
+            marginRight={4}
+          />
+
+          <Text style={style.listLabel}>{surveyType?.name}</Text>
+        </View>
+        <View style={{ flexDirection: "row", alignItems: "center" }}>
+          <FontAwesome5 name="clock" size={13} marginRight={4} />
+          <Text
+            style={[
+              style.listLabel,
+              {
+                fontSize: font.size["sm"],
+              },
+            ]}
+          >
+            Discharge days - {postOpDays}
+          </Text>
+        </View>
+      </View>
+
+      <View
+        style={{
+          justifyContent: "flex-end",
+          flex: 1,
+          flexDirection: "row",
+        }}
+      >
+        <Text
+          style={[
+            style.listLabel,
+            {
+              fontSize: font.size["sm"],
+              fontWeight: 500,
+            },
+          ]}
+        >
+          Start Survey
+        </Text>
+        <FontAwesome5
+          name="arrow-right"
+          size={18}
+          color={colors.primary[600]}
+          marginLeft={8}
+        />
+      </View>
+    </View>
+  </ListItem>
+);
+
+const CaseDetail = ({ navigation, caseData }) => (
+  <ListItem
+    onPress={() =>
+      navigation.navigate("CaseDetail", {
+        caseData,
+      })
+    }
+  >
+    <View style={{ flexDirection: "row", alignItems: "center" }}>
+      <FontAwesome5
+        name="horse-head"
+        size={18}
+        marginRight={6}
+        color={colors.primary[700]}
+      />
+      <Text style={[style.listLabel]}>View Case Detail</Text>
+    </View>
+  </ListItem>
+);
+
+const CaseSurvey = ({ navigation, caseSurveyData }) => (
+  <ListItem
+    onPress={() =>
+      navigation.navigate("CaseSurveyDetail", {
+        caseSurveyData,
+      })
+    }
+    borderLeftWidth={5}
+    borderColor={colors.patra[600]}
+  >
+    <View style={{ flexDirection: "row", alignItems: "center" }}>
+      <FontAwesome
+        name="wpforms"
+        size={18}
+        color={colors.primary[600]}
+        marginRight={4}
+      />
+
+      <Text style={style.listLabel}>Survey - {caseSurveyData?.surveyType}</Text>
+    </View>
+    <View style={{ flexDirection: "row", alignItems: "center" }}>
+      <FontAwesome5
+        name="calendar-day"
+        size={14}
+        color={colors.primary[600]}
+        marginRight={4}
+      />
+      <Text
+        style={[
+          style.listLabel,
+          {
+            fontSize: font.size["sm"],
+          },
+        ]}
+      >
+        Survey completion date: - {caseSurveyData?.surveyCompletion}
+      </Text>
+    </View>
+  </ListItem>
+);
 
 const style = StyleSheet.create({
   listLabel: { color: colors.primary[700], fontSize: font.size["lg"] },

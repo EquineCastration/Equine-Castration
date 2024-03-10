@@ -4,9 +4,10 @@ import { font, colors } from "style/style";
 import { CaseDetail } from "screens/CaseDetail";
 import { CaseList } from "screens/CaseList";
 import { headerOptions } from "./HomeStack";
-import { FontAwesome5, Ionicons } from "@expo/vector-icons";
+import { FontAwesome, FontAwesome5, Ionicons } from "@expo/vector-icons";
 import { InitialConsultationStack } from "./InitialConsultationStack";
 import { CaseOverview } from "screens/CaseOverview";
+import { SurveyForm } from "screens/Survey/SurveyForm";
 
 export const CaseStack = ({ navigation }) => {
   return (
@@ -62,6 +63,21 @@ export const CaseStack = ({ navigation }) => {
       <Stack.Screen
         name="EditInitialConsultation"
         component={InitialConsultationStack}
+      />
+      <Stack.Screen
+        name="CreateSurvey"
+        component={SurveyForm}
+        options={({ route }) => ({
+          headerBackground: () => (
+            <ScreenHeader
+              title={`${route.params.surveyType?.name} - Survey form`}
+              fontSize={font.size.md}
+              fontWeight={400}
+              icon={<FontAwesome name="wpforms" size={18} />}
+            />
+          ),
+          ...headerOptions,
+        })}
       />
     </Stack.Navigator>
   );
