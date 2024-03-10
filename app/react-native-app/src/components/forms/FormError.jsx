@@ -1,7 +1,6 @@
 import { Text } from "components/Text";
 import { View } from "react-native";
-import { colors } from "style";
-import { spacing } from "style";
+import { spacing, colors } from "style";
 
 /**
  * This component can be used to display form errors.
