@@ -32,8 +32,9 @@ export const Text = (props) => {
   const presets = {
     default: baseStyle,
     bold: [baseStyle, fontWeightStyles.bold],
-    heading: [baseStyle, sizeStyles.xxl, fontWeightStyles.bold],
+    heading: [baseStyle, sizeStyles.xl, fontWeightStyles.bold],
     subheading: [baseStyle, sizeStyles.lg, fontWeightStyles.medium],
+    label: [baseStyle, sizeStyles.md, fontWeightStyles.medium],
     formLabel: [baseStyle, sizeStyles.md, fontWeightStyles.medium],
     fieldOption: [baseStyle, sizeStyles.sm, fontWeightStyles.xs],
     formHelper: [baseStyle, sizeStyles.xs, fontWeightStyles.medium],

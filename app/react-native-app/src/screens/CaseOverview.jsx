@@ -1,14 +1,10 @@
-import {
-  FlatList,
-  Text,
-  View,
-  StyleSheet,
-  TouchableOpacity,
-} from "react-native";
-import { colors, font } from "style/style";
-import { DefaultLayout } from "layout/DefaultLayout";
-import { FontAwesome, FontAwesome5 } from "@expo/vector-icons";
+import { View, TouchableOpacity } from "react-native";
+import { FontAwesome5, Ionicons, AntDesign } from "@expo/vector-icons";
 import { useEligibleSurveyType, useSurveyList } from "api/survey";
+import { Screen } from "components/Screen";
+import { useStyle } from "contexts/StyleProvider";
+import { Text } from "components/Text";
+import { spacing } from "style";
 
 export const CaseOverview = ({ navigation, route }) => {
   const { caseData } = route.params;
@@ -17,48 +13,68 @@ export const CaseOverview = ({ navigation, route }) => {
   const { data: surveyList } = useSurveyList(caseData.id);
 
   return (
-    <DefaultLayout>
-      <FlatList
-        ItemSeparatorComponent={() => <View style={{ height: 12 }} />}
-        style={{
-          marginTop: 15,
-          marginHorizontal: 5,
-          paddingHorizontal: 5,
-        }}
-        ListHeaderComponent={<CaseDetail {...{ navigation, caseData }} />}
-        ListFooterComponent={() =>
-          eligibleSurveyType && (
-            <EligibleSurveyType
-              {...{ eligibleSurveyType, navigation, caseId: caseData.id }}
-            />
-          )
-        }
-        data={surveyList}
-        renderItem={({ item }) => (
-          <CaseSurvey {...{ navigation, caseSurveyData: item }} />
+    <Screen>
+      <View style={{ padding: spacing.md, gap: spacing.lg }}>
+        <CaseDetail {...{ navigation, caseData }} />
+        {eligibleSurveyType && (
+          <EligibleSurveyType
+            {...{ caseId: caseData.id, eligibleSurveyType, navigation }}
+          />
         )}
-      />
-    </DefaultLayout>
+        {surveyList?.map((caseSurveyData) => (
+          <CaseSurvey
+            key={caseSurveyData?.id}
+            {...{ navigation, caseSurveyData }}
+          />
+        ))}
+      </View>
+    </Screen>
   );
 };
 
-export const ListItem = ({ children, onPress, ...p }) => {
+const ListItem = ({ children, onPress, ...p }) => {
+  const { colors: colorScheme } = useStyle();
   return (
     <TouchableOpacity onPress={onPress}>
       <View
         style={{
-          borderBottomWidth: 2,
-          borderColor: colors.primary[100],
+          borderWidth: 1,
+          borderColor: colorScheme?.border,
           borderRadius: 10,
-          backgroundColor: colors.ui.bg,
           padding: 15,
-          marginBottom: 12,
+          flexDirection: "row",
+          alignItems: "center",
           ...p,
         }}
       >
-        {children}
+        <View style={{ flex: 1 }}>{children}</View>
+        <Ionicons name="arrow-forward-outline" size={20} />
       </View>
     </TouchableOpacity>
+  );
+};
+
+const CaseDetail = ({ navigation, caseData }) => {
+  const { colors: colorScheme } = useStyle();
+
+  return (
+    <ListItem
+      onPress={() =>
+        navigation.navigate("CaseDetail", {
+          caseData,
+        })
+      }
+    >
+      <View style={{ flexDirection: "row", alignItems: "center" }}>
+        <FontAwesome5
+          name="horse-head"
+          size={18}
+          marginRight={6}
+          color={colorScheme?.text}
+        />
+        <Text preset="label">View Case Detail</Text>
+      </View>
+    </ListItem>
   );
 };
 
@@ -66,143 +82,98 @@ const EligibleSurveyType = ({
   caseId,
   eligibleSurveyType: { surveyType, postOpDays },
   navigation,
-}) => (
-  <ListItem
-    onPress={() =>
-      navigation.navigate("SurveyForm", {
-        caseId,
-        surveyType, // { id, name }
-      })
-    }
-    borderLeftWidth={5}
-    borderColor={colors.kanaka[600]}
-  >
-    <View
-      style={{
-        flexDirection: "row",
-        alignItems: "center",
-      }}
+}) => {
+  const { colors: colorScheme } = useStyle();
+  return (
+    <ListItem
+      onPress={() =>
+        navigation.navigate("SurveyForm", {
+          caseId,
+          surveyType,
+        })
+      }
+      borderLeftWidth={spacing.xxs}
+      borderColor={colorScheme?.palette?.rebelGold400}
     >
-      <View>
-        <View style={{ flexDirection: "row", alignItems: "center" }}>
-          <FontAwesome
-            name="wpforms"
-            size={18}
-            color={colors.primary[600]}
-            marginRight={4}
-          />
-
-          <Text style={style.listLabel}>{surveyType?.name}</Text>
-        </View>
-        <View style={{ flexDirection: "row", alignItems: "center" }}>
-          <FontAwesome5 name="clock" size={13} marginRight={4} />
-          <Text
-            style={[
-              style.listLabel,
-              {
-                fontSize: font.size["sm"],
-              },
-            ]}
-          >
-            Discharge days - {postOpDays}
-          </Text>
-        </View>
-      </View>
-
       <View
         style={{
-          justifyContent: "flex-end",
-          flex: 1,
           flexDirection: "row",
+          alignItems: "center",
         }}
       >
-        <Text
-          style={[
-            style.listLabel,
-            {
-              fontSize: font.size["sm"],
-              fontWeight: 500,
-            },
-          ]}
+        <View>
+          <SurveyTitleLabel
+            surveyTypeName={surveyType?.name}
+            colorScheme={colorScheme}
+          />
+          <View style={{ flexDirection: "row", alignItems: "center" }}>
+            <FontAwesome5
+              name="clock"
+              size={15}
+              color={colorScheme?.text}
+              marginRight={spacing.xxs}
+            />
+            <Text>Discharge days - {postOpDays}</Text>
+          </View>
+        </View>
+        <View
+          style={{
+            alignItems: "flex-end",
+            flex: 1,
+            marginRight: spacing.xxs,
+          }}
         >
-          Start Survey
-        </Text>
-        <FontAwesome5
-          name="arrow-right"
-          size={18}
-          color={colors.primary[600]}
-          marginLeft={8}
-        />
+          <Text>Start Survey</Text>
+        </View>
       </View>
-    </View>
-  </ListItem>
-);
+    </ListItem>
+  );
+};
 
-const CaseDetail = ({ navigation, caseData }) => (
-  <ListItem
-    onPress={() =>
-      navigation.navigate("CaseDetail", {
-        caseData,
-      })
-    }
-  >
-    <View style={{ flexDirection: "row", alignItems: "center" }}>
-      <FontAwesome5
-        name="horse-head"
-        size={18}
-        marginRight={6}
-        color={colors.primary[700]}
+const CaseSurvey = ({ navigation, caseSurveyData }) => {
+  const { colors: colorScheme } = useStyle();
+  return (
+    <ListItem
+      onPress={() =>
+        navigation.navigate("SurveyForm", {
+          caseId: caseSurveyData?.caseId,
+          surveyType: caseSurveyData?.surveyType,
+          surveyData: caseSurveyData,
+        })
+      }
+      borderLeftWidth={spacing.xxs}
+      borderColor={colorScheme?.palette?.forestGreen400}
+    >
+      <SurveyTitleLabel
+        surveyTypeName={caseSurveyData?.surveyType?.name}
+        colorScheme={colorScheme}
       />
-      <Text style={[style.listLabel]}>View Case Detail</Text>
-    </View>
-  </ListItem>
+      <View style={{ flexDirection: "row", alignItems: "center" }}>
+        <FontAwesome5
+          name="calendar-day"
+          size={15}
+          color={colorScheme?.text}
+          marginRight={spacing.xxs}
+        />
+        <Text>
+          Survey completion date: - {caseSurveyData?.surveyCompletion}
+        </Text>
+      </View>
+    </ListItem>
+  );
+};
+
+const SurveyTitleLabel = ({ surveyTypeName, colorScheme }) => (
+  <View style={{ flexDirection: "row", alignItems: "center" }}>
+    <AntDesign
+      name="form"
+      size={18}
+      color={colorScheme?.text}
+      marginRight={spacing.xs}
+    />
+
+    <Text preset="label" weight="semiBold">
+      Survey - {surveyTypeName}
+    </Text>
+  </View>
 );
-
-const CaseSurvey = ({ navigation, caseSurveyData }) => (
-  <ListItem
-    onPress={() =>
-      navigation.navigate("SurveyForm", {
-        caseId: caseSurveyData?.caseId,
-        surveyType: caseSurveyData?.surveyType,
-        surveyData: caseSurveyData,
-      })
-    }
-    borderLeftWidth={5}
-    borderColor={colors.patra[600]}
-  >
-    <View style={{ flexDirection: "row", alignItems: "center" }}>
-      <FontAwesome
-        name="wpforms"
-        size={18}
-        color={colors.primary[600]}
-        marginRight={4}
-      />
-
-      <Text style={style.listLabel}>
-        Survey - {caseSurveyData?.surveyType?.name}
-      </Text>
-    </View>
-    <View style={{ flexDirection: "row", alignItems: "center" }}>
-      <FontAwesome5
-        name="calendar-day"
-        size={14}
-        color={colors.primary[600]}
-        marginRight={4}
-      />
-      <Text
-        style={[
-          style.listLabel,
-          {
-            fontSize: font.size["sm"],
-          },
-        ]}
-      >
-        Survey completion date: - {caseSurveyData?.surveyCompletion}
-      </Text>
-    </View>
-  </ListItem>
-);
-
-const style = StyleSheet.create({
-  listLabel: { color: colors.primary[700], fontSize: font.size["lg"] },
-});

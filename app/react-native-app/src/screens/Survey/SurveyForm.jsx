@@ -34,7 +34,6 @@ export const SurveyForm = ({ navigation, route }) => {
 
   const handleSubmit = async (values) => {
     try {
-      console.log("values", values);
       await create(values);
       setFeedback({
         status: "success",
