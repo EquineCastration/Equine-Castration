@@ -17,6 +17,7 @@ export const SliderField = ({
   labelAlign = "left",
   labelColor,
   maxVal,
+  disabled,
   ...props
 }) => {
   const { colors: colorScheme } = useStyle();
@@ -44,6 +45,7 @@ export const SliderField = ({
           maximumTrackTintColor: colorScheme?.textDim,
           bubbleBackgroundColor: colorScheme?.button,
         }}
+        disable={disabled}
         {...props}
       />
       <Text preset="formLabel" style={{ color: colorScheme?.button }}>
