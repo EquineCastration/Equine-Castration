@@ -7,13 +7,14 @@ import { View } from "react-native";
  * - PostDayFourteen
  */
 
-export const SurveyFormTypeTwo = ({ values }) => {
+export const SurveyFormTypeTwo = ({ values, disabled }) => {
   return (
     <View>
       <ToggleField
         label="Has your horse returned to normal eating and drinking behaviours?"
         name="hasReturnedToNormalBehaviour"
         variant="checkbox"
+        disabled={disabled}
       />
       <GroupCheckBoxField
         label="Does your horse appear stiff or lame?"
@@ -24,16 +25,19 @@ export const SurveyFormTypeTwo = ({ values }) => {
           "Yes- moderate (They are reluctant to walk but willing to, and appear consistently stiff which improves with walking)",
           "Yes- Severe (They are very reluctant to walk and the stiffness/lameness does not improve with walking)",
         ]}
+        disabled={disabled}
       />
       <GroupCheckBoxField
         label="Has the surgical site fully healed? "
         name="hasSurgicalSiteHealed"
         options={["Yes", "No", "Other"]}
+        disabled={disabled}
       />
       {values?.hasSurgicalSiteHealed === "Other" && (
         <InputField
           label="If other, please specify"
           name="hasSurgicalSiteHealedOther"
+          disabled={disabled}
         />
       )}
       <GroupCheckBoxField
@@ -45,11 +49,13 @@ export const SurveyFormTypeTwo = ({ values }) => {
           "Yes- around the size of an orange",
           "Yes- around the size of a football",
         ]}
+        disabled={disabled}
       />
       <SliderField
         name="pictogramPainScore"
         label="On a scale of 1-12, how would you rate your horse's pain?"
         maxVal={12}
+        disabled={disabled}
       />
       <GroupCheckBoxField
         label="Did your horse have any complications in the first two weeks postoperatively?"
@@ -61,11 +67,13 @@ export const SurveyFormTypeTwo = ({ values }) => {
           "Yes - tissue or gut protruding from surgery site ",
           "Yes - other",
         ]}
+        disabled={disabled}
       />
       {values?.firstTwoWeeksComplications?.toLowerCase().includes("yes") && (
         <InputField
           label="If yes, please specify"
           name="firstTwoWeeksComplicationsYesOther"
+          disabled={disabled}
         />
       )}
       <InputField
@@ -74,14 +82,15 @@ export const SurveyFormTypeTwo = ({ values }) => {
         numberOfLines={3}
         multiline
         placeholder="If not applicable, please input n/a"
+        disabled={disabled}
       />
-
       <InputField
         label="If you would like to add any further information, there is space below."
         name="furtherInformation"
         numberOfLines={3}
         multiline
         placeholder="If not applicable, please input n/a"
+        disabled={disabled}
       />
     </View>
   );
