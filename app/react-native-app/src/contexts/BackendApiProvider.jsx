@@ -11,6 +11,7 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 
 import axios from "axios";
 import { BackendApiContext } from "./BackendApi";
+import { getSurveyApi } from "api/survey";
 
 // list of cookies name to be stored in async storage
 const cookiesExpected = [
@@ -51,6 +52,7 @@ export const BackendApiProvider = ({ children }) => {
       registrationRules: getRegistrationRulesApi(baseContext),
       case: getCaseApi(baseContext),
       users: getUserApi(baseContext),
+      survey: getSurveyApi(baseContext),
     }),
     [baseContext]
   );

@@ -23,9 +23,9 @@ export const evaluateValidationSchema = (surveyType) => {
     hasReturnedToNormalBehaviour: boolean().required("Please select an option"),
     isStiffOrLame: string().required("Please select an option"),
     hasSwellingAtSurgicalSite: string().required("Please select an option"),
-    pictogramPainScore: number().required(
-      "Please use a slider to select a pain score"
-    ),
+    pictogramPainScore: number()
+      .min(1, "Pain score must be at least 1")
+      .required("Please use a slider to select a pain score"),
     ...commonTypeOne,
   };
 
