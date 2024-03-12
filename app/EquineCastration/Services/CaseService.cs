@@ -79,10 +79,10 @@ public class CaseService
       _db.Attach(owner);
     }
 
-    var horse = await _db.Horses.FirstOrDefaultAsync(x => x.Name == model.Horse.Name);
+    var horse = await _db.Horses.FirstOrDefaultAsync(x => x.Name == model.Horse.Name && x.Owner.Email == model.ClientEmail);
     if (horse is null)
     {
-      horse = model.ToHorseEntity();
+      horse = model.ToHorseEntity(owner);
       _db.Horses.Add(horse);
     }
     else
