@@ -1,4 +1,3 @@
-import { View } from "react-native";
 import { Formik } from "formik";
 import { object, string, number } from "yup";
 import { GroupCheckBoxField, ToggleField, InputField } from "components/forms";
@@ -82,66 +81,56 @@ export const InitialConsultationStepTwo = ({ navigation }) => {
     >
       {({ handleSubmit, values }) => (
         <Layout onSubmit={() => handleSubmit()} current={2}>
-          <View
-            style={{
-              flex: 1,
-            }}
-          >
-            <View>
-              <InputField
-                label={fields.horse.weight.label}
-                name="horse.weight"
-                keyboardType="numeric"
-              />
-              <GroupCheckBoxField
-                label={fields.horse.breed.label}
-                name="horse.breed"
-                options={fields.horse.breed.options}
-              />
-              {values?.horse?.breed === "Other" && (
-                <InputField
-                  label={fields.horse.breedOther.label}
-                  name="horse.breedOther"
-                />
-              )}
-              <ToggleField
-                name="horse.isClinicallyHealthy"
-                label={fields.horse.isClinicallyHealthy.label}
-                variant="checkbox"
-              />
-              {!values?.horse?.isClinicallyHealthy && (
-                <InputField
-                  label={fields.horse.isClinicallyHealthyNo.label}
-                  name="horse.isClinicallyHealthyNo"
-                  multiline
-                  numberOfLines={4}
-                />
-              )}
-              <ToggleField
-                name="horse.isOnMedication"
-                label={fields.horse.isOnMedication.label}
-                variant="checkbox"
-              />
-              {values?.horse?.isOnMedication && (
-                <InputField
-                  label={fields.horse.isOnMedicationYes.label}
-                  name="horse.isOnMedicationYes"
-                  multiline
-                  numberOfLines={4}
-                />
-              )}
-              <GroupCheckBoxField
-                label={fields.horse.locationTesticleLeft.label}
-                name="horse.locationTesticleLeft"
-                options={fields.horse.locationTesticleLeft.options}
-              />
-              <GroupCheckBoxField
-                label={fields.horse.locationTesticleRight.label}
-                name="horse.locationTesticleRight"
-                options={fields.horse.locationTesticleRight.options}
-              />
-            </View>
-          </View>
+          <InputField
+            label={fields.horse.weight.label}
+            name="horse.weight"
+            keyboardType="numeric"
+          />
+          <GroupCheckBoxField
+            label={fields.horse.breed.label}
+            name="horse.breed"
+            options={fields.horse.breed.options}
+          />
+          {values?.horse?.breed === "Other" && (
+            <InputField
+              label={fields.horse.breedOther.label}
+              name="horse.breedOther"
+            />
+          )}
+          <ToggleField
+            name="horse.isClinicallyHealthy"
+            label={fields.horse.isClinicallyHealthy.label}
+          />
+          {!values?.horse?.isClinicallyHealthy && (
+            <InputField
+              label={fields.horse.isClinicallyHealthyNo.label}
+              name="horse.isClinicallyHealthyNo"
+              multiline
+              numberOfLines={4}
+            />
+          )}
+          <ToggleField
+            name="horse.isOnMedication"
+            label={fields.horse.isOnMedication.label}
+          />
+          {values?.horse?.isOnMedication && (
+            <InputField
+              label={fields.horse.isOnMedicationYes.label}
+              name="horse.isOnMedicationYes"
+              multiline
+              numberOfLines={4}
+            />
+          )}
+          <GroupCheckBoxField
+            label={fields.horse.locationTesticleLeft.label}
+            name="horse.locationTesticleLeft"
+            options={fields.horse.locationTesticleLeft.options}
+          />
+          <GroupCheckBoxField
+            label={fields.horse.locationTesticleRight.label}
+            name="horse.locationTesticleRight"
+            options={fields.horse.locationTesticleRight.options}
+          />
         </Layout>
       )}
     </Formik>

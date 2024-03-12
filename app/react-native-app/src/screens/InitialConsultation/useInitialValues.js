@@ -1,4 +1,4 @@
-import { InitialConsultationStore as Store } from "store/InitialConsultationStore";
+import { initialConsultationStore as store } from "store/InitialConsultationStore";
 import set from "lodash/set";
 /**
  * Get the initial values for the formik form
@@ -21,6 +21,6 @@ export const useInitialValues = (keysArr) => {
     });
   };
 
-  search(keysArr, Store.useState());
+  search(keysArr, store.useState());
   return result;
 };

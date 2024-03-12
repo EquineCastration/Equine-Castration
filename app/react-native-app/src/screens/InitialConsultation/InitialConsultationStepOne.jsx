@@ -1,4 +1,3 @@
-import { View } from "react-native";
 import { useEffect } from "react";
 import { Formik } from "formik";
 import { object, string, number } from "yup";
@@ -65,26 +64,18 @@ export const InitialConsultationStepOne = ({ navigation, route }) => {
     >
       {({ handleSubmit }) => (
         <Layout onSubmit={() => handleSubmit()} current={1}>
-          <View
-            style={{
-              flex: 1,
-            }}
-          >
-            <View>
-              <InputField label={fields.horse.name.label} name="horse.name" />
-              <InputField label={fields.clientEmail.label} name="clientEmail" />
-              <DatePickerField
-                name="horse.dateOfCastration"
-                label={fields.horse.dateOfCastration.label}
-                type="date"
-              />
-              <InputField
-                label={fields.horse.age.label}
-                name="horse.age"
-                keyboardType="numeric"
-              />
-            </View>
-          </View>
+          <InputField label={fields.horse.name.label} name="horse.name" />
+          <InputField label={fields.clientEmail.label} name="clientEmail" />
+          <DatePickerField
+            name="horse.dateOfCastration"
+            label={fields.horse.dateOfCastration.label}
+            type="date"
+          />
+          <InputField
+            label={fields.horse.age.label}
+            name="horse.age"
+            keyboardType="numeric"
+          />
         </Layout>
       )}
     </Formik>
