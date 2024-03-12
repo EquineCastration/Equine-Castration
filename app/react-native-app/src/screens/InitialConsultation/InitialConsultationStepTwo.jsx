@@ -1,34 +1,59 @@
 import { View } from "react-native";
-
 import { Formik } from "formik";
 import { object, string, number } from "yup";
-
-import { BasicPickerField } from "components/BasicPickerField";
-import { InputField } from "components/InputField";
-import { InitialValues, Layout } from "./InitialConsultationStepOne";
-import { InitialConsultationStore } from "store/InitialConsultationStore";
+import { GroupCheckBoxField, ToggleField, InputField } from "components/forms";
+import { initialConsultationStore as store } from "store/InitialConsultationStore";
 import { initialConsultation } from "constants/initial-consultation";
+import { useInitialValues } from "./useInitialValues";
+import { Layout } from "./Layout";
 
 export const InitialConsultationStepTwo = ({ navigation }) => {
-  const keysArr = ["weight", "breed", "technique", "techniqueOther"];
+  const keysArr = [
+    "horse.weight",
+    "horse.breed",
+    "horse.breedOther",
+    "horse.isClinicallyHealthy",
+    "horse.isClinicallyHealthyNo",
+    "horse.isOnMedication",
+    "horse.isOnMedicationYes",
+    "horse.locationTesticleLeft",
+    "horse.locationTesticleRight",
+  ];
   const fields = initialConsultation.fields;
-  const initialValues = InitialValues(
-    keysArr,
-    InitialConsultationStore.useState()
-  );
+  const initialValues = useInitialValues(keysArr);
 
   const validationSchema = object().shape({
-    weight: number()
-      .min(1, "Weight must be greater than 0")
-      .positive()
-      .required("Weight is required")
-      .typeError("Weight must be a number"),
-    breed: string()
-      .oneOf(fields.breed.options, "Invalid breed")
-      .required("Breed is required"),
-    technique: string()
-      .oneOf(fields.technique.options, "Invalid technique")
-      .required("Technique is required"),
+    horse: object().shape({
+      weight: number()
+        .min(1, "Weight must be greater than 0")
+        .positive("Weight must be a positive number")
+        .typeError("Weight must be a number")
+        .required("Weight is required"),
+      breed: string()
+        .oneOf(fields.horse.breed.options, "Invalid breed")
+        .required("Breed is required"),
+      breedOther: string().when("breed", {
+        is: "Other",
+        then: () => string().required("Please specify the breed"),
+        otherwise: () => string(),
+      }),
+      isClinicallyHealthyNo: string().when("isClinicallyHealthy", {
+        is: false,
+        then: () => string().required("Please describe the abnormal findings"),
+        otherwise: () => string(),
+      }),
+      isOnMedicationYes: string().when("isOnMedication", {
+        is: true,
+        then: () => string().required("Please note the medication"),
+        otherwise: () => string(),
+      }),
+      locationTesticleLeft: string()
+        .oneOf(fields.horse.locationTesticleLeft.options, "Invalid location")
+        .required("Location is required"),
+      locationTesticleRight: string()
+        .oneOf(fields.horse.locationTesticleRight.options, "Invalid location")
+        .required("Location is required"),
+    }),
   });
 
   return (
@@ -36,12 +61,21 @@ export const InitialConsultationStepTwo = ({ navigation }) => {
       initialValues={initialValues}
       validationSchema={validationSchema}
       onSubmit={(values) => {
-        InitialConsultationStore.update((s) => {
-          s.weight = values.weight;
-          s.breed = values.breed;
-          s.technique = values.technique;
-          s.techniqueOther =
-            values.technique === "Other" ? values.techniqueOther : ""; // only if the 'technique' is 'Other' else ''
+        store.update((s) => {
+          s.horse.weight = values.horse.weight;
+          s.horse.breed = values.horse.breed;
+          s.horse.breedOther =
+            values.horse.breed === "Other" ? values.horse.breedOther : "";
+          s.horse.isClinicallyHealthy = values.horse.isClinicallyHealthy;
+          s.horse.isClinicallyHealthyNo = values.horse.isClinicallyHealthy
+            ? ""
+            : values.horse.isClinicallyHealthyNo;
+          s.horse.isOnMedication = values.horse.isOnMedication;
+          s.horse.isOnMedicationYes = values.horse.isOnMedication
+            ? values.horse.isOnMedicationYes
+            : "";
+          s.horse.locationTesticleLeft = values.horse.locationTesticleLeft;
+          s.horse.locationTesticleRight = values.horse.locationTesticleRight;
         });
         navigation.navigate("InitialConsultationStepThree");
       }}
@@ -55,36 +89,57 @@ export const InitialConsultationStepTwo = ({ navigation }) => {
           >
             <View>
               <InputField
-                label={fields.weight.label}
-                name="weight"
-                // onChangeText={(value) =>
-                //   setFieldValue(
-                //     "weight",
-                //     value.replace(/[- #*;,.<>\{\}\[\]\\\/]/gi, "")
-                //   )
-                // }
+                label={fields.horse.weight.label}
+                name="horse.weight"
                 keyboardType="numeric"
               />
-
-              <BasicPickerField
-                label={fields.breed.label}
-                name="breed"
-                pickerItems={fields.breed.options}
+              <GroupCheckBoxField
+                label={fields.horse.breed.label}
+                name="horse.breed"
+                options={fields.horse.breed.options}
               />
-
-              <BasicPickerField
-                label={fields.technique.label}
-                name="technique"
-                pickerItems={fields.technique.options}
-                numberOfLines={2}
-              />
-
-              {values?.technique === "Other" && (
+              {values?.horse?.breed === "Other" && (
                 <InputField
-                  label={fields.techniqueOther.label}
-                  name="techniqueOther"
+                  label={fields.horse.breedOther.label}
+                  name="horse.breedOther"
                 />
               )}
+              <ToggleField
+                name="horse.isClinicallyHealthy"
+                label={fields.horse.isClinicallyHealthy.label}
+                variant="checkbox"
+              />
+              {!values?.horse?.isClinicallyHealthy && (
+                <InputField
+                  label={fields.horse.isClinicallyHealthyNo.label}
+                  name="horse.isClinicallyHealthyNo"
+                  multiline
+                  numberOfLines={4}
+                />
+              )}
+              <ToggleField
+                name="horse.isOnMedication"
+                label={fields.horse.isOnMedication.label}
+                variant="checkbox"
+              />
+              {values?.horse?.isOnMedication && (
+                <InputField
+                  label={fields.horse.isOnMedicationYes.label}
+                  name="horse.isOnMedicationYes"
+                  multiline
+                  numberOfLines={4}
+                />
+              )}
+              <GroupCheckBoxField
+                label={fields.horse.locationTesticleLeft.label}
+                name="horse.locationTesticleLeft"
+                options={fields.horse.locationTesticleLeft.options}
+              />
+              <GroupCheckBoxField
+                label={fields.horse.locationTesticleRight.label}
+                name="horse.locationTesticleRight"
+                options={fields.horse.locationTesticleRight.options}
+              />
             </View>
           </View>
         </Layout>
