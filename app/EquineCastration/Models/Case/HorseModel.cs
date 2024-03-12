@@ -16,6 +16,8 @@ public class HorseModel
   public string LocationTesticleRight { get; set; } = string.Empty;
   public bool Deceased { get; set; }
   
+  public HorseModel() { }
+  
   public HorseModel(Data.Entities.Horse entity)
   {
     Name = entity.Name;

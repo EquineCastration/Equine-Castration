@@ -1,5 +1,3 @@
-using EquineCastration.Data.Entities;
-
 namespace EquineCastration.Models.Case;
 
 public class BaseCaseModel
@@ -105,6 +103,8 @@ public class CaseModel : BaseCaseModel
     AnyPostoperativeComplications = entity.AnyPostoperativeComplications;
     AnyPostoperativeComplicationsYes = entity.AnyPostoperativeComplicationsYes;
     AnyPostoperativeComplicationsYesOther = entity.AnyPostoperativeComplicationsYesOther;
+    
+    DischargeDate = entity.DischargeDate.ToString("dd/MM/yyyy");
   }
 }
 
