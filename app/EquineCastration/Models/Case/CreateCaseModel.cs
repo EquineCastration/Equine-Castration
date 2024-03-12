@@ -7,7 +7,7 @@ namespace EquineCastration.Models.Case;
 public class CreateCaseModel : BaseCaseModel
 {
   public bool OwnerParticipationConsent { get; set; }
-  public HorseModel Horse { get; set; } = null!;
+  public CreateHorseModel Horse { get; set; } = null!;
 
   public Data.Entities.Case ToEntity(Veterinarian author, Horse horse, Owner owner)
     => new()
@@ -59,7 +59,7 @@ public class CreateCaseModel : BaseCaseModel
       InviteOwner = OwnerParticipationConsent,
     };
 
-  public Horse ToHorseEntity()
+  public Horse ToHorseEntity(Owner owner)
     => new()
     {
       Name = Horse.Name,
@@ -74,6 +74,7 @@ public class CreateCaseModel : BaseCaseModel
       IsOnMedicationYes = Horse.IsOnMedicationYes,
       LocationTesticleLeft = Horse.LocationTesticleLeft,
       LocationTesticleRight = Horse.LocationTesticleRight,
-      Deceased = Horse.Deceased
+      Deceased = Horse.Deceased,
+      Owner = owner
     };
 }

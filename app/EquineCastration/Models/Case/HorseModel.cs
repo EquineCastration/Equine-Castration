@@ -1,6 +1,6 @@
 namespace EquineCastration.Models.Case;
 
-public class HorseModel
+public class BaseHorseModel
 {
   public string Name { get; set; } = string.Empty;
   public string DateOfCastration { get; set; } = string.Empty;
@@ -15,11 +15,15 @@ public class HorseModel
   public string LocationTesticleLeft { get; set; } = string.Empty;
   public string LocationTesticleRight { get; set; } = string.Empty;
   public bool Deceased { get; set; }
-  
-  public HorseModel() { }
+}
+
+public class HorseModel : BaseHorseModel
+{
+  public int Id { get; set; }
   
   public HorseModel(Data.Entities.Horse entity)
   {
+    Id = entity.Id;
     Name = entity.Name;
     DateOfCastration = entity.DateOfCastration.ToString("dd/MM/yyyy");
     Age = entity.Age;
@@ -34,4 +38,8 @@ public class HorseModel
     LocationTesticleRight = entity.LocationTesticleRight;
     Deceased = entity.Deceased;
   }
+}
+
+public class CreateHorseModel : BaseHorseModel
+{
 }
