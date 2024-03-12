@@ -1,5 +1,4 @@
 import { Stack } from "./navigationStack";
-import { ScreenHeader } from "components/ScreenHeader";
 import { font, colors } from "style/style";
 
 import { InitialConsultationStepOne } from "screens/InitialConsultation/InitialConsultationStepOne";
@@ -14,6 +13,7 @@ import { Ionicons } from "@expo/vector-icons";
 import { useIsFocused } from "@react-navigation/native";
 import { useEffect } from "react";
 import { resetInitialConsultationStore } from "store/InitialConsultationStore";
+import { BgGradient } from "components/BgGradient";
 
 export const InitialConsultationStack = ({ navigation, route }) => {
   const editData = route.params?.editData ?? undefined; // do we have data for editing ?
@@ -27,16 +27,14 @@ export const InitialConsultationStack = ({ navigation, route }) => {
     <Stack.Navigator screenOptions={{ headerShown: false }}>
       <Stack.Group
         screenOptions={{
-          headerBackground: () => (
-            <ScreenHeader
-              title={
-                editData
-                  ? `Editing case of ${route.params.editData.horseName}` // horse name as title
-                  : "Initial Consultation"
-              }
-              fontSize={editData ? font.size["xl"] : font.size["2xl"]}
-            />
-          ),
+          headerBackground: () => <BgGradient />,
+          headerTitleStyle: {
+            color: "blue",
+            fontSize: 20,
+            fontWeight: "bold",
+          },
+          // TODO: add correct styles
+          headerBackTitleVisible: false,
           ...headerOptions,
         }}
       >
@@ -45,6 +43,7 @@ export const InitialConsultationStack = ({ navigation, route }) => {
           component={InitialConsultationStepOne}
           initialParams={{ editData }}
           options={{
+            title: "Background Information",
             headerLeft: () => (
               <Ionicons
                 name={editData ? "arrow-back-outline" : "menu-outline"}
@@ -60,26 +59,32 @@ export const InitialConsultationStack = ({ navigation, route }) => {
           }}
         />
         <Stack.Screen
+          options={{ title: "Horse Information" }}
           name="InitialConsultationStepTwo"
           component={InitialConsultationStepTwo}
         />
         <Stack.Screen
+          options={{ title: "Surgical Technique" }}
           name="InitialConsultationStepThree"
           component={InitialConsultationStepThree}
         />
         <Stack.Screen
+          options={{ title: "Preoperative Management" }}
           name="InitialConsultationStepFour"
           component={InitialConsultationStepFour}
         />
         <Stack.Screen
+          options={{ title: "Postoperative Management" }}
           name="InitialConsultationStepFive"
           component={InitialConsultationStepFive}
         />
         <Stack.Screen
+          options={{ title: "Environmental Factors" }}
           name="InitialConsultationStepSix"
           component={InitialConsultationStepSix}
         />
         <Stack.Screen
+          options={{ title: "Case Summary" }}
           name="InitialConsultationConfirmation"
           component={Confirmation}
         />
