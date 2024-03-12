@@ -1,5 +1,4 @@
 using EquineCastration.Data;
-using EquineCastration.Data.Entities;
 using EquineCastration.Data.Entities.Identity;
 using EquineCastration.Models.Case;
 using EquineCastration.Models.Emails;
@@ -66,13 +65,13 @@ public class CaseService
     return new CaseModel(entity);
   }
 
-  public async Task<CaseModel> Create(CreateCaseModel newCase, string userId)
+  public async Task<CaseModel> Create(CreateCaseModel model, string userId)
   {
-    var owner = await _db.Owners.FirstOrDefaultAsync(x => x.Email == newCase.ClientEmail);
+    var owner = await _db.Owners.FirstOrDefaultAsync(x => x.Email == model.ClientEmail);
     
     if (owner is null)
     {
-      owner = new Owner { Email = newCase.ClientEmail };
+      owner = new Owner { Email = model.ClientEmail };
       _db.Owners.Add(owner);
     }
     else
@@ -80,10 +79,10 @@ public class CaseService
       _db.Attach(owner);
     }
 
-    var horse = await _db.Horses.FirstOrDefaultAsync(x => x.Name == newCase.HorseName);
+    var horse = await _db.Horses.FirstOrDefaultAsync(x => x.Name == model.Horse.Name);
     if (horse is null)
     {
-      horse = new Horse { Name = newCase.HorseName, Owner = owner };
+      horse = model.ToHorseEntity();
       _db.Horses.Add(horse);
     }
     else
@@ -97,26 +96,26 @@ public class CaseService
                  ?? throw new KeyNotFoundException();
     _db.Attach(author);
 
-    var entity = newCase.ToEntity(author, horse, owner);
+    var entity = model.ToEntity(author, horse, owner);
     await _db.Cases.AddAsync(entity);
     await _db.SaveChangesAsync();
 
-    if (!entity.Deceased) // send email only if the horse is not deceased
+    if (!entity.Horse.Deceased) // send email only if the horse is not deceased
     {
       var isOwnerNew = await _users.FindByEmailAsync(owner.Email) is null; // Check if the owner is registered
     
       // email type whether the owner is registered or not
       await (isOwnerNew
         ? _dischargeEmail.SendDischargeWithRegistrationRequest(new EmailAddress(owner.Email),
-          newCase.HorseName, newCase.DischargeDate, author.ApplicationUser.FullName)
+          model.Horse.Name, model.DischargeDate, author.ApplicationUser.FullName)
         : _dischargeEmail.SendDischarge(new EmailAddress(owner.Email),
-          newCase.HorseName, newCase.DischargeDate, author.ApplicationUser.FullName));
+          model.Horse.Name, model.DischargeDate, author.ApplicationUser.FullName));
     }
 
     return await Get(entity.Id);
   }
 
-  public async Task<CaseModel> EditAuthorCase(int caseId, CreateCaseModel caseUpdate, string userId)
+  public async Task<CaseModel> EditAuthorCase(int caseId, CreateCaseModel model, string userId)
   {
     var entity = await _db.Cases
                    .Include(x => x.Author)
@@ -126,7 +125,7 @@ public class CaseService
                    .SingleOrDefaultAsync()
                  ?? throw new KeyNotFoundException();
 
-    var update = caseUpdate.ToEntity(entity.Author, entity.Horse, entity.Owner);
+    var update = model.ToEntity(entity.Author, entity.Horse, entity.Owner);
     update.Id = entity.Id;
     _db.Entry(entity).CurrentValues.SetValues(update);
 
