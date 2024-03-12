@@ -11,7 +11,15 @@ import { spacing } from "style";
 export const Layout = ({ children, onSubmit, current, buttonTitle }) => {
   return (
     <DefaultLayout>
-      <KeyboardAwareScrollView>{children}</KeyboardAwareScrollView>
+      <KeyboardAwareScrollView>
+        <View
+          style={{
+            flex: 1,
+          }}
+        >
+          {children}
+        </View>
+      </KeyboardAwareScrollView>
       <View
         style={{
           marginHorizontal: spacing.sm,
