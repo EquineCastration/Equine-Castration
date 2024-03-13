@@ -125,11 +125,15 @@ public class CaseService
                    .SingleOrDefaultAsync()
                  ?? throw new KeyNotFoundException();
 
-    var update = model.ToEntity(entity.Author, entity.Horse, entity.Owner);
+    var horse = model.ToHorseEntity(entity.Owner);
+    horse.Id = entity.Horse.Id;
+    _db.Entry(entity.Horse).CurrentValues.SetValues(horse);
+    
+    var update = model.ToEntity(entity.Author, horse, entity.Owner);
     update.Id = entity.Id;
     _db.Entry(entity).CurrentValues.SetValues(update);
-
     await _db.SaveChangesAsync();
+    
     return await Get(entity.Id);
   }
 

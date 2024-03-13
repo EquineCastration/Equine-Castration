@@ -33,7 +33,7 @@ public class CreateCaseModel : BaseCaseModel
       PreoperativeAntimicrobialsGiven = PreoperativeAntimicrobialsGiven,
       PreoperativeAntimicrobialsGivenYes = PreoperativeAntimicrobialsGivenYes,
       PreoperativeAntimicrobialsGivenYesOther = PreoperativeAntimicrobialsGivenYesOther,
-      AntimicrobialAdminTiming = AantimicrobialAdminTiming,
+      AntimicrobialAdminTiming = AntimicrobialAdminTiming,
       PostoperativeAnalgesiaGiven = PostoperativeAnalgesiaGiven,
       PostoperativeAnalgesiaGivenYes = PostoperativeAnalgesiaGivenYes,
       PostoperativeAnalgesiaGivenYesOther = PostoperativeAnalgesiaGivenYesOther,
