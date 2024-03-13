@@ -1,6 +1,5 @@
 import { Stack } from "./navigationStack";
-import { font, colors } from "style/style";
-
+import { colors } from "style";
 import { InitialConsultationStepOne } from "screens/InitialConsultation/InitialConsultationStepOne";
 import { InitialConsultationStepTwo } from "screens/InitialConsultation/InitialConsultationStepTwo";
 import { InitialConsultationStepThree } from "screens/InitialConsultation/InitialConsultationStepThree";
@@ -13,7 +12,9 @@ import { Ionicons } from "@expo/vector-icons";
 import { useIsFocused } from "@react-navigation/native";
 import { useEffect } from "react";
 import { resetInitialConsultationStore } from "store/InitialConsultationStore";
-import { BgGradient } from "components/BgGradient";
+import { InitialConsultationStepSeven } from "screens/InitialConsultation/InitialConsultationStepSeven";
+import { InitialConsultationStepEight } from "screens/InitialConsultation/InitialConsultationStepEight";
+import { ScreenHeader } from "components/ScreenHeader";
 
 export const InitialConsultationStack = ({ navigation, route }) => {
   const editData = route.params?.editData ?? undefined; // do we have data for editing ?
@@ -27,13 +28,6 @@ export const InitialConsultationStack = ({ navigation, route }) => {
     <Stack.Navigator screenOptions={{ headerShown: false }}>
       <Stack.Group
         screenOptions={{
-          headerBackground: () => <BgGradient />,
-          headerTitleStyle: {
-            color: "blue",
-            fontSize: 20,
-            fontWeight: "bold",
-          },
-          // TODO: add correct styles
           headerBackTitleVisible: false,
           ...headerOptions,
         }}
@@ -43,12 +37,14 @@ export const InitialConsultationStack = ({ navigation, route }) => {
           component={InitialConsultationStepOne}
           initialParams={{ editData }}
           options={{
-            title: "Background Information",
+            headerBackground: () => (
+              <ScreenHeader title="Background Information" />
+            ),
             headerLeft: () => (
               <Ionicons
                 name={editData ? "arrow-back-outline" : "menu-outline"}
                 size={24}
-                color={colors.light}
+                color={colors.palette.primary100}
                 onPress={() =>
                   editData
                     ? (resetInitialConsultationStore(), navigation.goBack())
@@ -59,32 +55,64 @@ export const InitialConsultationStack = ({ navigation, route }) => {
           }}
         />
         <Stack.Screen
-          options={{ title: "Horse Information" }}
+          options={{
+            headerBackground: () => <ScreenHeader title="Horse Information" />,
+          }}
           name="InitialConsultationStepTwo"
           component={InitialConsultationStepTwo}
         />
         <Stack.Screen
-          options={{ title: "Surgical Technique" }}
+          options={{
+            headerBackground: () => <ScreenHeader title="Horse Information" />,
+          }}
           name="InitialConsultationStepThree"
           component={InitialConsultationStepThree}
         />
         <Stack.Screen
-          options={{ title: "Preoperative Management" }}
+          options={{
+            headerBackground: () => (
+              <ScreenHeader title="Preoperative Management" />
+            ),
+          }}
           name="InitialConsultationStepFour"
           component={InitialConsultationStepFour}
         />
         <Stack.Screen
-          options={{ title: "Postoperative Management" }}
+          options={{
+            headerBackground: () => (
+              <ScreenHeader title="Postoperative Management" />
+            ),
+          }}
           name="InitialConsultationStepFive"
           component={InitialConsultationStepFive}
         />
         <Stack.Screen
-          options={{ title: "Environmental Factors" }}
+          options={{
+            headerBackground: () => (
+              <ScreenHeader title="Environmental Factors" />
+            ),
+          }}
           name="InitialConsultationStepSix"
           component={InitialConsultationStepSix}
         />
         <Stack.Screen
-          options={{ title: "Case Summary" }}
+          options={{
+            headerBackground: () => <ScreenHeader title="Complications" />,
+          }}
+          name="InitialConsultationStepSeven"
+          component={InitialConsultationStepSeven}
+        />
+        <Stack.Screen
+          options={{
+            headerBackground: () => <ScreenHeader title="Discharge" />,
+          }}
+          name="InitialConsultationEight"
+          component={InitialConsultationStepEight}
+        />
+        <Stack.Screen
+          options={{
+            headerBackground: () => <ScreenHeader title="Case Summary" />,
+          }}
           name="InitialConsultationConfirmation"
           component={Confirmation}
         />

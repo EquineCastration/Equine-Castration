@@ -36,7 +36,7 @@ export const CaseStack = ({ navigation }) => {
         options={({ route }) => ({
           headerBackground: () => (
             <ScreenHeader
-              title={`${route.params.caseData.horseName} - Case Overview`}
+              title={`Case Overview - ${route.params.caseData?.horse?.name}`}
               fontSize={font.size.md}
               fontWeight={400}
               icon={<FontAwesome5 name="horse-head" size={18} />}
@@ -51,7 +51,7 @@ export const CaseStack = ({ navigation }) => {
         options={({ route }) => ({
           headerBackground: () => (
             <ScreenHeader
-              title={`${route.params.caseData.horseName} - Case detail`}
+              title={`Case detail - ${route.params.caseData?.horse?.name}`}
               fontSize={font.size.md}
               fontWeight={400}
               icon={<FontAwesome5 name="horse-head" size={18} />}
