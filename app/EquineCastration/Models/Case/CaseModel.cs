@@ -23,7 +23,7 @@ public class BaseCaseModel
   public bool PreoperativeAntimicrobialsGiven { get; set; }
   public List<string>? PreoperativeAntimicrobialsGivenYes { get; set; }
   public string? PreoperativeAntimicrobialsGivenYesOther { get; set; }
-  public int AantimicrobialAdminTiming { get; set; }
+  public int AntimicrobialAdminTiming { get; set; }
   
   public bool PostoperativeAnalgesiaGiven { get; set; }
   public List<string>? PostoperativeAnalgesiaGivenYes { get; set; }
@@ -80,7 +80,7 @@ public class CaseModel : BaseCaseModel
     PreoperativeAntimicrobialsGiven = entity.PreoperativeAntimicrobialsGiven;
     PreoperativeAntimicrobialsGivenYes = entity.PreoperativeAntimicrobialsGivenYes;
     PreoperativeAntimicrobialsGivenYesOther = entity.PreoperativeAntimicrobialsGivenYesOther;
-    AantimicrobialAdminTiming = entity.AntimicrobialAdminTiming;
+    AntimicrobialAdminTiming = entity.AntimicrobialAdminTiming;
     
     PostoperativeAnalgesiaGiven = entity.PostoperativeAnalgesiaGiven;
     PostoperativeAnalgesiaGivenYes = entity.PostoperativeAnalgesiaGivenYes;
