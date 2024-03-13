@@ -73,6 +73,10 @@ const horseInformation = {
       options: ["Normal", "Inguinal", "Abdominal"],
       defaultValue: "",
     },
+    deceased: {
+      label: "Deceased",
+      defaultValue: false,
+    },
   },
 };
 
@@ -201,7 +205,7 @@ export const initialConsultation = {
       defaultValue: "",
     },
 
-    aantimicrobialAdminTiming: {
+    antimicrobialAdminTiming: {
       label:
         "Timing of antimicrobial administration (minutes before start of surgery)",
       defaultValue: 0,
@@ -330,6 +334,14 @@ export const initialConsultation = {
     },
     anyPostoperativeComplicationsYesOther: {
       label: "If yes and other, please specify",
+      defaultValue: "",
+    },
+    dischargeDate: {
+      label: "Discharge date",
+      defaultValue: "",
+    },
+    dischargeNote: {
+      label: "Any discharge note",
       defaultValue: "",
     },
     horse: horseInformation.fields,

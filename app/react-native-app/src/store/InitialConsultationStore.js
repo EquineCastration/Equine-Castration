@@ -2,16 +2,17 @@ import { Store } from "pullstate";
 import { initialConsultation } from "constants/initial-consultation";
 
 /**
- * helper function to get default values for the fields. also works with nested objects
+ * helper function to get default values for the fields. also works with nested objects.
+ * ensure that the fields have a 'label' property to ensure that the function works correctly.
  * @param {*} fields - fields object
  * @returns - key value pair of fields with default values
  */
 const getDefaultValues = (fields) => {
   return Object.fromEntries(
     Object.entries(fields).map(([key, value]) => {
-      if (Object.prototype.hasOwnProperty.call(value, "defaultValue")) {
+      if ("defaultValue" in value) {
         return [key, value.defaultValue];
-      } else if (typeof value === "object") {
+      } else if (typeof value === "object" && !("label" in value)) {
         return [key, getDefaultValues(value)];
       } else {
         return [key, null];
