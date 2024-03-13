@@ -47,6 +47,7 @@ public class BaseCaseModel
   public bool AnyPostoperativeComplications { get; set; }
   public List<string>? AnyPostoperativeComplicationsYes { get; set; }
   public string? AnyPostoperativeComplicationsYesOther { get; set; }
+  public string? DischargeNote { get; set; } = string.Empty;
   public string DischargeDate { get; set; } = string.Empty;
 }
 public class CaseModel : BaseCaseModel
@@ -79,7 +80,7 @@ public class CaseModel : BaseCaseModel
     PreoperativeAntimicrobialsGiven = entity.PreoperativeAntimicrobialsGiven;
     PreoperativeAntimicrobialsGivenYes = entity.PreoperativeAntimicrobialsGivenYes;
     PreoperativeAntimicrobialsGivenYesOther = entity.PreoperativeAntimicrobialsGivenYesOther;
-    AantimicrobialAdminTiming = entity.AantimicrobialAdminTiming;
+    AantimicrobialAdminTiming = entity.AntimicrobialAdminTiming;
     
     PostoperativeAnalgesiaGiven = entity.PostoperativeAnalgesiaGiven;
     PostoperativeAnalgesiaGivenYes = entity.PostoperativeAnalgesiaGivenYes;
@@ -104,6 +105,7 @@ public class CaseModel : BaseCaseModel
     AnyPostoperativeComplicationsYes = entity.AnyPostoperativeComplicationsYes;
     AnyPostoperativeComplicationsYesOther = entity.AnyPostoperativeComplicationsYesOther;
     
+    DischargeNote = entity.DischargeNote;
     DischargeDate = entity.DischargeDate.ToString("dd/MM/yyyy");
   }
 }

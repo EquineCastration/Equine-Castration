@@ -75,7 +75,7 @@ public class Case
   public List<string>? PreoperativeAntimicrobialsGivenYes { get; set; }
   public string? PreoperativeAntimicrobialsGivenYesOther { get; set; }
   
-  public int AantimicrobialAdminTiming { get; set; } // minutes
+  public int AntimicrobialAdminTiming { get; set; } // minutes
   #endregion
   
   #region Postoperative Management
@@ -151,7 +151,7 @@ public class Case
   
   #endregion
   
+  public string? DischargeNote { get; set; }
   public DateTimeOffset DischargeDate { get; set; }
-  public bool InviteOwner { get; set; }
   public Veterinarian Author { get; set; } = null!;
 }

@@ -75,7 +75,7 @@ namespace EquineCastration.Migrations
             migrationBuilder.RenameColumn(
                 name: "Weight",
                 table: "Cases",
-                newName: "AantimicrobialAdminTiming");
+                newName: "AntimicrobialAdminTiming");
 
             migrationBuilder.RenameColumn(
                 name: "IsLessThanTwo",
@@ -83,9 +83,14 @@ namespace EquineCastration.Migrations
                 newName: "PreoperativeAntimicrobialsGiven");
 
             migrationBuilder.RenameColumn(
-                name: "Deceased",
+                name: "InviteOwner",
                 table: "Cases",
                 newName: "PreoperativeAnalgesiaGiven");
+
+            migrationBuilder.RenameColumn(
+                name: "Deceased",
+                table: "Cases",
+                newName: "PostoperativeAntimicrobialsGiven");
 
             migrationBuilder.AlterColumn<string>(
                 name: "IsOnMedicationYes",
@@ -166,6 +171,12 @@ namespace EquineCastration.Migrations
                 type: "text",
                 nullable: true);
 
+            migrationBuilder.AddColumn<string>(
+                name: "DischargeNote",
+                table: "Cases",
+                type: "text",
+                nullable: true);
+
             migrationBuilder.AddColumn<int>(
                 name: "EmasculatorsHeldDurationMinutes",
                 table: "Cases",
@@ -262,13 +273,6 @@ namespace EquineCastration.Migrations
                 table: "Cases",
                 type: "text",
                 nullable: true);
-
-            migrationBuilder.AddColumn<bool>(
-                name: "PostoperativeAntimicrobialsGiven",
-                table: "Cases",
-                type: "boolean",
-                nullable: false,
-                defaultValue: false);
 
             migrationBuilder.AddColumn<int>(
                 name: "PostoperativeAntimicrobialsGivenDays",
@@ -347,6 +351,10 @@ namespace EquineCastration.Migrations
                 table: "Cases");
 
             migrationBuilder.DropColumn(
+                name: "DischargeNote",
+                table: "Cases");
+
+            migrationBuilder.DropColumn(
                 name: "EmasculatorsHeldDurationMinutes",
                 table: "Cases");
 
@@ -407,10 +415,6 @@ namespace EquineCastration.Migrations
                 table: "Cases");
 
             migrationBuilder.DropColumn(
-                name: "PostoperativeAntimicrobialsGiven",
-                table: "Cases");
-
-            migrationBuilder.DropColumn(
                 name: "PostoperativeAntimicrobialsGivenDays",
                 table: "Cases");
 
@@ -450,10 +454,15 @@ namespace EquineCastration.Migrations
             migrationBuilder.RenameColumn(
                 name: "PreoperativeAnalgesiaGiven",
                 table: "Cases",
+                newName: "InviteOwner");
+
+            migrationBuilder.RenameColumn(
+                name: "PostoperativeAntimicrobialsGiven",
+                table: "Cases",
                 newName: "Deceased");
 
             migrationBuilder.RenameColumn(
-                name: "AantimicrobialAdminTiming",
+                name: "AntimicrobialAdminTiming",
                 table: "Cases",
                 newName: "Weight");
 
