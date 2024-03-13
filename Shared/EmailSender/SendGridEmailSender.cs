@@ -1,5 +1,6 @@
 using EquineCastration.Config;
 using EquineCastration.Services.Contracts;
+using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using SendGrid;
