@@ -1,6 +1,7 @@
 using System.Globalization;
-using EquineCastration.Auth;
 using Flurl;
+using Microsoft.AspNetCore.Http;
+using Shared.Constants;
 
 namespace EquineCastration.Extensions;
 
