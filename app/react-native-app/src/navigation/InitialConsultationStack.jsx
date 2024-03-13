@@ -1,20 +1,22 @@
 import { Stack } from "./navigationStack";
-import { colors } from "style";
-import { InitialConsultationStepOne } from "screens/InitialConsultation/InitialConsultationStepOne";
-import { InitialConsultationStepTwo } from "screens/InitialConsultation/InitialConsultationStepTwo";
-import { InitialConsultationStepThree } from "screens/InitialConsultation/InitialConsultationStepThree";
-import { InitialConsultationStepFour } from "screens/InitialConsultation/InitialConsultationStepFour";
-import { InitialConsultationStepFive } from "screens/InitialConsultation/InitialConsultationStepFive";
-import { InitialConsultationStepSix } from "screens/InitialConsultation/InitialConsultationStepSix";
-import { Confirmation } from "screens/InitialConsultation/Confirmation";
 import { headerOptions } from "./HomeStack";
+import { colors } from "style";
 import { Ionicons } from "@expo/vector-icons";
 import { useIsFocused } from "@react-navigation/native";
 import { useEffect } from "react";
 import { resetInitialConsultationStore } from "store/InitialConsultationStore";
-import { InitialConsultationStepSeven } from "screens/InitialConsultation/InitialConsultationStepSeven";
-import { InitialConsultationStepEight } from "screens/InitialConsultation/InitialConsultationStepEight";
 import { ScreenHeader } from "components/ScreenHeader";
+import {
+  InitialConsultationStepOne,
+  InitialConsultationStepTwo,
+  InitialConsultationStepThree,
+  InitialConsultationStepFour,
+  InitialConsultationStepFive,
+  InitialConsultationStepSix,
+  InitialConsultationStepSeven,
+  InitialConsultationStepEight,
+  Confirmation,
+} from "screens/InitialConsultation";
 
 export const InitialConsultationStack = ({ navigation, route }) => {
   const editData = route.params?.editData ?? undefined; // do we have data for editing ?
