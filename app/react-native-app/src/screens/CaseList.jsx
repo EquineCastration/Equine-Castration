@@ -1,16 +1,12 @@
 import { useEffect, useState } from "react";
-import {
-  FlatList,
-  Text,
-  View,
-  StyleSheet,
-  TouchableOpacity,
-} from "react-native";
-import { colors, font } from "style/style";
+import { FlatList, View, TouchableOpacity } from "react-native";
 import { DefaultLayout } from "layout/DefaultLayout";
 import { useCaseList } from "api/case";
 import { useIsFocused } from "@react-navigation/native";
 import { FontAwesome5 } from "@expo/vector-icons";
+import { useStyle } from "contexts/StyleProvider";
+import { spacing } from "style";
+import { Text } from "components/Text";
 
 export const CaseList = ({ navigation }) => {
   const { data: caseList, mutate } = useCaseList();
@@ -44,35 +40,23 @@ export const CaseList = ({ navigation }) => {
               })
             }
           >
-            <Text style={[style.listLabel]}>
-              <FontAwesome5 name="horse-head" size={18} /> {item.horseName}
+            <Text preset="label">
+              <FontAwesome5 name="horse-head" size={18} /> {item.horse.name}
             </Text>
 
-            <Text
-              style={[
-                style.listLabel,
-                {
-                  fontSize: font.size["sm"],
-                  marginVertical: 3,
-                },
-              ]}
-            >
+            <Text>
               <FontAwesome5 name="calendar-alt" size={13} /> Castration date:{" "}
-              {item.dateOfCastration}
+              {item.horse.dateOfCastration}
             </Text>
             <Text
-              style={[
-                style.listLabel,
-                {
-                  fontWeight: "300",
-                  fontStyle: "italic",
-                  fontSize: font.size["sm"],
-                  textAlign: "right",
-                },
-              ]}
+              weight="normal"
+              size="xs"
+              style={{
+                textAlign: "right",
+              }}
             >
               <FontAwesome5 name="user-alt" size={13} /> Owner:{" "}
-              {item.clientSurname}
+              {item.clientEmail}
             </Text>
           </ListItem>
         )}
@@ -82,15 +66,15 @@ export const CaseList = ({ navigation }) => {
 };
 
 export const ListItem = ({ children, onPress }) => {
+  const { colors: colorScheme } = useStyle();
   return (
     <TouchableOpacity onPress={onPress}>
       <View
         style={{
-          borderBottomWidth: 2,
-          borderColor: colors.primary[100],
+          borderWidth: 1,
+          borderColor: colorScheme?.border,
           borderRadius: 10,
-          backgroundColor: colors.ui.bg,
-          padding: 15,
+          padding: spacing.sm,
         }}
       >
         {children}
@@ -98,7 +82,3 @@ export const ListItem = ({ children, onPress }) => {
     </TouchableOpacity>
   );
 };
-
-const style = StyleSheet.create({
-  listLabel: { color: colors.primary[700], fontSize: font.size["lg"] },
-});
