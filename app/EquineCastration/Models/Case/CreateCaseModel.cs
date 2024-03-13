@@ -6,7 +6,6 @@ namespace EquineCastration.Models.Case;
 
 public class CreateCaseModel : BaseCaseModel
 {
-  public bool OwnerParticipationConsent { get; set; }
   public CreateHorseModel Horse { get; set; } = null!;
 
   public Data.Entities.Case ToEntity(Veterinarian author, Horse horse, Owner owner)
@@ -34,7 +33,7 @@ public class CreateCaseModel : BaseCaseModel
       PreoperativeAntimicrobialsGiven = PreoperativeAntimicrobialsGiven,
       PreoperativeAntimicrobialsGivenYes = PreoperativeAntimicrobialsGivenYes,
       PreoperativeAntimicrobialsGivenYesOther = PreoperativeAntimicrobialsGivenYesOther,
-      AantimicrobialAdminTiming = AantimicrobialAdminTiming,
+      AntimicrobialAdminTiming = AantimicrobialAdminTiming,
       PostoperativeAnalgesiaGiven = PostoperativeAnalgesiaGiven,
       PostoperativeAnalgesiaGivenYes = PostoperativeAnalgesiaGivenYes,
       PostoperativeAnalgesiaGivenYesOther = PostoperativeAnalgesiaGivenYesOther,
@@ -55,8 +54,8 @@ public class CreateCaseModel : BaseCaseModel
       AnyPostoperativeComplications = AnyPostoperativeComplications,
       AnyPostoperativeComplicationsYes = AnyPostoperativeComplicationsYes,
       AnyPostoperativeComplicationsYesOther = AnyPostoperativeComplicationsYesOther,
+      DischargeNote = DischargeNote,
       DischargeDate = DateTimeOffset.ParseExact(DischargeDate, "dd/MM/yyyy", CultureInfo.InvariantCulture),
-      InviteOwner = OwnerParticipationConsent,
     };
 
   public Horse ToHorseEntity(Owner owner)

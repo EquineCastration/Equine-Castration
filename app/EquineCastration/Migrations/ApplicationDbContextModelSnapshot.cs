@@ -31,7 +31,7 @@ namespace EquineCastration.Migrations
 
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
 
-                    b.Property<int>("AantimicrobialAdminTiming")
+                    b.Property<int>("AntimicrobialAdminTiming")
                         .HasColumnType("integer");
 
                     b.Property<bool>("AnyIntraoperativeComplications")
@@ -55,6 +55,9 @@ namespace EquineCastration.Migrations
                     b.Property<DateTimeOffset>("DischargeDate")
                         .HasColumnType("timestamp with time zone");
 
+                    b.Property<string>("DischargeNote")
+                        .HasColumnType("text");
+
                     b.Property<int?>("EmasculatorsHeldDurationMinutes")
                         .HasColumnType("integer");
 
@@ -70,9 +73,6 @@ namespace EquineCastration.Migrations
 
                     b.Property<int>("HorseId")
                         .HasColumnType("integer");
-
-                    b.Property<bool>("InviteOwner")
-                        .HasColumnType("boolean");
 
                     b.Property<bool>("LigaturesPlacedAroundVasculatureOnly")
                         .HasColumnType("boolean");
