@@ -14,7 +14,11 @@ export const InitialConsultationStepThree = ({ navigation }) => {
     "emasculatorsUsed",
     "emasculatorsHeldDurationMinutes",
     "ligaturesUsedToCloseParietalTunic",
+    "ligaturesUsedToCloseParietalTunicYes",
     "ligaturesUsedToCloseParietalTunicYesOther",
+    "ligaturesPlacedAroundVasculatureOnly",
+    "ligaturesPlacedAroundVasculatureOnlyYes",
+    "ligaturesPlacedAroundVasculatureOnlyYesOther",
     "skinClosure",
     "skinClosurePrimaryOrPartial",
   ];
@@ -193,14 +197,14 @@ export const InitialConsultationStepThree = ({ navigation }) => {
             name="skinClosure"
             options={fields.skinClosure.options}
           />
-          {values?.skinClosure === "Primary closure" ||
-            (values?.skinClosure === "Partial closure" && (
-              <GroupCheckBoxField
-                label={fields.skinClosurePrimaryOrPartial.label}
-                name="skinClosurePrimaryOrPartial"
-                options={fields.skinClosurePrimaryOrPartial.options}
-              />
-            ))}
+          {(values?.skinClosure === "Primary closure" ||
+            values?.skinClosure === "Partial closure") && (
+            <GroupCheckBoxField
+              label={fields.skinClosurePrimaryOrPartial.label}
+              name="skinClosurePrimaryOrPartial"
+              options={fields.skinClosurePrimaryOrPartial.options}
+            />
+          )}
         </Layout>
       )}
     </Formik>

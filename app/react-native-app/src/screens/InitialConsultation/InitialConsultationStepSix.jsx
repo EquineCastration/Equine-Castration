@@ -1,27 +1,52 @@
-import { View } from "react-native";
-
 import { Formik } from "formik";
 import { object, string } from "yup";
-
-import { InputField } from "components/InputField";
-import { BasicGroupOptionsField } from "components/BasicGroupOptionsField";
-
-import { InitialConsultationStore } from "store/InitialConsultationStore";
-import { Layout, InitialValues } from "./InitialConsultationStepOne";
+import { GroupCheckBoxField, InputField } from "components/forms";
+import { initialConsultationStore as store } from "store/InitialConsultationStore";
 import { initialConsultation } from "constants/initial-consultation";
+import { useInitialValues } from "./useInitialValues";
+import { Layout } from "./Layout";
 
 export const InitialConsultationStepSix = ({ navigation }) => {
-  const keysArr = ["patientCompliance", "patientComplianceOther"];
+  const keysArr = [
+    "restraint",
+    "location",
+    "locationOther",
+    "environmentCleanliness",
+    "environmentCleanlinessOther",
+    "patientCleanliness",
+    "patientCleanlinessOther",
+  ];
   const fields = initialConsultation.fields;
-  const initialValues = InitialValues(
-    keysArr,
-    InitialConsultationStore.useState()
-  );
+  const initialValues = useInitialValues(keysArr);
 
   const validationSchema = object().shape({
-    patientCompliance: string()
-      .oneOf(fields.patientCompliance.options, "Invalid")
-      .required("Patient Compliance is required"),
+    restraint: string()
+      .oneOf(fields.restraint.options, "Invalid option")
+      .required("Please select an option"),
+    location: string()
+      .oneOf(fields.location.options, "Invalid option")
+      .required("Please select an option"),
+    locationOther: string().when("location", {
+      is: "Other",
+      then: () => string().required("Please specify the location"),
+      otherwise: () => string(),
+    }),
+    environmentCleanliness: string()
+      .oneOf(fields.environmentCleanliness.options, "Invalid option")
+      .required("Please select an option"),
+    environmentCleanlinessOther: string().when("environmentCleanliness", {
+      is: "Other",
+      then: () => string().required("Please specify the cleanliness"),
+      otherwise: () => string(),
+    }),
+    patientCleanliness: string()
+      .oneOf(fields.patientCleanliness.options, "Invalid option")
+      .required("Please select an option"),
+    patientCleanlinessOther: string().when("patientCleanliness", {
+      is: "Other",
+      then: () => string().required("Please specify the cleanliness"),
+      otherwise: () => string(),
+    }),
   });
 
   return (
@@ -29,37 +54,65 @@ export const InitialConsultationStepSix = ({ navigation }) => {
       initialValues={initialValues}
       validationSchema={validationSchema}
       onSubmit={(values) => {
-        InitialConsultationStore.update((s) => {
-          s.patientCompliance = values.patientCompliance;
-          s.patientComplianceOther =
-            values.patientCompliance === "Other"
-              ? values.patientComplianceOther
-              : ""; // only if the 'patientCompliance' is 'Other' else ''
+        store.update((s) => {
+          s.restraint = values.restraint;
+          s.location = values.location;
+          s.locationOther =
+            values.location === "Other" ? values.locationOther : "";
+          s.environmentCleanliness = values.environmentCleanliness;
+          s.environmentCleanlinessOther =
+            values.environmentCleanliness === "Other"
+              ? values.environmentCleanlinessOther
+              : "";
+          s.patientCleanliness = values.patientCleanliness;
+          s.patientCleanlinessOther =
+            values.patientCleanliness === "Other"
+              ? values.patientCleanlinessOther
+              : "";
         });
-        navigation.navigate("InitialConsultationConfirmation");
+        navigation.navigate("InitialConsultationStepSeven");
       }}
     >
       {({ handleSubmit, values }) => (
         <Layout onSubmit={() => handleSubmit()} current={6}>
-          <View
-            style={{
-              flex: 1,
-            }}
-          >
-            <View>
-              <BasicGroupOptionsField
-                label={fields.patientCompliance.label}
-                name="patientCompliance"
-                options={fields.patientCompliance.options}
-              />
-              {values?.patientCompliance === "Other" && (
-                <InputField
-                  label={fields.patientComplianceOther.label}
-                  name="patientComplianceOther"
-                />
-              )}
-            </View>
-          </View>
+          <GroupCheckBoxField
+            label={fields.restraint.label}
+            name="restraint"
+            options={fields.restraint.options}
+          />
+          <GroupCheckBoxField
+            label={fields.location.label}
+            name="location"
+            options={fields.location.options}
+          />
+          {values.location.includes("Other") && (
+            <InputField
+              label={fields.locationOther.label}
+              name="locationOther"
+            />
+          )}
+          <GroupCheckBoxField
+            label={fields.environmentCleanliness.label}
+            name="environmentCleanliness"
+            options={fields.environmentCleanliness.options}
+          />
+          {values.environmentCleanliness.includes("Other") && (
+            <InputField
+              label={fields.environmentCleanlinessOther.label}
+              name="environmentCleanlinessOther"
+            />
+          )}
+          <GroupCheckBoxField
+            label={fields.patientCleanliness.label}
+            name="patientCleanliness"
+            options={fields.patientCleanliness.options}
+          />
+          {values.patientCleanliness.includes("Other") && (
+            <InputField
+              label={fields.patientCleanlinessOther.label}
+              name="patientCleanlinessOther"
+            />
+          )}
         </Layout>
       )}
     </Formik>

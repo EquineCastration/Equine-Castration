@@ -29,7 +29,7 @@ export const Layout = ({ children, onSubmit, current, buttonTitle }) => {
           onPress={onSubmit}
           current={current}
           title={buttonTitle}
-          total={7}
+          total={9}
         />
       </View>
     </DefaultLayout>

@@ -1,36 +1,88 @@
-import { View } from "react-native";
-
 import { Formik } from "formik";
-import { object, string } from "yup";
-
-import { BasicPickerField } from "components/BasicPickerField";
-import { InputField } from "components/InputField";
-import { BasicGroupOptionsField } from "components/BasicGroupOptionsField";
-
-import { InitialConsultationStore } from "store/InitialConsultationStore";
-import { Layout, InitialValues } from "./InitialConsultationStepOne";
+import { array, number, object, string } from "yup";
+import { GroupCheckBoxField, ToggleField, InputField } from "components/forms";
+import { initialConsultationStore as store } from "store/InitialConsultationStore";
 import { initialConsultation } from "constants/initial-consultation";
+import { useInitialValues } from "./useInitialValues";
+import { Layout } from "./Layout";
 
 export const InitialConsultationStepFour = ({ navigation }) => {
   const keysArr = [
-    "skinClosure",
-    "skinClosureOther",
-    "restraint",
-    "restraintStanding",
+    "preoperativeAnalgesiaGiven",
+    "preoperativeAnalgesiaGivenYes",
+    "preoperativeAnalgesiaGivenYesOther",
+    "preoperativeAntimicrobialsGiven",
+    "preoperativeAntimicrobialsGivenYes",
+    "preoperativeAntimicrobialsGivenYesOther",
+    "antimicrobialAdminTiming",
   ];
   const fields = initialConsultation.fields;
-  const initialValues = InitialValues(
-    keysArr,
-    InitialConsultationStore.useState()
-  );
+  const initialValues = useInitialValues(keysArr);
 
   const validationSchema = object().shape({
-    skinClosure: string()
-      .oneOf(fields.skinClosure.options, "Invalid skin closure")
-      .required("Skin Closure required"),
-    restraint: string()
-      .oneOf(fields.restraint.options, "Invalid restraint")
-      .required("Restraint required"),
+    preoperativeAnalgesiaGivenYes: array()
+      .of(
+        string().oneOf(
+          fields.preoperativeAnalgesiaGivenYes.options,
+          "Invalid option"
+        )
+      )
+      .when("preoperativeAnalgesiaGiven", {
+        is: true,
+        then: () =>
+          array()
+            .of(
+              string().oneOf(
+                fields.preoperativeAnalgesiaGivenYes.options,
+                "Invalid option"
+              )
+            )
+            .min(1, "Please select at least one option")
+            .required("Required"),
+        otherwise: () => array().of(string()),
+      }),
+    preoperativeAnalgesiaGivenYesOther: string().when(
+      "preoperativeAnalgesiaGivenYes",
+      {
+        is: (val) => val.includes("Other"),
+        then: () => string().required("Please specify the analgesia"),
+        otherwise: () => string(),
+      }
+    ),
+    preoperativeAntimicrobialsGivenYes: array()
+      .of(
+        string().oneOf(
+          fields.preoperativeAntimicrobialsGivenYes.options,
+          "Invalid option"
+        )
+      )
+      .when("preoperativeAntimicrobialsGiven", {
+        is: true,
+        then: () =>
+          array()
+            .of(
+              string().oneOf(
+                fields.preoperativeAntimicrobialsGivenYes.options,
+                "Invalid option"
+              )
+            )
+            .min(1, "Please select at least one option")
+            .required("Required"),
+        otherwise: () => array().of(string()),
+      }),
+    preoperativeAntimicrobialsGivenYesOther: string().when(
+      "preoperativeAntimicrobialsGivenYes",
+      {
+        is: (val) => val.includes("Other"),
+        then: () => string().required("Please specify the antimicrobial"),
+        otherwise: () => string(),
+      }
+    ),
+    antimicrobialAdminTiming: number()
+      .min(1, "Timing must be greater than 0")
+      .positive("Timing must be a positive number")
+      .typeError("Timing must be a number")
+      .required("Timing is required"),
   });
 
   return (
@@ -38,53 +90,73 @@ export const InitialConsultationStepFour = ({ navigation }) => {
       initialValues={initialValues}
       validationSchema={validationSchema}
       onSubmit={(values) => {
-        InitialConsultationStore.update((s) => {
-          s.skinClosure = values.skinClosure;
-          s.skinClosureOther =
-            values.skinClosure === "Other" ? values.skinClosureOther : ""; // only if the 'skinClosure' is 'Other' else ''
-          s.restraint = values.restraint;
-          s.restraintStanding =
-            values.restraint === "Standing" ? values.restraintStanding : ""; // only if the 'restraint' is 'Standing' else ''
+        store.update((s) => {
+          s.preoperativeAnalgesiaGiven = values.preoperativeAnalgesiaGiven;
+          s.preoperativeAnalgesiaGivenYes = values.preoperativeAnalgesiaGiven
+            ? values.preoperativeAnalgesiaGivenYes
+            : [];
+          s.preoperativeAnalgesiaGivenYesOther =
+            values.preoperativeAnalgesiaGivenYes.includes("Other")
+              ? values.preoperativeAnalgesiaGivenYesOther
+              : "";
+          s.preoperativeAntimicrobialsGiven =
+            values.preoperativeAntimicrobialsGiven;
+          s.preoperativeAntimicrobialsGivenYes =
+            values.preoperativeAntimicrobialsGiven
+              ? values.preoperativeAntimicrobialsGivenYes
+              : [];
+          s.preoperativeAntimicrobialsGivenYesOther =
+            values.preoperativeAntimicrobialsGivenYes.includes("Other")
+              ? values.preoperativeAntimicrobialsGivenYesOther
+              : "";
+          s.antimicrobialAdminTiming = values.antimicrobialAdminTiming;
         });
         navigation.navigate("InitialConsultationStepFive");
       }}
     >
       {({ handleSubmit, values }) => (
         <Layout onSubmit={() => handleSubmit()} current={4}>
-          <View
-            style={{
-              flex: 1,
-            }}
-          >
-            <View>
-              <BasicPickerField
-                label={fields.skinClosure.label}
-                name="skinClosure"
-                pickerItems={fields.skinClosure.options}
-              />
-
-              {values?.skinClosure === "Other" && (
-                <InputField
-                  label={fields.skinClosureOther.label}
-                  name="skinClosureOther"
-                />
-              )}
-
-              <BasicGroupOptionsField
-                label={fields.restraint.label}
-                name="restraint"
-                options={fields.restraint.options}
-              />
-
-              {values?.restraint === "Standing" && (
-                <BasicGroupOptionsField
-                  label={fields.restraintStanding.label}
-                  name="restraintStanding"
-                  options={fields.restraintStanding.options}
-                />
-              )}
-            </View>
-          </View>
+          <ToggleField
+            label={fields.preoperativeAnalgesiaGiven.label}
+            name="preoperativeAnalgesiaGiven"
+          />
+          {values.preoperativeAnalgesiaGiven && (
+            <GroupCheckBoxField
+              label={fields.preoperativeAnalgesiaGivenYes.label}
+              name="preoperativeAnalgesiaGivenYes"
+              options={fields.preoperativeAnalgesiaGivenYes.options}
+              multiSelect
+            />
+          )}
+          {values.preoperativeAnalgesiaGivenYes.includes("Other") && (
+            <InputField
+              label={fields.preoperativeAnalgesiaGivenYesOther.label}
+              name="preoperativeAnalgesiaGivenYesOther"
+            />
+          )}
+          <ToggleField
+            label={fields.preoperativeAntimicrobialsGiven.label}
+            name="preoperativeAntimicrobialsGiven"
+          />
+          {values.preoperativeAntimicrobialsGiven && (
+            <GroupCheckBoxField
+              label={fields.preoperativeAntimicrobialsGivenYes.label}
+              name="preoperativeAntimicrobialsGivenYes"
+              options={fields.preoperativeAntimicrobialsGivenYes.options}
+              multiSelect
+            />
+          )}
+          {values.preoperativeAntimicrobialsGivenYes.includes("Other") && (
+            <InputField
+              label={fields.preoperativeAntimicrobialsGivenYesOther.label}
+              name="preoperativeAntimicrobialsGivenYesOther"
+            />
+          )}
+          <InputField
+            label={fields.antimicrobialAdminTiming.label}
+            name="antimicrobialAdminTiming"
+            keyboardType="numeric"
+          />
         </Layout>
       )}
     </Formik>
