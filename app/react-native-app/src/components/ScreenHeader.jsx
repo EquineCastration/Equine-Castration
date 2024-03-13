@@ -1,24 +1,24 @@
+import { colors } from "style";
 import { BgGradient } from "./BgGradient";
-import { Text } from "react-native";
-import { colors, font } from "style/style";
+import { Text } from "./Text";
+import { View } from "react-native";
 
-export const ScreenHeader = ({
-  title,
-  color = colors.primary[50],
-  fontWeight = 300,
-  fontSize = font.size["4xl"],
-  icon,
-}) => (
+export const ScreenHeader = ({ title }) => (
   <BgGradient>
-    <Text
-      style={{
-        color,
-        fontWeight,
-        fontSize,
-        marginBottom: 10,
-      }}
-    >
-      {icon} {title}
-    </Text>
+    <View style={{ width: "75%" }}>
+      <Text
+        size="lg"
+        weight="normal"
+        numberOfLines={1}
+        ellipsizeMode="tail"
+        style={{
+          alignSelf: "center",
+          marginBottom: 10,
+          color: colors.palette.primary100,
+        }}
+      >
+        {title}
+      </Text>
+    </View>
   </BgGradient>
 );
