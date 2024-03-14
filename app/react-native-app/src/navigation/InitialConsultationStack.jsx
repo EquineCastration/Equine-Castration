@@ -65,7 +65,7 @@ export const InitialConsultationStack = ({ navigation, route }) => {
         />
         <Stack.Screen
           options={{
-            headerBackground: () => <ScreenHeader title="Horse Information" />,
+            headerBackground: () => <ScreenHeader title="Surgical Technique" />,
           }}
           name="InitialConsultationStepThree"
           component={InitialConsultationStepThree}
