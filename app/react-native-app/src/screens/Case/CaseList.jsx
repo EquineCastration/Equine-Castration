@@ -27,9 +27,8 @@ export const CaseList = ({ navigation }) => {
       <FlatList
         ItemSeparatorComponent={() => <View style={{ height: 12 }} />}
         style={{
-          marginTop: 15,
-          marginHorizontal: 5,
-          paddingHorizontal: 5,
+          marginTop: spacing.md,
+          paddingHorizontal: spacing.sm,
         }}
         data={caseList}
         renderItem={({ item }) => (
@@ -41,11 +40,11 @@ export const CaseList = ({ navigation }) => {
             }
           >
             <Text preset="label">
-              <FontAwesome5 name="horse-head" size={18} /> {item.horse.name}
+              <FontAwesome5 name="horse-head" size={16} /> {item.horse.name}
             </Text>
 
             <Text>
-              <FontAwesome5 name="calendar-alt" size={13} /> Castration date:{" "}
+              <FontAwesome5 name="calendar-alt" size={16} /> Castration date:{" "}
               {item.horse.dateOfCastration}
             </Text>
             <Text
@@ -55,7 +54,7 @@ export const CaseList = ({ navigation }) => {
                 textAlign: "right",
               }}
             >
-              <FontAwesome5 name="user-alt" size={13} /> Owner:{" "}
+              <FontAwesome5 name="user-alt" size={16} /> Owner:{" "}
               {item.clientEmail}
             </Text>
           </ListItem>
@@ -73,7 +72,7 @@ export const ListItem = ({ children, onPress }) => {
         style={{
           borderWidth: 1,
           borderColor: colorScheme?.border,
-          borderRadius: 10,
+          borderRadius: 8,
           padding: spacing.sm,
         }}
       >

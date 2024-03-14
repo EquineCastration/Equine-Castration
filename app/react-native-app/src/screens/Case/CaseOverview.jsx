@@ -40,8 +40,8 @@ const ListItem = ({ children, onPress, ...p }) => {
         style={{
           borderWidth: 1,
           borderColor: colorScheme?.border,
-          borderRadius: 10,
-          padding: 15,
+          borderRadius: 8,
+          padding: spacing.md,
           flexDirection: "row",
           alignItems: "center",
           ...p,
@@ -68,8 +68,8 @@ const CaseDetail = ({ navigation, caseData }) => {
       <View style={{ flexDirection: "row", alignItems: "center" }}>
         <FontAwesome5
           name="horse-head"
-          size={18}
-          marginRight={6}
+          size={16}
+          marginRight={spacing.xxs}
           color={colorScheme?.text}
         />
         <Text preset="label">View Case Detail</Text>
@@ -109,7 +109,7 @@ const EligibleSurveyType = ({
           <View style={{ flexDirection: "row", alignItems: "center" }}>
             <FontAwesome5
               name="clock"
-              size={15}
+              size={16}
               color={colorScheme?.text}
               marginRight={spacing.xxs}
             />
@@ -151,7 +151,7 @@ const CaseSurvey = ({ navigation, caseSurveyData }) => {
       <View style={{ flexDirection: "row", alignItems: "center" }}>
         <FontAwesome5
           name="calendar-day"
-          size={15}
+          size={16}
           color={colorScheme?.text}
           marginRight={spacing.xxs}
         />
@@ -167,7 +167,7 @@ const SurveyTitleLabel = ({ surveyTypeName, colorScheme }) => (
   <View style={{ flexDirection: "row", alignItems: "center" }}>
     <AntDesign
       name="form"
-      size={18}
+      size={16}
       color={colorScheme?.text}
       marginRight={spacing.xs}
     />
