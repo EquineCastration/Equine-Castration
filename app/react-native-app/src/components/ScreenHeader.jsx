@@ -1,4 +1,4 @@
-import { colors } from "style";
+import { colors, spacing } from "style";
 import { BgGradient } from "./BgGradient";
 import { Text } from "./Text";
 import { View } from "react-native";
@@ -13,7 +13,7 @@ export const ScreenHeader = ({ title }) => (
         ellipsizeMode="tail"
         style={{
           alignSelf: "center",
-          marginBottom: 10,
+          marginBottom: spacing.xs,
           color: colors.palette.primary100,
         }}
       >

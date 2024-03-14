@@ -6,7 +6,6 @@ import { Text } from "./Text";
 
 const Field = ({ label, value }) => {
   const { colors: colorScheme } = useStyle();
-
   return (
     <View
       style={{
@@ -46,7 +45,7 @@ const formatValue = (value) => {
     case "boolean":
       return value ? "Yes" : "No";
     case "object":
-      return Array.isArray(value) ? value.join(", ") : value.toString();
+      return Array.isArray(value) ? value.join(", ") : JSON.stringify(value);
     default:
       return value.toString();
   }
@@ -59,28 +58,34 @@ const isValidValue = (value) =>
   !(Array.isArray(value) && value.length === 0); // not empty array
 
 export const CaseSummary = ({ data }) => {
+  const HORSE = "horse"; // key for horse data
   const fields = initialConsultation.fields;
-
   return (
     <>
-      {Object.entries(data.horse).map(([key, value]) =>
-        isValidValue(value) ? (
-          <Field
-            key={key}
-            label={fields.horse[key]?.label}
-            value={formatValue(value)}
-          />
-        ) : null
-      )}
-      {Object.entries(data).map(([key, value]) =>
-        isValidValue(value) && key !== "horse" ? (
-          <Field
-            key={key}
-            label={fields[key]?.label}
-            value={formatValue(value)}
-          />
-        ) : null
-      )}
+      {
+        // horse fields
+        Object.entries(data.horse).map(([key, value]) =>
+          isValidValue(value) ? (
+            <Field
+              key={key}
+              label={fields.horse[key]?.label}
+              value={formatValue(value)}
+            />
+          ) : null
+        )
+      }
+      {
+        // rest of the fields
+        Object.entries(data).map(([key, value]) =>
+          isValidValue(value) && key !== HORSE ? (
+            <Field
+              key={key}
+              label={fields[key]?.label}
+              value={formatValue(value)}
+            />
+          ) : null
+        )
+      }
     </>
   );
 };
