@@ -2,80 +2,78 @@ import { Formik } from "formik";
 import { object, string, number } from "yup";
 import { GroupCheckBoxField, ToggleField, InputField } from "components/forms";
 import { initialConsultationStore as store } from "store/InitialConsultationStore";
+import { mapValuesToStore } from "store/storeMapper";
 import { initialConsultation } from "constants/initial-consultation";
 import { useInitialValues } from "./useInitialValues";
 import { Layout } from "./Layout";
 
-export const InitialConsultationStepTwo = ({ navigation }) => {
-  const keysArr = [
-    "horse.weight",
-    "horse.breed",
-    "horse.breedOther",
-    "horse.isClinicallyHealthy",
-    "horse.isClinicallyHealthyNo",
-    "horse.isOnMedication",
-    "horse.isOnMedicationYes",
-    "horse.locationTesticleLeft",
-    "horse.locationTesticleRight",
-  ];
-  const fields = initialConsultation.fields;
-  const initialValues = useInitialValues(keysArr);
+const OTHER = "Other";
 
-  const validationSchema = object().shape({
-    horse: object().shape({
-      weight: number()
-        .min(1, "Weight must be greater than 0")
-        .positive("Weight must be a positive number")
-        .typeError("Weight must be a number")
-        .required("Weight is required"),
-      breed: string()
-        .oneOf(fields.horse.breed.options, "Invalid breed")
-        .required("Breed is required"),
-      breedOther: string().when("breed", {
-        is: "Other",
-        then: () => string().required("Please specify the breed"),
-        otherwise: () => string(),
-      }),
-      isClinicallyHealthyNo: string().when("isClinicallyHealthy", {
-        is: false,
-        then: () => string().required("Please describe the abnormal findings"),
-        otherwise: () => string(),
-      }),
-      isOnMedicationYes: string().when("isOnMedication", {
-        is: true,
-        then: () => string().required("Please note the medication"),
-        otherwise: () => string(),
-      }),
-      locationTesticleLeft: string()
-        .oneOf(fields.horse.locationTesticleLeft.options, "Invalid location")
-        .required("Location is required"),
-      locationTesticleRight: string()
-        .oneOf(fields.horse.locationTesticleRight.options, "Invalid location")
-        .required("Location is required"),
+const keysArr = [
+  "horse.weight",
+  "horse.breed",
+  "horse.breedOther",
+  "horse.isClinicallyHealthy",
+  "horse.isClinicallyHealthyNo",
+  "horse.isOnMedication",
+  "horse.isOnMedicationYes",
+  "horse.locationTesticleLeft",
+  "horse.locationTesticleRight",
+];
+
+const fields = initialConsultation.fields;
+
+const validationSchema = object().shape({
+  horse: object().shape({
+    weight: number()
+      .min(1, "Weight must be greater than 0")
+      .positive("Weight must be a positive number")
+      .typeError("Weight must be a number")
+      .required("Weight is required"),
+    breed: string()
+      .oneOf(fields.horse.breed.options, "Invalid breed")
+      .required("Breed is required"),
+    breedOther: string().when("breed", {
+      is: OTHER,
+      then: () => string().required("Please specify the breed"),
+      otherwise: () => string(),
     }),
-  });
+    isClinicallyHealthyNo: string().when("isClinicallyHealthy", {
+      is: false,
+      then: () => string().required("Please describe the abnormal findings"),
+      otherwise: () => string(),
+    }),
+    isOnMedicationYes: string().when("isOnMedication", {
+      is: true,
+      then: () => string().required("Please note the medication"),
+      otherwise: () => string(),
+    }),
+    locationTesticleLeft: string()
+      .oneOf(fields.horse.locationTesticleLeft.options, "Invalid location")
+      .required("Location is required"),
+    locationTesticleRight: string()
+      .oneOf(fields.horse.locationTesticleRight.options, "Invalid location")
+      .required("Location is required"),
+  }),
+});
 
+export const InitialConsultationStepTwo = ({ navigation }) => {
+  const initialValues = useInitialValues(keysArr);
   return (
     <Formik
       initialValues={initialValues}
       validationSchema={validationSchema}
       onSubmit={(values) => {
-        store.update((s) => {
-          s.horse.weight = values.horse.weight;
-          s.horse.breed = values.horse.breed;
-          s.horse.breedOther =
-            values.horse.breed === "Other" ? values.horse.breedOther : "";
-          s.horse.isClinicallyHealthy = values.horse.isClinicallyHealthy;
-          s.horse.isClinicallyHealthyNo = values.horse.isClinicallyHealthy
-            ? ""
-            : values.horse.isClinicallyHealthyNo;
-          s.horse.isOnMedication = values.horse.isOnMedication;
-          s.horse.isOnMedicationYes = values.horse.isOnMedication
-            ? values.horse.isOnMedicationYes
-            : "";
-          s.horse.locationTesticleLeft = values.horse.locationTesticleLeft;
-          s.horse.locationTesticleRight = values.horse.locationTesticleRight;
-        });
+        // before updating the store, we need to reset some of the fields values based on condition.
+        // this enables updating the store by simply mapping the values to the store
+        let vals = { ...values };
+
+        vals.horse.breed !== OTHER && (vals.horse.breedOther = "");
+        vals.horse.isClinicallyHealthy &&
+          (vals.horse.isClinicallyHealthyNo = "");
+        !vals.horse.isOnMedication && (vals.horse.isOnMedicationYes = "");
+
+        store.update((s) => mapValuesToStore(vals, s)); // map values to store
         navigation.navigate("InitialConsultationStepThree");
       }}
     >
@@ -91,7 +89,7 @@ export const InitialConsultationStepTwo = ({ navigation }) => {
             name="horse.breed"
             options={fields.horse.breed.options}
           />
-          {values?.horse?.breed === "Other" && (
+          {values?.horse?.breed === OTHER && (
             <InputField
               label={fields.horse.breedOther.label}
               name="horse.breedOther"

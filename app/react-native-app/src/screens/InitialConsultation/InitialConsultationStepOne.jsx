@@ -11,6 +11,16 @@ import {
 } from "store/InitialConsultationStore";
 import { useInitialValues } from "./useInitialValues";
 import { Layout } from "./Layout";
+import { mapValuesToStore } from "store/storeMapper";
+
+const keysArr = [
+  "horse.name",
+  "clientEmail",
+  "horse.dateOfCastration",
+  "horse.age",
+];
+
+const fields = initialConsultation.fields;
 
 const validationSchema = object().shape({
   horse: object().shape({
@@ -24,15 +34,6 @@ const validationSchema = object().shape({
   }),
   ...emailSchema("clientEmail"),
 });
-
-const keysArr = [
-  "horse.name",
-  "clientEmail",
-  "horse.dateOfCastration",
-  "horse.age",
-];
-
-const fields = initialConsultation.fields;
 
 export const InitialConsultationStepOne = ({ navigation, route }) => {
   const { editData } = route.params;
@@ -53,12 +54,7 @@ export const InitialConsultationStepOne = ({ navigation, route }) => {
         // each step/stage submission acts as temp submission
         // only after the confirmation screen, data is finally added to the db
         // this allow user to navigate back and forth between the screens/forms
-        store.update((s) => {
-          s.horse.name = values.horse.name;
-          s.clientEmail = values.clientEmail;
-          s.horse.dateOfCastration = values.horse.dateOfCastration;
-          s.horse.age = values.horse.age;
-        });
+        store.update((s) => mapValuesToStore(values, s));
         navigation.navigate("InitialConsultationStepTwo");
       }}
     >

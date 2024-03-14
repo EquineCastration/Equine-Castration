@@ -5,71 +5,68 @@ import { initialConsultationStore as store } from "store/InitialConsultationStor
 import { initialConsultation } from "constants/initial-consultation";
 import { useInitialValues } from "./useInitialValues";
 import { Layout } from "./Layout";
+import { mapValuesToStore } from "store/storeMapper";
+
+const OTHER = "Other";
+
+const keysArr = [
+  "restraint",
+  "location",
+  "locationOther",
+  "environmentCleanliness",
+  "environmentCleanlinessOther",
+  "patientCleanliness",
+  "patientCleanlinessOther",
+];
+
+const fields = initialConsultation.fields;
+
+const validationSchema = object().shape({
+  restraint: string()
+    .oneOf(fields.restraint.options, "Invalid option")
+    .required("Please select an option"),
+  location: string()
+    .oneOf(fields.location.options, "Invalid option")
+    .required("Please select an option"),
+  locationOther: string().when("location", {
+    is: OTHER,
+    then: () => string().required("Please specify the location"),
+    otherwise: () => string(),
+  }),
+  environmentCleanliness: string()
+    .oneOf(fields.environmentCleanliness.options, "Invalid option")
+    .required("Please select an option"),
+  environmentCleanlinessOther: string().when("environmentCleanliness", {
+    is: OTHER,
+    then: () => string().required("Please specify the cleanliness"),
+    otherwise: () => string(),
+  }),
+  patientCleanliness: string()
+    .oneOf(fields.patientCleanliness.options, "Invalid option")
+    .required("Please select an option"),
+  patientCleanlinessOther: string().when("patientCleanliness", {
+    is: OTHER,
+    then: () => string().required("Please specify the cleanliness"),
+    otherwise: () => string(),
+  }),
+});
 
 export const InitialConsultationStepSix = ({ navigation }) => {
-  const keysArr = [
-    "restraint",
-    "location",
-    "locationOther",
-    "environmentCleanliness",
-    "environmentCleanlinessOther",
-    "patientCleanliness",
-    "patientCleanlinessOther",
-  ];
-  const fields = initialConsultation.fields;
   const initialValues = useInitialValues(keysArr);
-
-  const validationSchema = object().shape({
-    restraint: string()
-      .oneOf(fields.restraint.options, "Invalid option")
-      .required("Please select an option"),
-    location: string()
-      .oneOf(fields.location.options, "Invalid option")
-      .required("Please select an option"),
-    locationOther: string().when("location", {
-      is: "Other",
-      then: () => string().required("Please specify the location"),
-      otherwise: () => string(),
-    }),
-    environmentCleanliness: string()
-      .oneOf(fields.environmentCleanliness.options, "Invalid option")
-      .required("Please select an option"),
-    environmentCleanlinessOther: string().when("environmentCleanliness", {
-      is: "Other",
-      then: () => string().required("Please specify the cleanliness"),
-      otherwise: () => string(),
-    }),
-    patientCleanliness: string()
-      .oneOf(fields.patientCleanliness.options, "Invalid option")
-      .required("Please select an option"),
-    patientCleanlinessOther: string().when("patientCleanliness", {
-      is: "Other",
-      then: () => string().required("Please specify the cleanliness"),
-      otherwise: () => string(),
-    }),
-  });
-
   return (
     <Formik
       initialValues={initialValues}
       validationSchema={validationSchema}
       onSubmit={(values) => {
-        store.update((s) => {
-          s.restraint = values.restraint;
-          s.location = values.location;
-          s.locationOther =
-            values.location === "Other" ? values.locationOther : "";
-          s.environmentCleanliness = values.environmentCleanliness;
-          s.environmentCleanlinessOther =
-            values.environmentCleanliness === "Other"
-              ? values.environmentCleanlinessOther
-              : "";
-          s.patientCleanliness = values.patientCleanliness;
-          s.patientCleanlinessOther =
-            values.patientCleanliness === "Other"
-              ? values.patientCleanlinessOther
-              : "";
-        });
+        let vals = { ...values };
+
+        vals.location !== OTHER && (vals.locationOther = "");
+        vals.environmentCleanliness !== OTHER &&
+          (vals.environmentCleanlinessOther = "");
+        vals.patientCleanliness !== OTHER &&
+          (vals.patientCleanlinessOther = "");
+
+        store.update((s) => mapValuesToStore(vals, s));
         navigation.navigate("InitialConsultationStepSeven");
       }}
     >
@@ -85,7 +82,7 @@ export const InitialConsultationStepSix = ({ navigation }) => {
             name="location"
             options={fields.location.options}
           />
-          {values.location.includes("Other") && (
+          {values.location.includes(OTHER) && (
             <InputField
               label={fields.locationOther.label}
               name="locationOther"
@@ -96,7 +93,7 @@ export const InitialConsultationStepSix = ({ navigation }) => {
             name="environmentCleanliness"
             options={fields.environmentCleanliness.options}
           />
-          {values.environmentCleanliness.includes("Other") && (
+          {values.environmentCleanliness.includes(OTHER) && (
             <InputField
               label={fields.environmentCleanlinessOther.label}
               name="environmentCleanlinessOther"
@@ -107,7 +104,7 @@ export const InitialConsultationStepSix = ({ navigation }) => {
             name="patientCleanliness"
             options={fields.patientCleanliness.options}
           />
-          {values.patientCleanliness.includes("Other") && (
+          {values.patientCleanliness.includes(OTHER) && (
             <InputField
               label={fields.patientCleanlinessOther.label}
               name="patientCleanlinessOther"

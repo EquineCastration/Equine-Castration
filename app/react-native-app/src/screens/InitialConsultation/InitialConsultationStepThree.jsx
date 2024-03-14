@@ -5,131 +5,118 @@ import { initialConsultationStore as store } from "store/InitialConsultationStor
 import { initialConsultation } from "constants/initial-consultation";
 import { useInitialValues } from "./useInitialValues";
 import { Layout } from "./Layout";
+import { mapValuesToStore } from "store/storeMapper";
 
-export const InitialConsultationStepThree = ({ navigation }) => {
-  const keysArr = [
-    "localAnaestheticUsed",
-    "parietalTunicIncised",
-    "portionParietalTunicRemoved",
-    "emasculatorsUsed",
-    "emasculatorsHeldDurationMinutes",
+const OTHER = "Other";
+const PRIMARY_CLOSURE = "Primary closure";
+const PARTIAL_CLOSURE = "Partial closure";
+
+const keysArr = [
+  "localAnaestheticUsed",
+  "parietalTunicIncised",
+  "portionParietalTunicRemoved",
+  "emasculatorsUsed",
+  "emasculatorsHeldDurationMinutes",
+  "ligaturesUsedToCloseParietalTunic",
+  "ligaturesUsedToCloseParietalTunicYes",
+  "ligaturesUsedToCloseParietalTunicYesOther",
+  "ligaturesPlacedAroundVasculatureOnly",
+  "ligaturesPlacedAroundVasculatureOnlyYes",
+  "ligaturesPlacedAroundVasculatureOnlyYesOther",
+  "skinClosure",
+  "skinClosurePrimaryOrPartial",
+];
+
+const fields = initialConsultation.fields;
+
+const validationSchema = object().shape({
+  emasculatorsHeldDurationMinutes: number().when("emasculatorsUsed", {
+    is: true,
+    then: () =>
+      number()
+        .min(1, "Duration must be greater than 0")
+        .positive("Duration must be a positive number")
+        .typeError("Duration must be a number")
+        .required("Duration is required"),
+    otherwise: () => number(),
+  }),
+  ligaturesUsedToCloseParietalTunicYes: string().when(
     "ligaturesUsedToCloseParietalTunic",
-    "ligaturesUsedToCloseParietalTunicYes",
-    "ligaturesUsedToCloseParietalTunicYesOther",
-    "ligaturesPlacedAroundVasculatureOnly",
-    "ligaturesPlacedAroundVasculatureOnlyYes",
-    "ligaturesPlacedAroundVasculatureOnlyYesOther",
-    "skinClosure",
-    "skinClosurePrimaryOrPartial",
-  ];
-  const fields = initialConsultation.fields;
-  const initialValues = useInitialValues(keysArr);
-
-  const validationSchema = object().shape({
-    emasculatorsHeldDurationMinutes: number().when("emasculatorsUsed", {
+    {
       is: true,
       then: () =>
-        number()
-          .min(1, "Duration must be greater than 0")
-          .positive("Duration must be a positive number")
-          .typeError("Duration must be a number")
-          .required("Duration is required"),
-      otherwise: () => number(),
-    }),
-    ligaturesUsedToCloseParietalTunicYes: string().when(
-      "ligaturesUsedToCloseParietalTunic",
-      {
-        is: true,
-        then: () =>
-          string()
-            .oneOf(
-              fields.ligaturesUsedToCloseParietalTunicYes.options,
-              "Invalid option"
-            )
-            .required("Please select an option"),
-        otherwise: () => string(),
-      }
-    ),
-    ligaturesUsedToCloseParietalTunicYesOther: string().when(
-      "ligaturesUsedToCloseParietalTunicYes",
-      {
-        is: "Other",
-        then: () => string().required("Please specify the ligature"),
-        otherwise: () => string(),
-      }
-    ),
-    ligaturesPlacedAroundVasculatureOnlyYes: string().when(
-      "ligaturesPlacedAroundVasculatureOnly",
-      {
-        is: true,
-        then: () =>
-          string()
-            .oneOf(
-              fields.ligaturesPlacedAroundVasculatureOnlyYes.options,
-              "Invalid option"
-            )
-            .required("Please select an option"),
-        otherwise: () => string(),
-      }
-    ),
-    ligaturesPlacedAroundVasculatureOnlyYesOther: string().when(
-      "ligaturesPlacedAroundVasculatureOnlyYes",
-      {
-        is: "Other",
-        then: () => string().required("Please specify the ligature"),
-        otherwise: () => string(),
-      }
-    ),
-    skinClosure: string()
-      .oneOf(fields.skinClosure.options, "Invalid option")
-      .required("Please select skin closure option"),
-    skinClosurePrimaryOrPartial: string().when("skinClosure", {
-      is: (val) => val === "Primary closure" || val === "Partial closure",
-      then: () => string().required("Please select a suture pattern"),
+        string()
+          .oneOf(
+            fields.ligaturesUsedToCloseParietalTunicYes.options,
+            "Invalid option"
+          )
+          .required("Please select an option"),
       otherwise: () => string(),
-    }),
-  });
+    }
+  ),
+  ligaturesUsedToCloseParietalTunicYesOther: string().when(
+    "ligaturesUsedToCloseParietalTunicYes",
+    {
+      is: OTHER,
+      then: () => string().required("Please specify the ligature"),
+      otherwise: () => string(),
+    }
+  ),
+  ligaturesPlacedAroundVasculatureOnlyYes: string().when(
+    "ligaturesPlacedAroundVasculatureOnly",
+    {
+      is: true,
+      then: () =>
+        string()
+          .oneOf(
+            fields.ligaturesPlacedAroundVasculatureOnlyYes.options,
+            "Invalid option"
+          )
+          .required("Please select an option"),
+      otherwise: () => string(),
+    }
+  ),
+  ligaturesPlacedAroundVasculatureOnlyYesOther: string().when(
+    "ligaturesPlacedAroundVasculatureOnlyYes",
+    {
+      is: OTHER,
+      then: () => string().required("Please specify the ligature"),
+      otherwise: () => string(),
+    }
+  ),
+  skinClosure: string()
+    .oneOf(fields.skinClosure.options, "Invalid option")
+    .required("Please select skin closure option"),
+  skinClosurePrimaryOrPartial: string().when("skinClosure", {
+    is: (val) => val === PRIMARY_CLOSURE || val === PARTIAL_CLOSURE,
+    then: () => string().required("Please select a suture pattern"),
+    otherwise: () => string(),
+  }),
+});
 
+export const InitialConsultationStepThree = ({ navigation }) => {
+  const initialValues = useInitialValues(keysArr);
   return (
     <Formik
       initialValues={initialValues}
       validationSchema={validationSchema}
       onSubmit={(values) => {
-        store.update((s) => {
-          s.localAnaestheticUsed = values.localAnaestheticUsed;
-          s.parietalTunicIncised = values.parietalTunicIncised;
-          s.portionParietalTunicRemoved = values.portionParietalTunicRemoved;
-          s.emasculatorsUsed = values.emasculatorsUsed;
-          s.emasculatorsHeldDurationMinutes = values.emasculatorsUsed
-            ? values.emasculatorsHeldDurationMinutes
-            : 0;
-          s.ligaturesUsedToCloseParietalTunic =
-            values.ligaturesUsedToCloseParietalTunic;
-          s.ligaturesUsedToCloseParietalTunicYes =
-            values.ligaturesUsedToCloseParietalTunic
-              ? values.ligaturesUsedToCloseParietalTunicYes
-              : "";
-          s.ligaturesUsedToCloseParietalTunicYesOther =
-            values.ligaturesUsedToCloseParietalTunicYes === "Other"
-              ? values.ligaturesUsedToCloseParietalTunicYesOther
-              : "";
-          s.ligaturesPlacedAroundVasculatureOnly =
-            values.ligaturesPlacedAroundVasculatureOnly;
-          s.ligaturesPlacedAroundVasculatureOnlyYes =
-            values.ligaturesPlacedAroundVasculatureOnly
-              ? values.ligaturesPlacedAroundVasculatureOnlyYes
-              : "";
-          s.ligaturesPlacedAroundVasculatureOnlyYesOther =
-            values.ligaturesPlacedAroundVasculatureOnlyYes === "Other"
-              ? values.ligaturesPlacedAroundVasculatureOnlyYesOther
-              : "";
-          s.skinClosure = values.skinClosure;
-          s.skinClosurePrimaryOrPartial =
-            values.skinClosure === "Primary closure" ||
-            values.skinClosure === "Partial closure"
-              ? values.skinClosurePrimaryOrPartial
-              : "";
-        });
+        let vals = { ...values };
+
+        !vals.emasculatorsUsed && (vals.emasculatorsHeldDurationMinutes = 0);
+        !vals.ligaturesUsedToCloseParietalTunic &&
+          (vals.ligaturesUsedToCloseParietalTunicYes = "");
+        vals.ligaturesUsedToCloseParietalTunicYes !== OTHER &&
+          (vals.ligaturesUsedToCloseParietalTunicYesOther = "");
+        !vals.ligaturesPlacedAroundVasculatureOnly &&
+          (vals.ligaturesPlacedAroundVasculatureOnlyYes = "");
+        vals.ligaturesPlacedAroundVasculatureOnlyYes !== OTHER &&
+          (vals.ligaturesPlacedAroundVasculatureOnlyYesOther = "");
+        vals.skinClosure !== PRIMARY_CLOSURE &&
+          vals.skinClosure !== PARTIAL_CLOSURE &&
+          (vals.skinClosurePrimaryOrPartial = "");
+
+        store.update((s) => mapValuesToStore(vals, s));
         navigation.navigate("InitialConsultationStepFour");
       }}
     >
@@ -169,7 +156,7 @@ export const InitialConsultationStepThree = ({ navigation }) => {
               options={fields.ligaturesUsedToCloseParietalTunicYes.options}
             />
           )}
-          {values?.ligaturesUsedToCloseParietalTunicYes === "Other" && (
+          {values?.ligaturesUsedToCloseParietalTunicYes === OTHER && (
             <InputField
               label={fields.ligaturesUsedToCloseParietalTunicYesOther.label}
               name="ligaturesUsedToCloseParietalTunicYesOther"
@@ -186,7 +173,7 @@ export const InitialConsultationStepThree = ({ navigation }) => {
               options={fields.ligaturesPlacedAroundVasculatureOnlyYes.options}
             />
           )}
-          {values?.ligaturesPlacedAroundVasculatureOnlyYes === "Other" && (
+          {values?.ligaturesPlacedAroundVasculatureOnlyYes === OTHER && (
             <InputField
               label={fields.ligaturesPlacedAroundVasculatureOnlyYesOther.label}
               name="ligaturesPlacedAroundVasculatureOnlyYesOther"
@@ -197,8 +184,8 @@ export const InitialConsultationStepThree = ({ navigation }) => {
             name="skinClosure"
             options={fields.skinClosure.options}
           />
-          {(values?.skinClosure === "Primary closure" ||
-            values?.skinClosure === "Partial closure") && (
+          {(values?.skinClosure === PRIMARY_CLOSURE ||
+            values?.skinClosure === PARTIAL_CLOSURE) && (
             <GroupCheckBoxField
               label={fields.skinClosurePrimaryOrPartial.label}
               name="skinClosurePrimaryOrPartial"

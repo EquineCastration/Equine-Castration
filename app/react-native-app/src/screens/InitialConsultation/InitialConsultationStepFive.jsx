@@ -5,140 +5,133 @@ import { initialConsultationStore as store } from "store/InitialConsultationStor
 import { initialConsultation } from "constants/initial-consultation";
 import { useInitialValues } from "./useInitialValues";
 import { Layout } from "./Layout";
+import { mapValuesToStore } from "store/storeMapper";
+
+const OTHER = "Other";
+
+const keysArr = [
+  "postoperativeAnalgesiaGiven",
+  "postoperativeAnalgesiaGivenYes",
+  "postoperativeAnalgesiaGivenYesOther",
+  "postoperativeAnalgesiaGivenDays",
+  "postoperativeAntimicrobialsGiven",
+  "postoperativeAntimicrobialsGivenYes",
+  "postoperativeAntimicrobialsGivenYesOther",
+  "postoperativeAntimicrobialsGivenDays",
+];
+
+const fields = initialConsultation.fields;
+
+const validationSchema = object().shape({
+  postoperativeAnalgesiaGivenYes: array()
+    .of(
+      string().oneOf(
+        fields.postoperativeAnalgesiaGivenYes.options,
+        "Invalid option"
+      )
+    )
+    .when("postoperativeAnalgesiaGiven", {
+      is: true,
+      then: () =>
+        array()
+          .of(
+            string().oneOf(
+              fields.postoperativeAnalgesiaGivenYes.options,
+              "Invalid option"
+            )
+          )
+          .min(1, "Please select at least one option")
+          .required("Required"),
+      otherwise: () => array().of(string()),
+    }),
+  postoperativeAnalgesiaGivenYesOther: string().when(
+    "postoperativeAnalgesiaGivenYes",
+    {
+      is: (val) => val.includes(OTHER),
+      then: () => string().required("Please specify the analgesia"),
+      otherwise: () => string(),
+    }
+  ),
+  postoperativeAnalgesiaGivenDays: number().when(
+    "postoperativeAnalgesiaGiven",
+    {
+      is: true,
+      then: () =>
+        number()
+          .min(1, "Days must be greater than 0")
+          .positive("Days must be a positive number")
+          .typeError("Days must be a number")
+          .required("Days is required"),
+      otherwise: () => number(),
+    }
+  ),
+  postoperativeAntimicrobialsGivenYes: array()
+    .of(
+      string().oneOf(
+        fields.postoperativeAntimicrobialsGivenYes.options,
+        "Invalid option"
+      )
+    )
+    .when("postoperativeAntimicrobialsGiven", {
+      is: true,
+      then: () =>
+        array()
+          .of(
+            string().oneOf(
+              fields.postoperativeAntimicrobialsGivenYes.options,
+              "Invalid option"
+            )
+          )
+          .min(1, "Please select at least one option")
+          .required("Required"),
+      otherwise: () => array().of(string()),
+    }),
+  postoperativeAntimicrobialsGivenYesOther: string().when(
+    "postoperativeAntimicrobialsGivenYes",
+    {
+      is: (val) => val.includes(OTHER),
+      then: () => string().required("Please specify the antimicrobial"),
+      otherwise: () => string(),
+    }
+  ),
+  postoperativeAntimicrobialsGivenDays: number().when(
+    "postoperativeAntimicrobialsGiven",
+    {
+      is: true,
+      then: () =>
+        number()
+          .min(1, "Days must be greater than 0")
+          .positive("Days must be a positive number")
+          .typeError("Days must be a number")
+          .required("Days is required"),
+      otherwise: () => number(),
+    }
+  ),
+});
 
 export const InitialConsultationStepFive = ({ navigation }) => {
-  const keysArr = [
-    "postoperativeAnalgesiaGiven",
-    "postoperativeAnalgesiaGivenYes",
-    "postoperativeAnalgesiaGivenYesOther",
-    "postoperativeAnalgesiaGivenDays",
-    "postoperativeAntimicrobialsGiven",
-    "postoperativeAntimicrobialsGivenYes",
-    "postoperativeAntimicrobialsGivenYesOther",
-    "postoperativeAntimicrobialsGivenDays",
-  ];
-  const fields = initialConsultation.fields;
   const initialValues = useInitialValues(keysArr);
-
-  const validationSchema = object().shape({
-    postoperativeAnalgesiaGivenYes: array()
-      .of(
-        string().oneOf(
-          fields.postoperativeAnalgesiaGivenYes.options,
-          "Invalid option"
-        )
-      )
-      .when("postoperativeAnalgesiaGiven", {
-        is: true,
-        then: () =>
-          array()
-            .of(
-              string().oneOf(
-                fields.postoperativeAnalgesiaGivenYes.options,
-                "Invalid option"
-              )
-            )
-            .min(1, "Please select at least one option")
-            .required("Required"),
-        otherwise: () => array().of(string()),
-      }),
-    postoperativeAnalgesiaGivenYesOther: string().when(
-      "postoperativeAnalgesiaGivenYes",
-      {
-        is: (val) => val.includes("Other"),
-        then: () => string().required("Please specify the analgesia"),
-        otherwise: () => string(),
-      }
-    ),
-    postoperativeAnalgesiaGivenDays: number().when(
-      "postoperativeAnalgesiaGiven",
-      {
-        is: true,
-        then: () =>
-          number()
-            .min(1, "Days must be greater than 0")
-            .positive("Days must be a positive number")
-            .typeError("Days must be a number")
-            .required("Days is required"),
-        otherwise: () => number(),
-      }
-    ),
-    postoperativeAntimicrobialsGivenYes: array()
-      .of(
-        string().oneOf(
-          fields.postoperativeAntimicrobialsGivenYes.options,
-          "Invalid option"
-        )
-      )
-      .when("postoperativeAntimicrobialsGiven", {
-        is: true,
-        then: () =>
-          array()
-            .of(
-              string().oneOf(
-                fields.postoperativeAntimicrobialsGivenYes.options,
-                "Invalid option"
-              )
-            )
-            .min(1, "Please select at least one option")
-            .required("Required"),
-        otherwise: () => array().of(string()),
-      }),
-    postoperativeAntimicrobialsGivenYesOther: string().when(
-      "postoperativeAntimicrobialsGivenYes",
-      {
-        is: (val) => val.includes("Other"),
-        then: () => string().required("Please specify the antimicrobial"),
-        otherwise: () => string(),
-      }
-    ),
-    postoperativeAntimicrobialsGivenDays: number().when(
-      "postoperativeAntimicrobialsGiven",
-      {
-        is: true,
-        then: () =>
-          number()
-            .min(1, "Days must be greater than 0")
-            .positive("Days must be a positive number")
-            .typeError("Days must be a number")
-            .required("Days is required"),
-        otherwise: () => number(),
-      }
-    ),
-  });
-
   return (
     <Formik
       initialValues={initialValues}
       validationSchema={validationSchema}
       onSubmit={(values) => {
-        store.update((s) => {
-          s.postoperativeAnalgesiaGiven = values.postoperativeAnalgesiaGiven;
-          s.postoperativeAnalgesiaGivenYes = values.postoperativeAnalgesiaGiven
-            ? values.postoperativeAnalgesiaGivenYes
-            : [];
-          s.postoperativeAnalgesiaGivenYesOther =
-            values.postoperativeAnalgesiaGivenYes.includes("Other")
-              ? values.postoperativeAnalgesiaGivenYesOther
-              : "";
-          s.postoperativeAnalgesiaGivenDays = values.postoperativeAnalgesiaGiven
-            ? values.postoperativeAnalgesiaGivenDays
-            : 0;
-          s.postoperativeAntimicrobialsGiven =
-            values.postoperativeAntimicrobialsGiven;
-          s.postoperativeAntimicrobialsGivenYes =
-            values.postoperativeAntimicrobialsGiven
-              ? values.postoperativeAntimicrobialsGivenYes
-              : [];
-          s.postoperativeAntimicrobialsGivenYesOther =
-            values.postoperativeAntimicrobialsGivenYes.includes("Other")
-              ? values.postoperativeAntimicrobialsGivenYesOther
-              : "";
-          s.postoperativeAntimicrobialsGivenDays =
-            values.postoperativeAntimicrobialsGiven
-              ? values.postoperativeAntimicrobialsGivenDays
-              : 0;
-        });
+        let vals = { ...values };
+
+        !vals.postoperativeAnalgesiaGiven &&
+          (vals.postoperativeAnalgesiaGivenYes = []);
+        !vals.postoperativeAnalgesiaGivenYes.includes(OTHER) &&
+          (vals.postoperativeAnalgesiaGivenYesOther = "");
+        !vals.postoperativeAnalgesiaGiven &&
+          (vals.postoperativeAnalgesiaGivenDays = 0);
+        !vals.postoperativeAntimicrobialsGiven &&
+          (vals.postoperativeAntimicrobialsGivenYes = []);
+        !vals.postoperativeAntimicrobialsGivenYes.includes(OTHER) &&
+          (vals.postoperativeAntimicrobialsGivenYesOther = "");
+        !vals.postoperativeAntimicrobialsGiven &&
+          (vals.postoperativeAntimicrobialsGivenDays = 0);
+
+        store.update((s) => mapValuesToStore(vals, s));
         navigation.navigate("InitialConsultationStepSix");
       }}
     >
@@ -156,7 +149,7 @@ export const InitialConsultationStepFive = ({ navigation }) => {
               multiSelect
             />
           )}
-          {values.postoperativeAnalgesiaGivenYes.includes("Other") && (
+          {values.postoperativeAnalgesiaGivenYes.includes(OTHER) && (
             <InputField
               name="postoperativeAnalgesiaGivenYesOther"
               label={fields.postoperativeAnalgesiaGivenYesOther.label}
@@ -181,7 +174,7 @@ export const InitialConsultationStepFive = ({ navigation }) => {
               multiSelect
             />
           )}
-          {values.postoperativeAntimicrobialsGivenYes.includes("Other") && (
+          {values.postoperativeAntimicrobialsGivenYes.includes(OTHER) && (
             <InputField
               name="postoperativeAntimicrobialsGivenYesOther"
               label={fields.postoperativeAntimicrobialsGivenYesOther.label}

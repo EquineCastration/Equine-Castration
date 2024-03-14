@@ -1,5 +1,4 @@
 import { Formik } from "formik";
-import { object, string } from "yup";
 import { InputField } from "components/forms";
 import { initialConsultationStore as store } from "store/InitialConsultationStore";
 import { initialConsultation } from "constants/initial-consultation";
@@ -7,21 +6,20 @@ import { useInitialValues } from "./useInitialValues";
 import { Layout } from "./Layout";
 import { DatePickerField } from "components/DatePickerField";
 import { ToggleField } from "components/forms";
+import { mapValuesToStore } from "store/storeMapper";
+
+const keysArr = ["dischargeDate", "dischargeNote", "horse.deceased"];
+
+const fields = initialConsultation.fields;
 
 export const InitialConsultationStepEight = ({ navigation }) => {
-  const keysArr = ["dischargeDate", "dischargeNote", "horse.deceased"];
-  const fields = initialConsultation.fields;
   const initialValues = useInitialValues(keysArr);
 
   return (
     <Formik
       initialValues={initialValues}
       onSubmit={(values) => {
-        store.update((s) => {
-          s.dischargeDate = values.dischargeDate;
-          s.dischargeNote = values.dischargeNote;
-          s.horse.deceased = values.horse.deceased;
-        });
+        store.update((s) => mapValuesToStore(values, s));
         navigation.navigate("InitialConsultationConfirmation");
       }}
     >
