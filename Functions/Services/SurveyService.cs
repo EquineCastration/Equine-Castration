@@ -1,20 +1,19 @@
 using EquineCastration.Data;
 using Functions.Services.Contracts;
 using Microsoft.EntityFrameworkCore;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using Shared.Models.Account.Email;
+using System.Net.Http.Json;
 
 namespace Functions.Services;
 public class SurveyService : ISurveyService
 {
   private readonly ApplicationDbContext _db;
+  private readonly HttpClient _client;
 
-  public SurveyService(ApplicationDbContext db)
+  public SurveyService(ApplicationDbContext db, IHttpClientFactory httpClientFactory)
   {
     _db = db;
+    _client = httpClientFactory.CreateClient("client");
   }
 
   public async Task SendOwnerSurveys()
@@ -27,6 +26,7 @@ public class SurveyService : ISurveyService
                                 .Include(x => x.Owner)
                                 .Include(x => x.Surveys)
                                 .ThenInclude(y => y.SurveyType)
+                                .Include(x => x.Horse)
                                 .Where(x => x.DischargeDate.AddDays(90) < DateTime.Now && x.Deceased == false && x.Owner.OptOut == false)
                                 .ToListAsync();
 
@@ -47,10 +47,26 @@ public class SurveyService : ISurveyService
 
         if(existingSurvey == null) 
         {
+          var model = new NewSurveyNotificationModel
+          {
+            HorseName = c.Horse.Name,
+            DischargeDate = c.DischargeDate,
+            OwnerEmail = c.Owner.Email,
+            Days = numberOfDays
+          };
+
+          await SendOwnerSurvey(model);
 
         }
       }
     }
+  }
 
+  public async Task SendOwnerSurvey(NewSurveyNotificationModel model)
+  {
+    var response = await _client.PostAsJsonAsync("Surveys/SendOwnerNotification", model);
+    response.EnsureSuccessStatusCode();
   }
 }
+
+

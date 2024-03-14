@@ -1,16 +1,24 @@
+using EquineCastration.Config;
 using EquineCastration.Data;
 using EquineCastration.Models.Survey;
+using EquineCastration.Services.Contracts;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Options;
+using Shared.Models.Account.Email;
 
 namespace EquineCastration.Services;
 
 public class SurveyService
 {
   private readonly ApplicationDbContext _db;
+  private readonly BaseEmailSenderOptions _siteConfig;
+  private readonly IEmailSender _emailSender;
 
-  public SurveyService(ApplicationDbContext db)
+  public SurveyService(ApplicationDbContext db, IOptions<BaseEmailSenderOptions> siteConfigOptions, IEmailSender emailSender)
   {
     _db = db;
+    _siteConfig = siteConfigOptions.Value;
+    _emailSender = emailSender;
   }
 
   public async Task<List<SurveyModel>> ListByCase(string userId, int caseId)
@@ -112,7 +120,17 @@ public class SurveyService
       .FirstOrDefaultAsync();
     return isAuthorOrOwner is not null;
   }
-  
+
+  /// <summary>
+  /// Sends an email out to a horse owner notifying them of a new survey.
+  /// </summary>
+  /// <param name="model"></param>
+  /// <returns></returns>
+  public async Task SendOwnerSurveyNotification(NewSurveyNotificationModel model)
+  {
+
+  }
+
   private async Task<SurveyTypeModel?> GetEligibleSurveyTypeByDate(DateTimeOffset dischargeDate)
   {
     var surveyTypeMap = new SortedDictionary<DateTimeOffset, string>();
@@ -132,4 +150,6 @@ public class SurveyService
     }
     return null; // No eligible survey type
   }
+
+
 }

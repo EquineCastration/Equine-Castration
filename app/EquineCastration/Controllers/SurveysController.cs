@@ -5,6 +5,7 @@ using EquineCastration.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Shared.Models.Account.Email;
 
 namespace EquineCastration.Controllers;
 
@@ -66,6 +67,18 @@ public class SurveysController : ControllerBase
   }
 
   /// <summary>
+  /// Sends a 
+  /// </summary>
+  /// <param name="model"></param>
+  /// <returns></returns>
+  public async Task<ActionResult> SendOwnerNotification(NewSurveyNotificationModel model)
+  {
+    await _survey.SendOwnerSurveyNotification(model);
+
+    return NoContent();
+  }
+
+  /// <summary>
   /// Get eligible survey type for creation for a case.
   /// Case discharge date is used to determine the eligible survey type.
   /// Also, doesn't include the survey types already created for the case.
@@ -96,4 +109,6 @@ public class SurveysController : ControllerBase
       return BadRequest();
     }
   }
+
+
 }
