@@ -14,6 +14,7 @@ import {
   evaluateInitialValues,
   evaluateValidationSchema,
 } from "./form";
+import { Spinner } from "components/Spinner";
 
 export const SurveyForm = ({ navigation, route }) => {
   const { caseId, surveyType, surveyData } = route.params;
@@ -21,6 +22,7 @@ export const SurveyForm = ({ navigation, route }) => {
     survey: { create },
   } = useBackendApi();
   const [feedback, setFeedback] = useState();
+  const [isLoading, setIsLoading] = useState(false);
   const formRef = useRef();
 
   const initialValues = evaluateInitialValues(
@@ -33,6 +35,7 @@ export const SurveyForm = ({ navigation, route }) => {
   const validationSchema = evaluateValidationSchema(surveyType.name);
 
   const handleSubmit = async (values) => {
+    setIsLoading(true);
     try {
       await create(values);
       setFeedback({
@@ -59,6 +62,7 @@ export const SurveyForm = ({ navigation, route }) => {
           });
       }
     }
+    setIsLoading(false);
   };
 
   const confirmAlert = () =>
@@ -99,20 +103,23 @@ export const SurveyForm = ({ navigation, route }) => {
   );
 
   return (
-    <Formik
-      enableReinitialize
-      initialValues={initialValues}
-      validationSchema={validationSchema}
-      innerRef={formRef}
-      onSubmit={handleSubmit}
-    >
-      {({ values }) => (
-        <Screen>
-          <SurveyFormType values={values} disabled={!!surveyData} />
-          {!surveyData && <SubmitButton />}
-        </Screen>
-      )}
-    </Formik>
+    <>
+      {isLoading ? <Spinner text={"Submitting"} /> : null}
+      <Formik
+        enableReinitialize
+        initialValues={initialValues}
+        validationSchema={validationSchema}
+        innerRef={formRef}
+        onSubmit={handleSubmit}
+      >
+        {({ values }) => (
+          <Screen>
+            <SurveyFormType values={values} disabled={!!surveyData} />
+            {!surveyData && <SubmitButton />}
+          </Screen>
+        )}
+      </Formik>
+    </>
   );
 };
 

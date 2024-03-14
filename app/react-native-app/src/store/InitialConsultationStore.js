@@ -1,17 +1,60 @@
 import { Store } from "pullstate";
 import { initialConsultation } from "constants/initial-consultation";
 
-// Grab initial state/default values
-// E.g. { horseName : "" , clientSurname : "" ....}
-export const ICStoreInitialState = Object.fromEntries(
-  Object.entries(initialConsultation.fields).map(([key, { defaultValue }]) => [
-    key,
-    defaultValue,
-  ])
-);
+/**
+ * helper function to get default values for the fields. also works with nested objects.
+ * ensure that the fields have a 'label' property to ensure that the function works correctly.
+ * @param {*} fields - fields object
+ * @returns - key value pair of fields with default values
+ */
+const getDefaultValues = (fields) => {
+  return Object.fromEntries(
+    Object.entries(fields).map(([key, value]) => {
+      if ("defaultValue" in value) {
+        return [key, value.defaultValue];
+      } else if (typeof value === "object" && !("label" in value)) {
+        return [key, getDefaultValues(value)];
+      } else {
+        return [key, null];
+      }
+    })
+  );
+};
 
-// Create a globally available store
-export const InitialConsultationStore = new Store(ICStoreInitialState);
+const storeInitialState = getDefaultValues(initialConsultation.fields);
 
+/**
+ * store for initial consultation form
+ */
+export const initialConsultationStore = new Store(storeInitialState);
+
+/**
+ * helper function to reset the store to initial state
+ * @returns - reset the initial consultation store to initial state
+ */
 export const resetInitialConsultationStore = () =>
-  InitialConsultationStore.replace(ICStoreInitialState);
+  initialConsultationStore.replace(storeInitialState);
+
+/**
+ * helper function to update the initial consultation store. works with nested objects.
+ * @param {*} data - data to update the store with
+ */
+export const updateInitialConsultationStore = (data) => {
+  initialConsultationStore.update((store) => {
+    const updateStore = (store, data) => {
+      Object.keys(data).forEach((key) => {
+        if (
+          typeof data[key] === "object" &&
+          data[key] !== null &&
+          !Array.isArray(data[key])
+        ) {
+          if (!store[key]) store[key] = {};
+          updateStore(store[key], data[key]);
+        } else {
+          store[key] = data[key];
+        }
+      });
+    };
+    updateStore(store, data);
+  });
+};

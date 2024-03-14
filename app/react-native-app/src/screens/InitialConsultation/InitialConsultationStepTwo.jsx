@@ -1,92 +1,134 @@
-import { View } from "react-native";
-
 import { Formik } from "formik";
 import { object, string, number } from "yup";
-
-import { BasicPickerField } from "components/BasicPickerField";
-import { InputField } from "components/InputField";
-import { InitialValues, Layout } from "./InitialConsultationStepOne";
-import { InitialConsultationStore } from "store/InitialConsultationStore";
+import { GroupCheckBoxField, ToggleField, InputField } from "components/forms";
+import { initialConsultationStore as store } from "store/InitialConsultationStore";
+import { mapValuesToStore } from "store/storeMapper";
 import { initialConsultation } from "constants/initial-consultation";
+import { useInitialValues } from "./useInitialValues";
+import { Layout } from "./Layout";
 
-export const InitialConsultationStepTwo = ({ navigation }) => {
-  const keysArr = ["weight", "breed", "technique", "techniqueOther"];
-  const fields = initialConsultation.fields;
-  const initialValues = InitialValues(
-    keysArr,
-    InitialConsultationStore.useState()
-  );
+const OTHER = "Other";
 
-  const validationSchema = object().shape({
+const keysArr = [
+  "horse.weight",
+  "horse.breed",
+  "horse.breedOther",
+  "horse.isClinicallyHealthy",
+  "horse.isClinicallyHealthyNo",
+  "horse.isOnMedication",
+  "horse.isOnMedicationYes",
+  "horse.locationTesticleLeft",
+  "horse.locationTesticleRight",
+];
+
+const fields = initialConsultation.fields;
+
+const validationSchema = object().shape({
+  horse: object().shape({
     weight: number()
       .min(1, "Weight must be greater than 0")
-      .positive()
-      .required("Weight is required")
-      .typeError("Weight must be a number"),
+      .positive("Weight must be a positive number")
+      .typeError("Weight must be a number")
+      .required("Weight is required"),
     breed: string()
-      .oneOf(fields.breed.options, "Invalid breed")
+      .oneOf(fields.horse.breed.options, "Invalid breed")
       .required("Breed is required"),
-    technique: string()
-      .oneOf(fields.technique.options, "Invalid technique")
-      .required("Technique is required"),
-  });
+    breedOther: string().when("breed", {
+      is: OTHER,
+      then: () => string().required("Please specify the breed"),
+      otherwise: () => string(),
+    }),
+    isClinicallyHealthyNo: string().when("isClinicallyHealthy", {
+      is: false,
+      then: () => string().required("Please describe the abnormal findings"),
+      otherwise: () => string(),
+    }),
+    isOnMedicationYes: string().when("isOnMedication", {
+      is: true,
+      then: () => string().required("Please note the medication"),
+      otherwise: () => string(),
+    }),
+    locationTesticleLeft: string()
+      .oneOf(fields.horse.locationTesticleLeft.options, "Invalid location")
+      .required("Location is required"),
+    locationTesticleRight: string()
+      .oneOf(fields.horse.locationTesticleRight.options, "Invalid location")
+      .required("Location is required"),
+  }),
+});
 
+export const InitialConsultationStepTwo = ({ navigation }) => {
+  const initialValues = useInitialValues(keysArr);
   return (
     <Formik
       initialValues={initialValues}
       validationSchema={validationSchema}
       onSubmit={(values) => {
-        InitialConsultationStore.update((s) => {
-          s.weight = values.weight;
-          s.breed = values.breed;
-          s.technique = values.technique;
-          s.techniqueOther =
-            values.technique === "Other" ? values.techniqueOther : ""; // only if the 'technique' is 'Other' else ''
-        });
+        // before updating the store, we need to reset some of the fields values based on condition.
+        // this enables updating the store by simply mapping the values to the store
+        let vals = { ...values };
+
+        vals.horse.breed !== OTHER && (vals.horse.breedOther = "");
+        vals.horse.isClinicallyHealthy &&
+          (vals.horse.isClinicallyHealthyNo = "");
+        !vals.horse.isOnMedication && (vals.horse.isOnMedicationYes = "");
+
+        store.update((s) => mapValuesToStore(vals, s)); // map values to store
         navigation.navigate("InitialConsultationStepThree");
       }}
     >
       {({ handleSubmit, values }) => (
         <Layout onSubmit={() => handleSubmit()} current={2}>
-          <View
-            style={{
-              flex: 1,
-            }}
-          >
-            <View>
-              <InputField
-                label={fields.weight.label}
-                name="weight"
-                // onChangeText={(value) =>
-                //   setFieldValue(
-                //     "weight",
-                //     value.replace(/[- #*;,.<>\{\}\[\]\\\/]/gi, "")
-                //   )
-                // }
-                keyboardType="numeric"
-              />
-
-              <BasicPickerField
-                label={fields.breed.label}
-                name="breed"
-                pickerItems={fields.breed.options}
-              />
-
-              <BasicPickerField
-                label={fields.technique.label}
-                name="technique"
-                pickerItems={fields.technique.options}
-                numberOfLines={2}
-              />
-
-              {values?.technique === "Other" && (
-                <InputField
-                  label={fields.techniqueOther.label}
-                  name="techniqueOther"
-                />
-              )}
-            </View>
-          </View>
+          <InputField
+            label={fields.horse.weight.label}
+            name="horse.weight"
+            keyboardType="numeric"
+          />
+          <GroupCheckBoxField
+            label={fields.horse.breed.label}
+            name="horse.breed"
+            options={fields.horse.breed.options}
+          />
+          {values?.horse?.breed === OTHER && (
+            <InputField
+              label={fields.horse.breedOther.label}
+              name="horse.breedOther"
+            />
+          )}
+          <ToggleField
+            name="horse.isClinicallyHealthy"
+            label={fields.horse.isClinicallyHealthy.label}
+          />
+          {!values?.horse?.isClinicallyHealthy && (
+            <InputField
+              label={fields.horse.isClinicallyHealthyNo.label}
+              name="horse.isClinicallyHealthyNo"
+              multiline
+              numberOfLines={4}
+            />
+          )}
+          <ToggleField
+            name="horse.isOnMedication"
+            label={fields.horse.isOnMedication.label}
+          />
+          {values?.horse?.isOnMedication && (
+            <InputField
+              label={fields.horse.isOnMedicationYes.label}
+              name="horse.isOnMedicationYes"
+              multiline
+              numberOfLines={4}
+            />
+          )}
+          <GroupCheckBoxField
+            label={fields.horse.locationTesticleLeft.label}
+            name="horse.locationTesticleLeft"
+            options={fields.horse.locationTesticleLeft.options}
+          />
+          <GroupCheckBoxField
+            label={fields.horse.locationTesticleRight.label}
+            name="horse.locationTesticleRight"
+            options={fields.horse.locationTesticleRight.options}
+          />
         </Layout>
       )}
     </Formik>

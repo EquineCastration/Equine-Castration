@@ -1,17 +1,17 @@
-import {
-  InitialConsultationStore,
-  ICStoreInitialState,
-} from "store/InitialConsultationStore";
-import { Layout } from "./InitialConsultationStepOne";
-import { CaseSummary } from "components/CaseSummary";
-import { useBackendApi } from "contexts/BackendApi";
 import { useEffect, useState } from "react";
-import { Toast } from "react-native-toast-message/lib/src/Toast";
-import { Spinner } from "components/Spinner";
 import { Alert } from "react-native";
+import { useBackendApi } from "contexts/BackendApi";
+import { Toast } from "react-native-toast-message/lib/src/Toast";
+import {
+  initialConsultationStore as store,
+  resetInitialConsultationStore,
+} from "store/InitialConsultationStore";
+import { CaseSummary } from "components/CaseSummary";
+import { Spinner } from "components/Spinner";
+import { Layout } from "./Layout";
 
 export const Confirmation = ({ navigation }) => {
-  const data = InitialConsultationStore.useState();
+  const data = store.useState();
   const isEditing = data.id ?? false;
   const [feedback, setFeedback] = useState();
   const [isLoading, setIsLoading] = useState(false);
@@ -50,7 +50,7 @@ export const Confirmation = ({ navigation }) => {
         status: "success",
         message: `Case ${isEditing ? "updated" : "created"} successfully!`,
       });
-      InitialConsultationStore.replace(ICStoreInitialState);
+      resetInitialConsultationStore();
       navigation.reset({
         index: 0,
         routes: [{ name: isEditing ? "CaseList" : "Home" }],
@@ -83,7 +83,7 @@ export const Confirmation = ({ navigation }) => {
       {isLoading ? (
         <Spinner text={isEditing ? "Updating " : "Creating new case."} />
       ) : null}
-      <Layout onSubmit={confirmAlert} current={7} title="Confirm">
+      <Layout onSubmit={confirmAlert} current={9} buttonTitle="Confirm">
         <CaseSummary data={data} />
       </Layout>
     </>
