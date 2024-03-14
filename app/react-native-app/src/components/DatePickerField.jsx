@@ -40,6 +40,7 @@ export const DatePickerField = ({
           {label}
         </Text>
         <TextInput
+          pointerEvents="none"
           editable={false}
           placeholder={placeholder}
           value={field.value}

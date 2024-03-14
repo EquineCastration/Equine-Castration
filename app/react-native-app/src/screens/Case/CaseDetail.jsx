@@ -48,7 +48,10 @@ export const CaseDetail = ({ navigation, route }) => {
         status: "success",
         message: `Case id -${caseId} removed successfully!`,
       });
-      navigation.goBack();
+      navigation.reset({
+        index: 0,
+        routes: [{ name: "CaseList" }],
+      });
     } catch (e) {
       const error = await e.response;
       switch (error?.status) {

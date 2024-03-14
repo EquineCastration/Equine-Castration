@@ -4,71 +4,76 @@ using EquineCastration.Data.Entities.Identity;
 
 namespace EquineCastration.Models.Case;
 
-public record CreateCaseModel
-  {
-  public string HorseName { get; set; } = string.Empty;
-  public string ClientEmail { get; set; } = string.Empty;
-  public string DateOfCastration { get; set; } = string.Empty;
-  public bool IsLessThanTwo { get; set; }
-  public int AgeAboveTwo { get; set; }
-  public int Weight { get; set; }
-  public string Breed { get; set; } = string.Empty;
-  public string Technique { get; set; } = string.Empty;
-  public string TechniqueOther { get; set; } = string.Empty;
-  public string LocationTesticleLeft { get; set; } = string.Empty;
-  public string LocationTesticleRight { get; set; } = string.Empty;
-  public string LigatureUsed { get; set; } = string.Empty;
-  public string SkinClosure { get; set; } = string.Empty;
-  public string SkinClosureOther { get; set; } = string.Empty;
-  public string Restraint { get; set; } = string.Empty;
-  public string RestraintStanding { get; set; } = string.Empty;
-  public List<string> Environment { get; set; } = new();
-  public string EnvironmentOther { get; set; } = string.Empty;
-  public string Location { get; set; } = string.Empty;
-  public string LocationOther { get; set; } = string.Empty;
-  public string PatientCleanliness { get; set; } = string.Empty;
-  public string PatientCleanlinessOther { get; set; } = string.Empty;
-  public string EnvironmentCleanliness { get; set; } = string.Empty;
-  public string EnvironmentCleanlinessOther { get; set; } = string.Empty;
-  public string PatientCompliance { get; set; } = string.Empty;
-  public string PatientComplianceOther { get; set; } = string.Empty;
-  public string DischargeDate { get; set; } = string.Empty;
-  public bool Deceased { get; set; }
-  public bool InviteOwner { get; set; }
-  
+public class CreateCaseModel : BaseCaseModel
+{
+  public CreateHorseModel Horse { get; set; } = null!;
 
   public Data.Entities.Case ToEntity(Veterinarian author, Horse horse, Owner owner)
     => new()
     {
       Horse = horse,
       Owner = owner,
-      DateOfCastration = new DateTimeOffset(DateTime.ParseExact(DateOfCastration, "dd/MM/yyyy", CultureInfo.InvariantCulture), TimeSpan.Zero),
-      IsLessThanTwo = IsLessThanTwo,
-      AgeAboveTwo = AgeAboveTwo,
-      Weight = Weight,
-      Breed = Breed,
-      Technique = Technique,
-      TechniqueOther = TechniqueOther,
-      LocationTesticleLeft = LocationTesticleLeft,
-      LocationTesticleRight = LocationTesticleRight,
-      LigatureUsed = LigatureUsed,
+      Author = author,
+      LocalAnaestheticUsed = LocalAnaestheticUsed,
+      ParietalTunicIncised = ParietalTunicIncised,
+      PortionParietalTunicRemoved = PortionParietalTunicRemoved,
+      EmasculatorsUsed = EmasculatorsUsed,
+      EmasculatorsHeldDurationMinutes = EmasculatorsHeldDurationMinutes,
+      LigaturesUsedToCloseParietalTunic = LigaturesUsedToCloseParietalTunic,
+      LigaturesUsedToCloseParietalTunicYes = LigaturesUsedToCloseParietalTunicYes,
+      LigaturesUsedToCloseParietalTunicYesOther = LigaturesUsedToCloseParietalTunicYesOther,
+      LigaturesPlacedAroundVasculatureOnly = LigaturesPlacedAroundVasculatureOnly,
+      LigaturesPlacedAroundVasculatureOnlyYes = LigaturesPlacedAroundVasculatureOnlyYes,
+      LigaturesPlacedAroundVasculatureOnlyYesOther = LigaturesPlacedAroundVasculatureOnlyYesOther,
       SkinClosure = SkinClosure,
-      SkinClosureOther = SkinClosureOther,
+      SkinClosurePrimaryOrPartial = SkinClosurePrimaryOrPartial,
+      PreoperativeAnalgesiaGiven = PreoperativeAnalgesiaGiven,
+      PreoperativeAnalgesiaGivenYes = PreoperativeAnalgesiaGivenYes,
+      PreoperativeAnalgesiaGivenYesOther = PreoperativeAnalgesiaGivenYesOther,
+      PreoperativeAntimicrobialsGiven = PreoperativeAntimicrobialsGiven,
+      PreoperativeAntimicrobialsGivenYes = PreoperativeAntimicrobialsGivenYes,
+      PreoperativeAntimicrobialsGivenYesOther = PreoperativeAntimicrobialsGivenYesOther,
+      AntimicrobialAdminTiming = AntimicrobialAdminTiming,
+      PostoperativeAnalgesiaGiven = PostoperativeAnalgesiaGiven,
+      PostoperativeAnalgesiaGivenYes = PostoperativeAnalgesiaGivenYes,
+      PostoperativeAnalgesiaGivenYesOther = PostoperativeAnalgesiaGivenYesOther,
+      PostoperativeAnalgesiaGivenDays = PostoperativeAnalgesiaGivenDays,
+      PostoperativeAntimicrobialsGiven = PostoperativeAntimicrobialsGiven,
+      PostoperativeAntimicrobialsGivenYes = PostoperativeAntimicrobialsGivenYes,
+      PostoperativeAntimicrobialsGivenYesOther = PostoperativeAntimicrobialsGivenYesOther,
+      PostoperativeAntimicrobialsGivenDays = PostoperativeAntimicrobialsGivenDays,
       Restraint = Restraint,
-      RestraintStanding = RestraintStanding,
-      Environment = Environment,
-      EnvironmentOther = EnvironmentOther,
       Location = Location,
       LocationOther = LocationOther,
-      PatientCleanliness = PatientCleanliness,
-      PatientCleanlinessOther = PatientCleanlinessOther,
       EnvironmentCleanliness = EnvironmentCleanliness,
       EnvironmentCleanlinessOther = EnvironmentCleanlinessOther,
-      PatientCompliance = PatientCompliance,
-      PatientComplianceOther = PatientComplianceOther,
-      DischargeDate = new DateTimeOffset(DateTimeOffset.Now.Date, TimeSpan.Zero), // TODO: assign actual discharge date
-      Deceased = Deceased,
-      InviteOwner = InviteOwner,
-      Author = author
+      PatientCleanliness = PatientCleanliness,
+      PatientCleanlinessOther = PatientCleanlinessOther,
+      AnyIntraoperativeComplications = AnyIntraoperativeComplications,
+      AnyIntraoperativeComplicationsYes = AnyIntraoperativeComplicationsYes,
+      AnyPostoperativeComplications = AnyPostoperativeComplications,
+      AnyPostoperativeComplicationsYes = AnyPostoperativeComplicationsYes,
+      AnyPostoperativeComplicationsYesOther = AnyPostoperativeComplicationsYesOther,
+      DischargeNote = DischargeNote,
+      DischargeDate = DateTimeOffset.ParseExact(DischargeDate, "dd/MM/yyyy", CultureInfo.InvariantCulture),
     };
-  }
+
+  public Horse ToHorseEntity(Owner owner)
+    => new()
+    {
+      Name = Horse.Name,
+      DateOfCastration = DateTimeOffset.ParseExact(Horse.DateOfCastration, "dd/MM/yyyy", CultureInfo.InvariantCulture),
+      Age = Horse.Age,
+      Weight = Horse.Weight,
+      Breed = Horse.Breed,
+      BreedOther = Horse.BreedOther,
+      IsClinicallyHealthy = Horse.IsClinicallyHealthy,
+      IsClinicallyHealthyNo = Horse.IsClinicallyHealthyNo,
+      IsOnMedication = Horse.IsOnMedication,
+      IsOnMedicationYes = Horse.IsOnMedicationYes,
+      LocationTesticleLeft = Horse.LocationTesticleLeft,
+      LocationTesticleRight = Horse.LocationTesticleRight,
+      Deceased = Horse.Deceased,
+      Owner = owner
+    };
+}

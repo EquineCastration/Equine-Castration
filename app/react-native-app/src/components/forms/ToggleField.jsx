@@ -8,10 +8,13 @@ import { Text } from "components/Text";
 
 export const ToggleField = ({ variant, name, label, labelColor, ...props }) => {
   const { colors: colorScheme } = useStyle();
-  const [field] = useField(name);
+  const [field, meta, helpers] = useField(name);
   const [isEnabled, setIsEnabled] = useState(field?.value ?? false);
 
-  const toggleSwitch = () => setIsEnabled((previousState) => !previousState);
+  const toggleSwitch = () => {
+    setIsEnabled(!isEnabled);
+    helpers.setValue(!isEnabled);
+  };
 
   const CheckBox = () => (
     <Checkbox
