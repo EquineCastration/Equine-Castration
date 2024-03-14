@@ -2,7 +2,7 @@
   "expo": {
     "name": "Equine Castration",
     "slug": "equine-castration",
-    "version": "1.0.0",
+    "version": "1.0.1",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
     "userInterfaceStyle": "automatic",
@@ -13,12 +13,12 @@
     },
     "assetBundlePatterns": ["**/*"],
     "ios": {
-      "buildNumber": "1.0.3",
+      "buildNumber": "1.0.4",
       "supportsTablet": true,
       "bundleIdentifier": "com.equinecastration.app"
     },
     "android": {
-      "versionCode": 2,
+      "versionCode": 3,
       "adaptiveIcon": {
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#ffffff"
