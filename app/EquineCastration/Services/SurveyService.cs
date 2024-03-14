@@ -1,5 +1,6 @@
 using EquineCastration.Config;
 using EquineCastration.Data;
+using EquineCastration.Models.Emails;
 using EquineCastration.Models.Survey;
 using EquineCastration.Services.Contracts;
 using Microsoft.EntityFrameworkCore;
@@ -128,7 +129,9 @@ public class SurveyService
   /// <returns></returns>
   public async Task SendOwnerSurveyNotification(NewSurveyNotificationModel model)
   {
+    var to = new EmailAddress(model.OwnerEmail);
 
+    await _emailSender.SendEmail(to, "Emails/OwnerSurveyNotification", model);
   }
 
   private async Task<SurveyTypeModel?> GetEligibleSurveyTypeByDate(DateTimeOffset dischargeDate)

@@ -1,5 +1,5 @@
 namespace Shared.Models.Account.Email;
-public class NewSurveyNotificationModel()
+public record NewSurveyNotificationModel()
 {
   public string HorseName { get; set; } = string.Empty;
   public DateTimeOffset DischargeDate { get; set; }

@@ -1,0 +1,19 @@
+@using Shared.Models.Account.Email
+@inject IOptions<BaseEmailSenderOptions> _config
+@model NewSurveyNotificationModel
+
+@{
+    ViewBag.Subject = "@Notification of owner survey";
+    ViewBag.Heading = "Survey Notification";
+}
+
+<p>Dear owner of @Model.HorseName</p>
+
+<p>This is a notification that a new survey is available on the Equine Castration App.</p>
+<p>This is the day @Model.Days survey.</p>
+
+<p>If possible, please enter the information requested regarding @Model.HorseName since his castration procedure in the next 24 hours. </p>
+
+<p>Many thanks,</p>
+
+<p>The Equine Castration App Team</p>
