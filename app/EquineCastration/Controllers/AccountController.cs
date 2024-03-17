@@ -396,14 +396,26 @@ public class AccountController : ControllerBase
 
     if (!isTokenValid) return BadRequest();
 
-    try
+    const int max = 3; // max number of retries
+    for (var x = 0; x < max; x++)
     {
-      await _account.Delete(user.Id);
-      return NoContent();
+      try
+      {
+        await _account.Delete(user.Id);
+        return NoContent();
+      }
+      catch (KeyNotFoundException)
+      {
+        return NotFound();
+      }
+      catch (DbUpdateConcurrencyException)
+      {
+        if (x == max - 1) return Conflict();
+        await Task.Delay(200); // wait before retrying
+      }
     }
-    catch (KeyNotFoundException)
-    {
-      return NotFound();
-    }
+    
+    // should not reach here but just in case
+    return StatusCode(500, "An unexpected error occurred while trying to delete the user.");
   }
 }
