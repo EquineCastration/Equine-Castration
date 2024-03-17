@@ -60,4 +60,14 @@ export const getAccountApi = ({ api }) => ({
         data: { password, passwordConfirm },
       },
     }),
+
+  /**
+   * Request a account deletion
+   * @param {*} userIdOrEmail The User ID or Email Address
+   * @returns
+   */
+  requestAccountDelete: (userIdOrEmail) =>
+    api.post("account/delete", {
+      json: userIdOrEmail,
+    }),
 });
