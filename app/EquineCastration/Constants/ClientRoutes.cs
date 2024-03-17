@@ -12,4 +12,6 @@ public static class ClientRoutes
   public const string ResendConfirm = "/account/confirm/resend"; // path to re-send account confirmation  (when user self registers)
 
   public const string ConfirmEmailChange = "/account/ConfirmEmailChange"; // path to email change confirmation 
+  
+  public const string ConfirmAccountDelete = "/account/confirm/delete"; // path to confirm account deletion
 }

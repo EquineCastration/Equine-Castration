@@ -33,31 +33,28 @@ public class AccountEmailService
   public async Task SendEmailChange(EmailAddress to, string link)
       => await _emails.SendEmail(
           to,
-          //$"Confirm your new {_config.ServiceName} Email Address",
           "Emails/EmailChangeConfirmation",
           new TokenEmailModel(
             to.Name!,
             link,
             string.Empty));
   
-  public async Task SendUserInvite(EmailAddress to, string link)
-    => await _emails.SendEmail(
-      to,
-      //$"Confirm your new {_config.ServiceName} Email Address",
-      "Emails/InviteUser",
-      new TokenEmailModel(
-        to.Name!,
-        link,
-        string.Empty));
-  
   public async Task SendDeleteUpdate(EmailAddress to)
     => await _emails.SendEmail(
       to,
-      //$"Confirm your new {_config.ServiceName} Email Address",
       "Emails/DeleteUpdate",
       new TokenEmailModel(
         to.Name!,
         string.Empty,
+        string.Empty));
+  
+  public async Task SendAccountDelete(EmailAddress to, string link)
+    => await _emails.SendEmail(
+      to,
+      "Emails/AccountDelete",
+      new TokenEmailModel(
+        to.Name!,
+        link,
         string.Empty));
 }
 
