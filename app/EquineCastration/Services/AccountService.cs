@@ -27,24 +27,24 @@ public class AccountService
     _cases = cases;
   }
 
-  public async Task Delete(string userId)
-  {
-    var user = await _users.Users
-      .Include(x => x.Veterinarian)
-      .Include(x => x.Owner)
-      .FirstOrDefaultAsync(x => x.Id == userId);
-    if (user is null) throw new KeyNotFoundException();
+public async Task Delete(string userId)
+{
+  var user = await _users.Users
+    .Include(x => x.Veterinarian)
+    .Include(x => x.Owner)
+    .FirstOrDefaultAsync(x => x.Id == userId);
+  
+  if (user is null) throw new KeyNotFoundException();
 
-    await _cases.DeleteUserCases(user.Id);
-    
-    // only applicable to owner
-    var horses = await _db.Horses
-      .Where(x => x.Owner.ApplicationUserId == user.Id)
-      .ToListAsync();
-    _db.Horses.RemoveRange(horses);
-    
-    await _users.DeleteAsync(user);
-    if (user.Email is not null)
-      await _accountEmail.SendDeleteUpdate(new EmailAddress(user.Email) { Name = user.FullName });
-  }
+  await _cases.DeleteUserCases(user.Id);
+  
+  if (user.Owner is not null) _db.Owners.Remove(user.Owner);
+  if (user.Veterinarian is not null) _db.Veterinarians.Remove(user.Veterinarian);
+  await _users.DeleteAsync(user);
+
+  await _db.SaveChangesAsync();
+
+  if (user.Email is not null)
+    await _accountEmail.SendDeleteUpdate(new EmailAddress(user.Email) { Name = user.FullName });
+}
 }

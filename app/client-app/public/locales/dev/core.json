@@ -104,5 +104,13 @@
     "feedback": {
       "success": "If there is an user account associated with that email address, we'll send an email with instructions on how to delete your account."
     }
+  },
+  "confirmAccountDelete": {
+    "feedback": {
+      "busy": "Please wait while we confirm your account deletion",
+      "success": "Your account has been deleted.",
+      "error": "An error occurred trying to delete your account.",
+      "invalidLink": "Your account deletion link is invalid, or the token has expired."
+    }
   }
 }
