@@ -23,6 +23,7 @@ public class AccountController : ControllerBase
   private readonly UserManager<ApplicationUser> _users;
   private readonly SignInManager<ApplicationUser> _signIn;
   private readonly UserService _user;
+  private readonly AccountService _account;
   private readonly TokenIssuingService _tokens;
   private readonly ApplicationDbContext _db;
 
@@ -30,6 +31,7 @@ public class AccountController : ControllerBase
     UserManager<ApplicationUser> users,
     SignInManager<ApplicationUser> signIn,
     UserService user,
+    AccountService account,
     TokenIssuingService tokens,
     ApplicationDbContext db)
 
@@ -37,6 +39,7 @@ public class AccountController : ControllerBase
     _users = users;
     _signIn = signIn;
     _user = user;
+    _account = account;
     _tokens = tokens;
     _db = db;
   }
@@ -359,5 +362,48 @@ public class AccountController : ControllerBase
       }
     }
     return BadRequest(new SetEmailResult { Errors = ModelState.CollapseErrors() });
+  }
+
+  /// <summary>
+  /// Email user a token to confirm the deletion of their account
+  /// </summary>
+  /// <param name="userIdOrEmail"></param>
+  /// <returns></returns>
+  [HttpPost("delete")]
+  public async Task<IActionResult> RequestAccountDelete([FromBody] string userIdOrEmail)
+  {
+    var user = await _users.FindByIdAsync(userIdOrEmail) ?? await _users.FindByEmailAsync(userIdOrEmail);
+    if (user is null) return NoContent(); // don't want to reveal if user exist or not
+
+    await _tokens.SendAccountDelete(user);
+    return NoContent();
+  }
+
+  /// <summary>
+  /// Delete user account and all the cases they are associated with including horses.
+  /// </summary>
+  /// <param name="model"> userId and token </param>
+  /// <returns></returns>
+  [HttpPost("confirm/delete")]
+  public async Task<IActionResult> ConfirmDelete(UserTokenModel model)
+  {
+    if (!ModelState.IsValid) return BadRequest();
+    var user = await _users.FindByIdAsync(model.UserId);
+    if (user is null) return NotFound();
+
+    var isTokenValid = await _users
+      .VerifyUserTokenAsync(user, "Default", "DeleteAccount", model.Token);
+
+    if (!isTokenValid) return BadRequest();
+
+    try
+    {
+      await _account.Delete(user.Id);
+      return NoContent();
+    }
+    catch (KeyNotFoundException)
+    {
+      return NotFound();
+    }
   }
 }
