@@ -3,8 +3,7 @@ import { BusyPage } from "components/Busy";
 import { TitledAlert } from "components/TitledAlert";
 import { useBackendApi } from "contexts/BackendApi";
 import { useQueryStringViewModel } from "helpers/hooks/useQueryStringViewModel";
-import { Suspense, useCallback } from "react";
-import { useAsync } from "react-use";
+import { Suspense, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useNavigate } from "react-router-dom";
 
@@ -21,69 +20,74 @@ const ErrorFeedback = ({ tKey }) => {
   );
 };
 
-const useConfirmHandler = () => {
+const useConfirmDelete = (userId, token) => {
   const {
     account: { confirmDelete },
   } = useBackendApi();
-  return useCallback(
-    async ({ userId, token }) => await confirmDelete(userId, token).json(),
-    [confirmDelete]
-  );
+  const [status, setStatus] = useState();
+  const [error, setError] = useState();
+
+  useEffect(() => {
+    const handleConfirm = async () => {
+      try {
+        const response = await confirmDelete(userId, token);
+        setStatus(response.status);
+      } catch (e) {
+        setError(e);
+      }
+    };
+
+    if (userId && token) {
+      handleConfirm();
+    }
+  }, [userId, token, confirmDelete]);
+
+  return { status, error };
 };
 
-// this actually does the hard work
-// but we use suspense at the page level while its busy
-const ConfirmAccountDelete = () => {
+export const ConfirmDelete = () => {
   const { userId, token } = useQueryStringViewModel();
   const navigate = useNavigate();
   const { t } = useTranslation();
+  const { status, error } = useConfirmDelete(userId, token);
 
-  const handleConfirm = useConfirmHandler();
+  useEffect(() => {
+    if (status === 204 || status === 200) {
+      navigate("/", {
+        state: {
+          toast: {
+            title: t("confirmAccountDelete.feedback.success"),
+            status: "success",
+            duration: 2500,
+            isClosable: true,
+          },
+        },
+      });
+    }
+  }, [status, navigate, t]);
 
-  const { error, value: data } = useAsync(
-    async () => await handleConfirm({ userId, token }),
-    [userId, token]
-  );
-
+  let tKey;
   if (error) {
-    let tKey;
     switch (error?.response?.status) {
       case 400:
       case 404:
         tKey = "confirmAccountDelete.feedback.invalidLink";
         break;
+      default:
+        tKey = "confirmAccountDelete.feedback.error";
     }
-
-    console.error(error);
-    return <ErrorFeedback tKey={tKey} />;
   }
 
-  if (data) {
-    // TOAST success
-    navigate("/", {
-      state: {
-        toast: {
-          title: t("confirmAccountDelete.feedback.success"),
-          status: "success",
-          duration: 2500,
-          isClosable: true,
-        },
-      },
-    });
-  }
-
-  return null;
+  return (
+    <Suspense
+      fallback={
+        <BusyPage
+          tKey="confirm.feedback.busy"
+          containerProps={{ justifyContent: "center" }}
+        />
+      }
+    >
+      {tKey ? <ErrorFeedback tKey={tKey} /> : null}
+    </Suspense>
+  );
 };
-
-export const ConfirmDelete = () => (
-  <Suspense
-    fallback={
-      <BusyPage
-        tKey="confirm.feedback.busy"
-        containerProps={{ justifyContent: "center" }}
-      />
-    }
-  >
-    <ConfirmAccountDelete />
-  </Suspense>
-);
