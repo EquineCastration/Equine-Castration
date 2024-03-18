@@ -1,7 +1,7 @@
 using EquineCastration.Data;
 using Functions.Services.Contracts;
 using Microsoft.EntityFrameworkCore;
-using Shared.Models.Account.Email;
+using Shared;
 using System.Net.Http.Json;
 
 namespace Functions.Services;

@@ -1,4 +1,4 @@
-namespace Shared.Models.Account.Email;
+namespace Shared;
 public record NewSurveyNotificationModel()
 {
   public string HorseName { get; set; } = string.Empty;

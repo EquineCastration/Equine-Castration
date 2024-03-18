@@ -5,7 +5,7 @@ using EquineCastration.Models.Survey;
 using EquineCastration.Services.Contracts;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
-using Shared.Models.Account.Email;
+using Shared;
 
 namespace EquineCastration.Services;
 
