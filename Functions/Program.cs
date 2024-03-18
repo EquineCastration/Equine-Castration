@@ -8,7 +8,7 @@ using Functions.Services.Contracts;
 using Functions.Config;
 
 var host = new HostBuilder()
-   // .ConfigureFunctionsWorkerDefaults()
+    .ConfigureFunctionsWorkerDefaults()
     .ConfigureServices((context, s) =>
     {
 
