@@ -1,15 +1,24 @@
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Configuration;
-
-using Microsoft.AspNetCore.Identity;
 using EquineCastration.Data;
 using Microsoft.EntityFrameworkCore;
+using Functions.Services;
+using Functions.Services.Contracts;
+using Functions.Config;
 
 var host = new HostBuilder()
    // .ConfigureFunctionsWorkerDefaults()
     .ConfigureServices((context, s) =>
     {
+
+      // Adds a named client that uses the token management 
+      var apiConfig = context.Configuration.GetSection("Backend").Get<SiteOptions>();
+
+      s.AddClientAccessTokenHttpClient("client", configureClient: client =>
+      {
+        client.BaseAddress = new Uri(apiConfig?.ApiUrl ?? throw new InvalidOperationException());
+      });
 
       s.AddDbContext<ApplicationDbContext>(o =>
       {
@@ -22,7 +31,7 @@ var host = new HostBuilder()
       });
 
       //Services here
-      //s.AddTransient<IReportingService, ReportService>();
+      s.AddTransient<ISurveyService, SurveyService>();
 
     })
     .Build();

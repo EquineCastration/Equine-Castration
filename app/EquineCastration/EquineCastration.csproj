@@ -43,7 +43,7 @@
     </ItemGroup>
 
     <ItemGroup>
-      <ProjectReference Include="..\..\Shared\Shared.csproj" />
+      <ProjectReference Include="..\..\Shared\Data.csproj" />
     </ItemGroup>
 
     <Target Name="PublishIncludeBuiltSpa" AfterTargets="ComputeFilesToPublish">
