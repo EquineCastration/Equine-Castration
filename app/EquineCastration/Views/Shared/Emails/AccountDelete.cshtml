@@ -1,0 +1,22 @@
+@inject IOptions<BaseEmailSenderOptions> _config
+@model TokenEmailModel
+
+@{
+    ViewBag.Subject = $"Important! {_config.Value.ServiceName} Account Deletion Confirmation";
+    ViewBag.Heading = " Account deletion confirmation";
+
+    var actionButton = "Confirm Delete";
+}
+
+<p>@Model!.RecipientName,</p>
+
+<p>An account deletion request was requested for your @_config.Value.ServiceName User Account.</p>
+
+<p>If you didn't request to delete your account, you can ignore this email.</p>
+
+<p>To continue with the deletion, please click below.</p>
+
+@await Html.PartialAsync("_EmailButton", new EmailButtonModel(actionButton, Model.ActionLink))
+
+<p>The reset link is only valid for a limited time; click below if you need to request a fresh link.</p>
+

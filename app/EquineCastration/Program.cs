@@ -4,8 +4,6 @@ using EquineCastration.Extensions;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using EquineCastration.Data;
-using EquineCastration.Data.Entities;
-
 using EquineCastration.Config;
 using EquineCastration.Services;
 using EquineCastration.Constants;
@@ -59,6 +57,7 @@ b.Services
 
   .AddEmailSender(b.Configuration)
 
+  .AddTransient<AccountService>()
   .AddTransient<UserService>()
   .AddTransient<FeatureFlagService>()
   .AddTransient<RegistrationRuleService>()

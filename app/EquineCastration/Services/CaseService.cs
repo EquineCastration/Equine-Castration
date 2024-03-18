@@ -128,38 +128,43 @@ public class CaseService
     var horse = model.ToHorseEntity(entity.Owner);
     horse.Id = entity.Horse.Id;
     _db.Entry(entity.Horse).CurrentValues.SetValues(horse);
-    
+
     var update = model.ToEntity(entity.Author, horse, entity.Owner);
     update.Id = entity.Id;
     _db.Entry(entity).CurrentValues.SetValues(update);
     await _db.SaveChangesAsync();
-    
+
     return await Get(entity.Id);
   }
 
   public async Task DeleteAuthorCase(int caseId, string userId)
   {
     var entity = await _db.Cases
-                   .Include(x=>x.Horse)
+                   .Include(x => x.Horse)
                    .Where(x => x.Id == caseId && x.Author.ApplicationUserId == userId)
                    .SingleOrDefaultAsync()
                  ?? throw new KeyNotFoundException();
-    
-    _db.Cases.Remove(entity); 
+
+    _db.Cases.Remove(entity);
     _db.Horses.Remove(entity.Horse);
-    
+
     await _db.SaveChangesAsync();
   }
 
-  public async Task DeleteAuthorAllCases(string userId)
+  /// <summary>
+  /// Delete all cases authored by the user or owned by the user and their horses
+  /// </summary>
+  /// <param name="userId"></param>
+  public async Task DeleteUserCases(string userId)
   {
     var entity = await _db.Cases
       .Include(x => x.Horse)
-      .Where(x => x.Author.ApplicationUserId == userId)
+      .Where(x => x.Author.ApplicationUserId == userId
+                  || x.Owner.ApplicationUserId == userId)
       .ToListAsync();
-    
+
     _db.Cases.RemoveRange(entity);
-    _db.Horses.RemoveRange(entity.Select(x=>x.Horse));
+    _db.Horses.RemoveRange(entity.Select(x => x.Horse));
     await _db.SaveChangesAsync();
   }
 }

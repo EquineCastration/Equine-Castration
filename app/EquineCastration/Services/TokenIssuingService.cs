@@ -128,5 +128,35 @@ public class TokenIssuingService
 
     return new EmailChangeLinkModel() { EmailChangeLink = emailChangeLink };
   }
+
+  /// <summary>
+  /// Get Account deletion token link, and send a confirmation link to the user to delete their account.
+  /// </summary>
+  /// <param name="user">The user to issue the token for.</param>
+  public async Task SendAccountDelete(ApplicationUser user)
+  {
+    var link = await GenerateAccountDeletionLink(user);
+    await _accountEmail.SendAccountDelete(
+      new EmailAddress(user.Email ?? throw new InvalidOperationException("Email cannot be null"))
+        { Name = user.FullName },
+      link);
+  }
+
+  /// <summary>
+  /// Generate Account deletion token link.
+  /// </summary>
+  /// <param name="user">The user to issue the token for.</param>
+  /// <returns> Account deletion link</returns>
+  private async Task<string> GenerateAccountDeletionLink(ApplicationUser user)
+  {
+    var token = await _users.GenerateUserTokenAsync(user, "Default", "DeleteAccount");
+    var vm = new UserTokenModel(user.Id, token);
+
+    var link = (ClientRoutes.ConfirmAccountDelete +
+                $"?vm={vm.ObjectToBase64UrlJson()}")
+      .ToLocalUrlString(_actionContext.HttpContext.Request);
+
+    return link;
+  }
 }
 
