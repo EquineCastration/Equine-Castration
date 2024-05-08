@@ -123,12 +123,12 @@ public class DataSeeder
   {
     var inputList = new List<CreateSurveyTypeModel>
     {
-      new CreateSurveyTypeModel (SurveyTypes.PostTwentyFourHours),
-      new CreateSurveyTypeModel (SurveyTypes.PostDayThree),
-      new CreateSurveyTypeModel (SurveyTypes.PostDayFive),
-      new CreateSurveyTypeModel (SurveyTypes.PostDaySeven),
-      new CreateSurveyTypeModel (SurveyTypes.PostDayFourteen),
-      new CreateSurveyTypeModel (SurveyTypes.PostMonthThree),
+      new CreateSurveyTypeModel (SurveyTypes.PostTwentyFourHours, 1),
+      new CreateSurveyTypeModel (SurveyTypes.PostDayThree, 3),
+      new CreateSurveyTypeModel (SurveyTypes.PostDayFive, 5),
+      new CreateSurveyTypeModel (SurveyTypes.PostDaySeven, 7),
+      new CreateSurveyTypeModel (SurveyTypes.PostDayFourteen, 14),
+      new CreateSurveyTypeModel (SurveyTypes.PostMonthThree, 90),
     };
 
     foreach (var inputType in inputList)
