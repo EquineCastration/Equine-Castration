@@ -39,6 +39,7 @@ namespace EquineCastration.Extensions
         .AddTransient<RazorViewService>()
         .AddTransient<AccountEmailService>()
         .AddTransient<DischargeEmailService>()
+        .AddTransient<SurveyEmailService>()
         .TryAddSingleton<IActionContextAccessor, ActionContextAccessor>();
 
       return s;
