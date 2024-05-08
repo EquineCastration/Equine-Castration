@@ -55,14 +55,14 @@ public class CreateCaseModel : BaseCaseModel
       AnyPostoperativeComplicationsYes = AnyPostoperativeComplicationsYes,
       AnyPostoperativeComplicationsYesOther = AnyPostoperativeComplicationsYesOther,
       DischargeNote = DischargeNote,
-      DischargeDate = DateTimeOffset.ParseExact(DischargeDate, "dd/MM/yyyy", CultureInfo.InvariantCulture),
+      DischargeDate = DateTimeOffset.ParseExact(DischargeDate, "dd/MM/yyyy", CultureInfo.InvariantCulture).ToUniversalTime(),
     };
 
   public Horse ToHorseEntity(Owner owner)
     => new()
     {
       Name = Horse.Name,
-      DateOfCastration = DateTimeOffset.ParseExact(Horse.DateOfCastration, "dd/MM/yyyy", CultureInfo.InvariantCulture),
+      DateOfCastration = DateTimeOffset.ParseExact(Horse.DateOfCastration, "dd/MM/yyyy", CultureInfo.InvariantCulture).ToUniversalTime(),
       Age = Horse.Age,
       Weight = Horse.Weight,
       Breed = Horse.Breed,
