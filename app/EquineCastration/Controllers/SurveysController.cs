@@ -75,7 +75,6 @@ public class SurveysController : ControllerBase
   [HttpPost("SendSurveyNotification")]
   public async Task<ActionResult> SendSurveyNotification(NewSurveyNotificationModel model)
   {
-    Console.WriteLine("Sending survey notification");
     await _survey.SendOwnerSurveyNotification(model);
 
     return NoContent();
