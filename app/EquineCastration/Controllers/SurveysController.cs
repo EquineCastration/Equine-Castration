@@ -71,7 +71,7 @@ public class SurveysController : ControllerBase
   /// </summary>
   /// <param name="model"></param>
   /// <returns></returns>
-  [AllowAnonymous]
+  [Authorize(nameof(AuthPolicies.IsWorkerApp))]
   [HttpPost("SendSurveyNotification")]
   public async Task<ActionResult> SendSurveyNotification(NewSurveyNotificationModel model)
   {
