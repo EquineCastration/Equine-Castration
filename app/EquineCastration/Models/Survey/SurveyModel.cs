@@ -35,7 +35,7 @@ public class SurveyModel : BaseSurveyModel
     Id = entity.Id;
     CaseId = entity.Case.Id;
     HorseId = entity.Case.Horse.Id;
-    SurveyType = new SurveyTypeModel(entity.SurveyType.Id, entity.SurveyType.Name);
+    SurveyType = new SurveyTypeModel(entity.SurveyType.Id, entity.SurveyType.Name, entity.SurveyType.DaysAfterCase);
     SurveyCompletion = entity.SurveyCompletion.ToString("dd/MM/yyyy");
     HasReturnedToNormalBehaviour = entity.HasReturnedToNormalBehaviour;
     IsStiffOrLame = entity.IsStiffOrLame;
