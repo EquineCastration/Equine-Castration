@@ -23,6 +23,7 @@ public class SurveyService : ISurveyService
     //No deceased horse
     //No opt outs for their owners from email/push
     var cases = await _db.Cases
+      .AsNoTracking()
       .Include(x => x.Owner)
       .Include(x => x.Surveys)
       .ThenInclude(y => y.SurveyType)
@@ -31,14 +32,16 @@ public class SurveyService : ISurveyService
       .ToListAsync();
     
     //Get a list of every survey type
-    var surveyTypes = await _db.SurveyTypes.ToListAsync();
+    var surveyTypes = await _db.SurveyTypes
+      .AsNoTracking()
+      .OrderByDescending(x => x.DaysAfterCase)
+      .ToListAsync();
 
     //foreach case
     foreach (var c in cases)
     {
       var numberOfDays = (int)(DateTimeOffset.Now - c.DischargeDate).TotalDays;
-
-      var surveyType = surveyTypes.Single(x => x.DaysAfterCase == numberOfDays);
+      var surveyType = surveyTypes.FirstOrDefault(x => x.DaysAfterCase <= numberOfDays);
 
       var existingSurvey = await _db.Surveys.AsNoTracking()
         .SingleOrDefaultAsync(x => x.SurveyType == surveyType && x.Case.Id == c.Id);

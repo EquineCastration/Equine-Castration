@@ -1,3 +1,4 @@
+using System.Net.Http.Headers;
 using EquineCastration.Data;
 using Functions.Config;
 using Functions.Services;
@@ -22,6 +23,7 @@ var host = new HostBuilder()
     s.AddHttpClient("client", configureClient: client =>
     {
       client.BaseAddress = new Uri(apiConfig?.ApiUrl ?? throw new InvalidOperationException());
+      client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", apiConfig.ApiKey ?? throw new InvalidOperationException());
     });
 
     s.AddDbContext<ApplicationDbContext>(o =>
