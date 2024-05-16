@@ -54,6 +54,7 @@ b.Services
   .Configure<RegistrationOptions>(b.Configuration.GetSection("Registration"))
   .Configure<UserAccountOptions>(b.Configuration.GetSection("UserAccounts"))
   .Configure<AppDownloadOptions>(b.Configuration.GetSection("AppDownloadUrl"))
+  .Configure<WorkerOptions>(b.Configuration.GetSection("Worker"))
 
   .AddEmailSender(b.Configuration)
 

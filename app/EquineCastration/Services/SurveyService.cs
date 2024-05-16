@@ -130,21 +130,13 @@ public class SurveyService
   
   private async Task<SurveyTypeModel?> GetEligibleSurveyTypeByDate(DateTimeOffset dischargeDate)
   {
-    var surveyTypeMap = new SortedDictionary<DateTimeOffset, string>();
-    var surveyTypes = await _db.SurveyTypes.AsNoTracking().ToListAsync();
+    var surveyTypes = await _db.SurveyTypes.AsNoTracking().OrderByDescending(x => x.DaysAfterCase).ToListAsync();
 
-    foreach (var st in surveyTypes)
-      surveyTypeMap.Add(dischargeDate.AddDays(st.DaysAfterCase), st.Name);
-    
-    foreach (var kvp in surveyTypeMap.Reverse())
-    {
-      if (DateTimeOffset.UtcNow >= kvp.Key)
-      {
-        var surveyType = surveyTypes.Single(x => x.Name == kvp.Value) 
-                         ?? throw new InvalidOperationException("Survey type not found.");
-        return new SurveyTypeModel(surveyType.Id, surveyType.Name);
-      }
-    }
-    return null; // No eligible survey type
+    var numberOfDays = (int)(DateTimeOffset.Now - dischargeDate).TotalDays;
+    var surveyType = surveyTypes.FirstOrDefault(x => x.DaysAfterCase <= numberOfDays);
+
+    return surveyType is not null 
+      ? new SurveyTypeModel(surveyType.Id, surveyType.Name, surveyType.DaysAfterCase) 
+      : null; // No eligible survey type
   }
 }
