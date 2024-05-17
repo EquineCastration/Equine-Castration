@@ -13,8 +13,8 @@ env:
   CI_node-version: "16"
   CI_package: react-native-app
   Profile: preview
-  API_URL: ${{ secrets.API_URL }}
-  EQUINE_CASTRATION_IDENTIFIER: ${{ secrets.EQUINE_CASTRATION_IDENTIFIER }}
+  API_URL: ${{ secrets.UAT_BACKEND_URL }}
+  EQUINE_CASTRATION_IDENTIFIER: ${{ secrets.UAT_EQUINE_CASTRATION_IDENTIFIER }}
 
 jobs:
   build-mobile-app:
