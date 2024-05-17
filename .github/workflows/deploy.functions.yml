@@ -32,22 +32,3 @@ jobs:
         with:
           name: functionsapp
           path: ${{ env.AZURE_WEBAPP_PACKAGE_PATH }}
-
-  # Deploy Production
-  deploy-prod:
-    runs-on: ubuntu-latest
-    environment: production
-
-    steps:
-      - name: Download artifact from build job
-        uses: actions/download-artifact@v4
-        with:
-          path: functionsapp
-          name: functionsapp
-
-      - name: "Run Azure webapp deploy action using publish profile credentials"
-        uses: azure/webapps-deploy@v2
-        with:
-          app-name: ${{ env.AZURE_WEBAPP_FUNCTIONS_NAME }}
-          publish-profile: ${{ secrets.AZURE_WEBAPP_FUNCTIONS_PUBLISH_PROFILE  }}
-          package: ${{ github.workspace }}/functionsapp
