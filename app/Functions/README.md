@@ -38,7 +38,8 @@ In local development a `local.settings.json` file is required, with the followin
     "FUNCTIONS_WORKER_RUNTIME": "dotnet-isolated"
   },
   "Backend": {
-    "ApiUrl": "http://localhost:5735/api/"
+    "ApiUrl": "http://localhost:5735/api/",
+    "ApiKey": "__DEV__"
   },
   "ConnectionStrings": {
     "Default": "Host=localhost;Username=postgres;Port=5432;Password=example;Database=equine-castration"
