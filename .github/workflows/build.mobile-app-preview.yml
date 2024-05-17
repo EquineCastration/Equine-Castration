@@ -1,4 +1,4 @@
-name: Build Equine Castration ios preview build
+name: Build Equine Castration Mobile App previiew build
 
 on:
   workflow_dispatch:
@@ -12,16 +12,24 @@ env:
   # Configure these
   CI_node-version: "16"
   CI_package: react-native-app
-  Platform: ios
   Profile: preview
-  Output: ios-preview-build
   API_URL: ${{ secrets.API_URL }}
   EQUINE_CASTRATION_IDENTIFIER: ${{ secrets.EQUINE_CASTRATION_IDENTIFIER }}
 
 jobs:
-  build-ios-preview:
-    runs-on: macos-latest
-
+  build-mobile-app:
+    strategy:
+      matrix:
+        include:
+          - platform: android
+            runs-on: ubuntu-latest
+            output: android-preview-build
+            file-extension: apk
+          - platform: ios
+            runs-on: macos-latest
+            output: ios-preview-build
+            file-extension: app
+    runs-on: ${{ matrix.runs-on }}
     steps:
       - uses: actions/checkout@v3
       - uses: pnpm/action-setup@v2.0.1
@@ -48,12 +56,12 @@ jobs:
           echo "EQUINE_CASTRATION_IDENTIFIER=${EQUINE_CASTRATION_IDENTIFIER}" >> .env
           eas build --local \
             --non-interactive \
-            --output=./${{ env.Output }}.app \
-            --platform=${{ env.Platform }} \
+            --output=./${{ matrix.output }}.${{ matrix.file-extension }} \
+            --platform=${{ matrix.platform }} \
             --profile=${{ env.Profile }}
 
       - name: 📱 Upload binary
         uses: actions/upload-artifact@v2
         with:
-          name: ${{ env.Output }}.app
-          path: app/react-native-app/${{ env.Output }}.app
+          name: ${{ matrix.output }}.${{ matrix.file-extension }}
+          path: app/react-native-app/${{ matrix.output }}.${{ matrix.file-extension }}
