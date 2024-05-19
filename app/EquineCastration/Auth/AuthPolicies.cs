@@ -7,8 +7,6 @@ namespace EquineCastration.Auth;
 
 public static class AuthPolicies
 {
-  private static readonly AppRequestHeaderOptions _appRequestHeader = Configs.AppRequestHeaderOptions;
-  
   public static AuthorizationPolicy IsWorkerApp
     => new AuthorizationPolicyBuilder()
       .RequireAssertion(HasWorkerToken)
