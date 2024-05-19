@@ -55,6 +55,7 @@ b.Services
   .Configure<UserAccountOptions>(b.Configuration.GetSection("UserAccounts"))
   .Configure<AppDownloadOptions>(b.Configuration.GetSection("AppDownloadUrl"))
   .Configure<WorkerOptions>(b.Configuration.GetSection("Worker"))
+  .Configure<AppRequestHeaderOptions>(b.Configuration.GetSection("AppRequestHeader"))
 
   .AddEmailSender(b.Configuration)
 
@@ -67,8 +68,6 @@ b.Services
 
 b.Services.AddSwaggerGen();
 
-b.Configuration
-  .GetSection("AppRequestHeader").Bind(Configs.AppRequestHeaderOptions);
 #endregion
 
 var app = b.Build();

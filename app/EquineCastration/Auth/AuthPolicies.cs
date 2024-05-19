@@ -131,10 +131,19 @@ public static class AuthPolicies
  private static Func<AuthorizationHandlerContext, bool> HasValidIdentifier =>
    context =>
    {
-     if (!_appRequestHeader.CheckHeader) return true;
      var request = ((DefaultHttpContext?)context.Resource)?.Request;
-     var identifier = request?.Headers["X-Equine-Castration-Identifier"].ToString();
-     if (identifier is null) return false;
-     return identifier == _appRequestHeader.AppIdentifier;
+     
+     var headerOptions = request?.HttpContext.RequestServices
+       .GetRequiredService<IOptions<AppRequestHeaderOptions>>()
+       .Value;
+     
+     if (headerOptions is null) return false;
+     
+     if (!headerOptions.CheckHeader) return true;
+     
+     var headerName = headerOptions.Name;
+     var identifier = request?.Headers[headerName].ToString();
+
+     return identifier == headerOptions.Value;
    };
 }
