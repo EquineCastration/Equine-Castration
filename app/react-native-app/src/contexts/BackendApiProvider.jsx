@@ -5,6 +5,7 @@ import { getUserApi } from "api/user";
 import { useCallback, useMemo } from "react";
 import {
   EXPO_PUBLIC_BACKEND_URL as BACKEND_URL,
+  EXPO_PUBLIC_APP_IDENTIFIER_NAME as APP_IDENTIFIER_NAME,
   EXPO_PUBLIC_APP_IDENTIFIER as APP_IDENTIFIER,
 } from "react-native-dotenv";
 import AsyncStorage from "@react-native-async-storage/async-storage";
@@ -14,7 +15,8 @@ import { getSurveyApi } from "api/survey";
 
 const HEADER_COOKIE = "Cookie";
 const HEADER_SET_COOKIE = "set-cookie";
-const HEADER_APP_IDENTIFIER = "X-Equine-Castration-Identifier";
+const HEADER_APP_IDENTIFIER =
+  APP_IDENTIFIER_NAME || "X-Equine-Castration-Identifier";
 
 // list of cookies name to be stored in async storage
 const cookiesExpected = [
