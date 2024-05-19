@@ -4,14 +4,17 @@ import { getCaseApi } from "api/case";
 import { getUserApi } from "api/user";
 import { useCallback, useMemo } from "react";
 import {
-  LOCAL_PUBLIC_API,
-  EQUINE_CASTRATION_IDENTIFIER,
+  EXPO_PUBLIC_BACKEND_URL as BACKEND_URL,
+  EXPO_PUBLIC_APP_IDENTIFIER as APP_IDENTIFIER,
 } from "react-native-dotenv";
 import AsyncStorage from "@react-native-async-storage/async-storage";
-
 import axios from "axios";
 import { BackendApiContext } from "./BackendApi";
 import { getSurveyApi } from "api/survey";
+
+const HEADER_COOKIE = "Cookie";
+const HEADER_SET_COOKIE = "set-cookie";
+const HEADER_APP_IDENTIFIER = "X-Equine-Castration-Identifier";
 
 // list of cookies name to be stored in async storage
 const cookiesExpected = [
@@ -22,7 +25,7 @@ const cookiesExpected = [
 
 /** Default axios instance options for hitting the backend API */
 export const getBackendDefaults = () => ({
-  baseURL: `${LOCAL_PUBLIC_API}/api/`,
+  baseURL: `${BACKEND_URL}/api/`,
 });
 
 export const BackendApiProvider = ({ children }) => {
@@ -68,11 +71,10 @@ export const BackendApiProvider = ({ children }) => {
     if (cookies?.length >= 1) {
       // Concatenate the cookie values into a single string
       const cookieHeaderValue = cookies.filter((cookie) => cookie).join("; ");
-      config.headers["Cookie"] = cookieHeaderValue; // add them to the request headers
+      config.headers[HEADER_COOKIE] = cookieHeaderValue; // add them to the request headers
     }
 
-    config.headers["X-Equine-Castration-Identifier"] =
-      EQUINE_CASTRATION_IDENTIFIER; // will be used to identify requests from the app
+    config.headers[HEADER_APP_IDENTIFIER] = APP_IDENTIFIER; // will be used to identify requests from the app
     return config;
   });
 
@@ -81,7 +83,7 @@ export const BackendApiProvider = ({ children }) => {
   // Extractinng relevant cookies name-value pairs and storing them in async storage
   api.interceptors.response.use(
     (response) => {
-      const cookiesStr = response.headers["set-cookie"]; // an array with one string item
+      const cookiesStr = response.headers[HEADER_SET_COOKIE]; // an array with one string item
 
       if (cookiesStr) {
         const cookiesArr = cookiesStr[0].split(", "); // split the one an only string by comma and space to get an array of cookies
