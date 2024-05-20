@@ -1,0 +1,20 @@
+@inject IOptions<BaseEmailSenderOptions> _config
+@model NewSurveyNotificationEmailModel
+
+@{
+    ViewBag.Subject = $"{@_config.Value.ServiceName} @Notification of owner survey";
+    ViewBag.Heading = "Survey Notification";
+}
+
+<p>Dear owner of @Model.HorseName</p>
+
+<p>This is a notification that a new survey is available on the Equine Castration App.</p>
+<p>This is the day @Model.Days survey.</p>
+
+<p>If possible, please enter the information requested regarding @Model.HorseName since his castration procedure in the next 24 hours. </p>
+
+<p>The app can be downloaded on the <a href="@Model.AppStoreLink">App Store</a> or <a href="@Model.PlayStoreLink">Play Store</a>.</p>
+
+<p>Many thanks,</p>
+
+<p>The Equine Castration App Team</p>

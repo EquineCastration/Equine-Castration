@@ -5,8 +5,6 @@ namespace EquineCastration.Data.Entities;
 public class Case
 {
   public int Id { get; set; }
-  public Horse Horse { get; set; } = null!;
-  public Owner Owner { get; set; } = null!;
   
   #region Surgical Technique
   /// <summary>
@@ -153,5 +151,10 @@ public class Case
   
   public string? DischargeNote { get; set; }
   public DateTimeOffset DischargeDate { get; set; }
+  
+  // Navigation properties
+  public Horse Horse { get; set; } = null!;
+  public Owner Owner { get; set; } = null!;
   public Veterinarian Author { get; set; } = null!;
+  public List<Survey> Surveys { get; set; } = new List<Survey>();
 }

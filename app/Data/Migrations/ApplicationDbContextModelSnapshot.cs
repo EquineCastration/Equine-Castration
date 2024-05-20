@@ -340,6 +340,9 @@ namespace EquineCastration.Migrations
                         .IsRequired()
                         .HasColumnType("text");
 
+                    b.Property<bool>("OptOut")
+                        .HasColumnType("boolean");
+
                     b.HasKey("Id");
 
                     b.HasIndex("ApplicationUserId")
@@ -489,6 +492,9 @@ namespace EquineCastration.Migrations
                         .HasColumnType("integer");
 
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
+
+                    b.Property<int>("DaysAfterCase")
+                        .HasColumnType("integer");
 
                     b.Property<string>("Name")
                         .IsRequired()
@@ -684,7 +690,7 @@ namespace EquineCastration.Migrations
             modelBuilder.Entity("EquineCastration.Data.Entities.Survey", b =>
                 {
                     b.HasOne("EquineCastration.Data.Entities.Case", "Case")
-                        .WithMany()
+                        .WithMany("Surveys")
                         .HasForeignKey("CaseId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -749,6 +755,11 @@ namespace EquineCastration.Migrations
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+                });
+
+            modelBuilder.Entity("EquineCastration.Data.Entities.Case", b =>
+                {
+                    b.Navigation("Surveys");
                 });
 
             modelBuilder.Entity("EquineCastration.Data.Entities.Identity.ApplicationUser", b =>

@@ -1,6 +1,9 @@
-using EquineCastration.Constants;
 using EquineCastration.Data;
+using EquineCastration.Data.Models;
+using EquineCastration.Models.Emails;
 using EquineCastration.Models.Survey;
+using EquineCastration.Services.Contracts;
+using EquineCastration.Services.EmailServices;
 using Microsoft.EntityFrameworkCore;
 
 namespace EquineCastration.Services;
@@ -8,10 +11,12 @@ namespace EquineCastration.Services;
 public class SurveyService
 {
   private readonly ApplicationDbContext _db;
+  private readonly SurveyEmailService _surveyEmail;
 
-  public SurveyService(ApplicationDbContext db)
+  public SurveyService(ApplicationDbContext db, SurveyEmailService surveyEmail)
   {
     _db = db;
+    _surveyEmail = surveyEmail;
   }
 
   public async Task<List<SurveyModel>> ListByCase(string userId, int caseId)
@@ -114,30 +119,24 @@ public class SurveyService
     return isAuthorOrOwner is not null;
   }
   
+  /// <summary>
+  /// Sends an email out to a horse owner notifying them of a new survey.
+  /// </summary>
+  /// <param name="model"></param>
+  /// <returns></returns>
+  public async Task SendOwnerSurveyNotification(NewSurveyNotificationModel model) 
+    => await _surveyEmail.SendOwnerSurveyNotification(new EmailAddress(model.OwnerEmail), model);
+  
+  
   private async Task<SurveyTypeModel?> GetEligibleSurveyTypeByDate(DateTimeOffset dischargeDate)
   {
-    var surveyTypeMap = new SortedDictionary<DateTimeOffset, string>
-    {
-      { dischargeDate.AddMonths(3), SurveyTypes.PostMonthThree },
-      { dischargeDate.AddDays(14), SurveyTypes.PostDayFourteen },
-      { dischargeDate.AddDays(7), SurveyTypes.PostDaySeven },
-      { dischargeDate.AddDays(5), SurveyTypes.PostDayFive },
-      { dischargeDate.AddDays(3), SurveyTypes.PostDayThree },
-      { dischargeDate.AddHours(24), SurveyTypes.PostTwentyFourHours }
-    };
-    
-    foreach (var kvp in surveyTypeMap.Reverse())
-    {
-      if (DateTimeOffset.UtcNow >= kvp.Key)
-      {
-        var surveyType = await _db.SurveyTypes.AsNoTracking().SingleAsync(x => x.Name == kvp.Value) 
-          ?? throw new InvalidOperationException("Survey type not found.");
-        return new SurveyTypeModel(surveyType.Id, surveyType.Name);
-      }
-    }
-    return null; // No eligible survey type
+    var surveyTypes = await _db.SurveyTypes.AsNoTracking().OrderByDescending(x => x.DaysAfterCase).ToListAsync();
+
+    var numberOfDays = (int)(DateTimeOffset.Now - dischargeDate).TotalDays;
+    var surveyType = surveyTypes.FirstOrDefault(x => x.DaysAfterCase <= numberOfDays);
+
+    return surveyType is not null 
+      ? new SurveyTypeModel(surveyType.Id, surveyType.Name, surveyType.DaysAfterCase) 
+      : null; // No eligible survey type
   }
-
-
-
 }

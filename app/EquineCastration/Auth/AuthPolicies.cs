@@ -1,12 +1,19 @@
 using System.Text.RegularExpressions;
 using EquineCastration.Config;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.Extensions.Options;
 
 namespace EquineCastration.Auth;
 
 public static class AuthPolicies
 {
   private static readonly AppRequestHeaderOptions _appRequestHeader = Configs.AppRequestHeaderOptions;
+  
+  public static AuthorizationPolicy IsWorkerApp
+    => new AuthorizationPolicyBuilder()
+      .RequireAssertion(HasWorkerToken)
+      .Build();
+
   public static AuthorizationPolicy IsClientApp
     => new AuthorizationPolicyBuilder()
         .RequireAssertion(c=> 
@@ -72,6 +79,27 @@ public static class AuthPolicies
      .Combine(IsAuthenticatedUser)
      .RequireClaim(CustomClaimTypes.SitePermission, SitePermissionClaims.GetEligibleSurveyType)
      .Build();
+ 
+ private static readonly Func<AuthorizationHandlerContext, bool> HasWorkerToken =
+   context =>
+   {
+     var request = ((DefaultHttpContext?)context.Resource)?.Request;
+
+     var authHeader = request?.Headers.Authorization.FirstOrDefault();
+     if (authHeader is null) return false;
+
+     var parts = authHeader.Split(' ');
+     if (parts[0] != "Bearer") return false;
+
+     var validToken = request?.HttpContext.RequestServices
+       .GetRequiredService<IOptions<WorkerOptions>>()
+       .Value
+       .ApiKey;
+
+     if (parts[1] != validToken) return false;
+
+     return true;
+   };
  
  private static readonly Func<AuthorizationHandlerContext, bool> IsSameHost =
     context =>
