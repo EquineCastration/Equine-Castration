@@ -1,4 +1,4 @@
-name: Build Equine Castration Mobile App previiew build
+name: Equine Castration Mobile App Preview Build
 
 on:
   workflow_dispatch:
@@ -13,8 +13,6 @@ env:
   CI_node-version: "16"
   CI_package: react-native-app
   Profile: preview
-  API_URL: ${{ secrets.UAT_BACKEND_URL }}
-  EQUINE_CASTRATION_IDENTIFIER: ${{ secrets.UAT_EQUINE_CASTRATION_IDENTIFIER }}
 
 jobs:
   build-mobile-app:
@@ -52,8 +50,8 @@ jobs:
       - name: Build app preview
         working-directory: app/react-native-app
         run: |
-          echo "LOCAL_PUBLIC_API=${API_URL}" > .env
-          echo "EQUINE_CASTRATION_IDENTIFIER=${EQUINE_CASTRATION_IDENTIFIER}" >> .env
+          echo "EXPO_PUBLIC_BACKEND_URL=${{ secrets.UAT_BACKEND_URL }}" > .env
+          echo "EXPO_PUBLIC_APP_IDENTIFIER=${{ secrets.UAT_APP_IDENTIFIER }}" >> .env
           eas build --local \
             --non-interactive \
             --output=./${{ matrix.output }}.${{ matrix.file-extension }} \
