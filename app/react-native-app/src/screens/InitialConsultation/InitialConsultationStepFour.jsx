@@ -80,11 +80,16 @@ const validationSchema = object().shape({
       otherwise: () => string(),
     }
   ),
-  antimicrobialAdminTiming: number()
-    .min(1, "Timing must be greater than 0")
-    .positive("Timing must be a positive number")
-    .typeError("Timing must be a number")
-    .required("Timing is required"),
+  antimicrobialAdminTiming: number().when("preoperativeAntimicrobialsGiven", {
+    is: true,
+    then: () =>
+      number()
+        .min(1, "Timing must be greater than 0")
+        .positive("Timing must be a positive number")
+        .typeError("Timing must be a number")
+        .required("Timing is required"),
+    otherwise: () => number(),
+  }),
 });
 
 export const InitialConsultationStepFour = ({ navigation }) => {
@@ -147,11 +152,13 @@ export const InitialConsultationStepFour = ({ navigation }) => {
               name="preoperativeAntimicrobialsGivenYesOther"
             />
           )}
-          <InputField
-            label={fields.antimicrobialAdminTiming.label}
-            name="antimicrobialAdminTiming"
-            keyboardType="numeric"
-          />
+          {values.preoperativeAntimicrobialsGiven && (
+            <InputField
+              label={fields.antimicrobialAdminTiming.label}
+              name="antimicrobialAdminTiming"
+              keyboardType="numeric"
+            />
+          )}
         </Layout>
       )}
     </Formik>

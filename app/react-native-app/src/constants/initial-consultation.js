@@ -102,11 +102,11 @@ export const initialConsultation = {
       defaultValue: false,
     },
     portionParietalTunicRemoved: {
-      label: "A portion of the parietal tunic was removed during surgery.",
+      label: "A portion of the parietal tunic was removed during surgery",
       defaultValue: false,
     },
     emasculatorsUsed: {
-      label: "Emasculators used.",
+      label: "Emasculators used",
       defaultValue: false,
     },
     emasculatorsHeldDurationMinutes: {
@@ -133,7 +133,7 @@ export const initialConsultation = {
     },
     ligaturesPlacedAroundVasculatureOnly: {
       label:
-        "Were ligatures placed around the vasculature only and the parietal tunic remained open.",
+        "Were ligatures placed around the vasculature only and the parietal tunic remained open?",
       defaultValue: false,
     },
     ligaturesPlacedAroundVasculatureOnlyYes: {
@@ -166,6 +166,7 @@ export const initialConsultation = {
       label: "If yes, please choose one or more",
       options: [
         "Butorphanol",
+        "Flunixin Meglumine",
         "Firocoxib",
         "Meloxicam",
         "Morphine",
