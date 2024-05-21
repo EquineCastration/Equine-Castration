@@ -1,6 +1,6 @@
 # Introduction
 
-This repository is for Equine Castration reserarch app.
+This repository is for Equine Castration research app.
 
 This currently consists of a .NET backend that interacts with a PostgreSQL database and React Native app.
 
