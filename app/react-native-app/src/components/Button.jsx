@@ -45,6 +45,14 @@ export const Button = (props) => {
       baseViewStyle,
       { backgroundColor: colorScheme?.button ?? colors.palette.primary },
     ],
+
+    ghost: [
+      baseViewStyle,
+      {
+        backgroundColor: "transparent",
+        padding: 0,
+      },
+    ],
   };
 
   const textPresets = {
