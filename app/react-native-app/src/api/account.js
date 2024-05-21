@@ -32,8 +32,8 @@ export const getAccountApi = ({ api }) => ({
    * @returns
    */
   resendConfirm: (userIdOrEmail) =>
-    api.post("account/confirm/resend", {
-      json: userIdOrEmail,
+    api.post("account/confirm/resend", JSON.stringify(userIdOrEmail), {
+      headers: { "Content-Type": "application/json" },
     }),
 
   /**
