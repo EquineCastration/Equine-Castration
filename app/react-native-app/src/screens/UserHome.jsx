@@ -1,13 +1,16 @@
-import { BasicTouchableOpacity } from "components/BasicTouchableOpacity";
+import { Button } from "components/Button";
 import { SafeAreaView, View, Text } from "react-native";
-import { colors, font } from "style/style";
 import { resetInitialConsultationStore } from "store/InitialConsultationStore";
 import { useUser } from "contexts/User";
 import { permissions } from "constants/site-permissions";
+import { useStyle } from "contexts/StyleProvider";
+import { colors } from "style";
+import { spacing } from "style";
+import { Ionicons } from "@expo/vector-icons";
 
 export const UserHome = ({ navigation }) => {
   // should be loaded as screen to get navigation prop
-
+  const { colors: colorScheme } = useStyle();
   const { user } = useUser();
 
   const initialsOptions = [
@@ -16,7 +19,7 @@ export const UserHome = ({ navigation }) => {
       navigateToParent: "InitialConsultation",
       navigate: "InitialConsultationStepOne", // screen name
       icon: "ios-brush-outline", // only accepts ionicons
-      bgColor: colors.primary[800],
+      bgColor: colors.palette.trentTurquoise,
       visible: user?.permissions.includes(permissions.CreateCases),
     },
     {
@@ -24,22 +27,9 @@ export const UserHome = ({ navigation }) => {
       navigateToParent: "Cases",
       navigate: "CaseList", // screen name
       icon: "documents-outline", // only accepts ionicons
-      bgColor: colors.secondary[800],
+      bgColor: colors.palette.forestGreen,
       visible: user?.permissions.includes(permissions.ListOwnCases),
     },
-    // TODO: to be implemented in future
-    // {
-    //   title: "Follow up",
-    //   bgColor: colors.patra[900],
-    //   icon: "expand-outline",
-    //   visible: true,
-    // },
-    // {
-    //   title: "Review",
-    //   bgColor: colors.kanaka[900],
-    //   icon: "file-tray-full-outline",
-    //   visible: true,
-    // },
   ];
   return (
     <SafeAreaView
@@ -47,62 +37,80 @@ export const UserHome = ({ navigation }) => {
         flex: 1,
         alignItems: "center",
         justifyContent: "center",
-        backgroundColor: "white",
+        backgroundColor: colorScheme?.background,
       }}
     >
       <View
         style={{
           flex: 1,
           width: "100%",
-          paddingVertical: 10,
+          paddingVertical: spacing.sm,
           justifyContent: "center",
-          paddingHorizontal: 20,
+          paddingHorizontal: spacing.md,
         }}
       >
         <View style={{ height: "20%", justifyContent: "center" }}>
-          <Text
-            style={{
-              fontSize: font.size["6xl"],
-              fontWeight: 300,
-              color: colors.primary[700],
-            }}
-          >
-            Welcome,
+          <Text size="xxl" weight="semiBold">
+            {getCurrentGreeting()}
           </Text>
-          <Text
-            style={{
-              fontSize: font.size["4xl"],
-              fontWeight: 500,
-              color: colors.primary[700],
-            }}
-          >
-            {user.fullName.toUpperCase()}
+          <Text size="xl" weight="medium">
+            {user.fullName}
           </Text>
         </View>
-        {initialsOptions &&
-          initialsOptions.map((option, index) => {
-            return (
-              option.visible && (
-                <BasicTouchableOpacity
-                  paddingVertical={11}
-                  key={index}
-                  title={option.title}
-                  icon={option.icon}
-                  bgColor={option.bgColor}
-                  onPress={
-                    option.navigate &&
-                    (() => {
-                      navigation.navigate(option.navigateToParent, {
-                        screen: option.navigate,
-                      });
-                      resetInitialConsultationStore(); // clear existing form data
-                    })
-                  }
-                />
-              )
-            );
-          })}
+
+        <View
+          style={{
+            gap: spacing.sm,
+          }}
+        >
+          {initialsOptions &&
+            initialsOptions.map((option, index) => {
+              return (
+                option.visible && (
+                  <Button
+                    preset="filled"
+                    key={index}
+                    text={option.title}
+                    style={{
+                      paddingVertical: spacing.md,
+                      backgroundColor: option.bgColor,
+                    }}
+                    LeftAccessory={() => (
+                      <Ionicons
+                        name={option.icon}
+                        size={20}
+                        color={colors.stone}
+                        paddingHorizontal={spacing.xxs}
+                      />
+                    )}
+                    onPress={
+                      option.navigate &&
+                      (() => {
+                        navigation.navigate(option.navigateToParent, {
+                          screen: option.navigate,
+                        });
+                        resetInitialConsultationStore(); // clear existing form data
+                      })
+                    }
+                  />
+                )
+              );
+            })}
+        </View>
       </View>
     </SafeAreaView>
   );
+};
+
+const getCurrentGreeting = () => {
+  const currentHour = new Date().getHours();
+  switch (Math.floor(currentHour / 6)) {
+    case 0:
+    case 1:
+      return "Good Morning,";
+    case 2:
+      return "Good Afternoon,";
+    default:
+      return "Good Evening,";
+  }
 };
