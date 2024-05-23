@@ -46,7 +46,7 @@ export const InitialConsultationStack = ({ navigation, route }) => {
               <Ionicons
                 name={editData ? "arrow-back-outline" : "menu-outline"}
                 size={24}
-                color={colors.palette.primary100}
+                color={colors.stone}
                 onPress={() =>
                   editData
                     ? (resetInitialConsultationStore(), navigation.goBack())

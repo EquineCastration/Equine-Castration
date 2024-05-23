@@ -2,13 +2,13 @@ import { Stack } from "./navigationStack";
 import { ScreenHeader } from "components/ScreenHeader";
 import { UserHome } from "screens/UserHome";
 import { Ionicons } from "@expo/vector-icons";
-import { colors } from "style/style";
+import { colors } from "style";
 
 export const headerOptions = {
   headerShown: true,
   headerShadowVisible: false,
   title: "",
-  headerTintColor: colors.light,
+  headerTintColor: colors.stone,
 };
 
 export const HomeStack = ({ navigation }) => {
@@ -24,7 +24,7 @@ export const HomeStack = ({ navigation }) => {
             <Ionicons
               name="menu-outline"
               size={24}
-              color={colors.light}
+              color={colors.stone}
               onPress={() => navigation.openDrawer()}
             />
           ),
