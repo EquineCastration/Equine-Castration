@@ -1,26 +1,31 @@
 import { Text } from "components/Text";
+import { useStyle } from "contexts/StyleProvider";
 import { View } from "react-native";
-import { spacing, colors } from "style";
+import { spacing } from "style";
 
 /**
  * This component can be used to display form errors.
  */
 
-export const FormError = ({ error }) => (
-  <View
-    style={{
-      marginTop: spacing.xxs,
-      padding: spacing.xxs,
-      backgroundColor: colors.errorBackground,
-    }}
-  >
-    <Text
-      preset="formHelper"
+export const FormError = ({ error }) => {
+  const { colors: colorScheme } = useStyle();
+
+  return (
+    <View
       style={{
-        color: colors.error,
+        marginTop: spacing.xxs,
+        padding: spacing.xxs,
+        backgroundColor: colorScheme?.errorBackground,
       }}
     >
-      {error}
-    </Text>
-  </View>
-);
+      <Text
+        preset="formHelper"
+        style={{
+          color: colorScheme?.error,
+        }}
+      >
+        {error}
+      </Text>
+    </View>
+  );
+};
