@@ -9,7 +9,7 @@ import { useBackendApi } from "contexts/BackendApi";
 import { AccountLayout } from "layout/AccountLayout";
 import { Toast } from "react-native-toast-message/lib/src/Toast";
 
-import { validationSchema as emailSchema } from "components/EmailField";
+import { validationSchema as emailSchema } from "components/forms/EmailField";
 import { Spinner } from "components/Spinner";
 import { Text } from "components/Text";
 import { spacing } from "style";
