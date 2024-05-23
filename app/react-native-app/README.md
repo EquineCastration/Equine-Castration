@@ -57,9 +57,17 @@ For more details, refer to the [Set up development environment](https://docs.exp
    npm install -g eas-cli
    ```
 1. Log in to [Expo](https://expo.dev/) account:
+
    ```bash
    eas login
    ```
+
+   _Note_: In order to use EAS CLI, you need an Expo Dev account. EAS CLI simplifies the process of generating app builds, handling tasks such as managing certificates and app signing. You can utilize it to generate builds on their cloud infrastructure (which may incur fees), or opt for local builds using the `--local` parameter without incurring any additional costs.
+
+   If you're working on this project and want to use the existing EAS CLI setup, please check with the app developer to add you to the project (via expo dev). This is necessary if you want to submit updates to the existing app listing on the App Store or Google Play Store.
+
+   However, if you want to set up the project independently and submit it as a new app, you can create a new configuration for EAS CLI under your own Expo account. Note that you'll need to use a unique bundle/application ID to submit the app under your own developer account.
+
 1. Build your App using the appropriate profile configured in `eas.json`. More details [here](https://docs.expo.dev/build/introduction/):
 
    ```bash

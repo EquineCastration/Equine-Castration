@@ -14,6 +14,8 @@ env:
   DATA_PROJECT: ./app/Data/Data.csproj
   WEB_APP_PROJECT: ./app/EquineCastration/EquineCastration.csproj
   DOTNET_BUILD_CONFIG: release
+  NODE_VERSION: "16.x"
+  CLIENT_PACKAGE: "client-app"
 
 jobs:
   # Publish Db Migrations
@@ -42,9 +44,35 @@ jobs:
           path: ${{ github.workspace }}
           name: migrations
 
+  # publish the web frontend
+  publish-web-frontend:
+    name: Publish Web Frontend
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v3
+      - uses: pnpm/action-setup@v2.0.1
+        with:
+          version: 6.30.0
+      - uses: actions/setup-node@v3
+        with:
+          node-version: ${{ env.NODE_VERSION}}
+          cache: pnpm
+
+      - run: pnpm i --frozen-lockfile --filter ${{ env.CLIENT_PACKAGE }}
+
+      - run: pnpm --filter ${{ env.CLIENT_PACKAGE }} build
+
+      - name: Publish web frontend artifact
+        uses: actions/upload-artifact@v3
+        with:
+          path: ./app/client-app/dist
+          name: web-frontend
+
   # Publish Web App
   publish_webapp:
     name: Publish Web App
+    needs: [publish-web-frontend]
     runs-on: ubuntu-latest
 
     steps:
@@ -60,6 +88,12 @@ jobs:
         uses: actions/setup-dotnet@v3
         with:
           dotnet-version: ${{ env.DOTNET_VERSION }}
+
+      - name: Download web frontend artifact
+        uses: actions/download-artifact@v3
+        with:
+          name: web-frontend
+          path: ./app/client-app/dist
 
       - name: dotnet publish
         run: dotnet publish ${{ env.WEB_APP_PROJECT }} -c ${{ env.DOTNET_BUILD_CONFIG }} -o ${{ github.workspace }} -p:GitHash=${{ env.GitHash }}
