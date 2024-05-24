@@ -6,6 +6,7 @@ namespace EquineCastration.Models.Case;
 
 public class CreateCaseModel : BaseCaseModel
 {
+  public string DischargeDate { get; set; } = string.Empty;
   public CreateHorseModel Horse { get; set; } = null!;
 
   public Data.Entities.Case ToEntity(Veterinarian author, Horse horse, Owner owner)

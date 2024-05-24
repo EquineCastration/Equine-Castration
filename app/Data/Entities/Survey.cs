@@ -5,7 +5,7 @@ public class Survey
   public int Id { get; set; }
   public SurveyType SurveyType { get; set; } = null!;
   public Case Case { get; set; } = null!;
-  public DateTimeOffset SurveyCompletion { get; set; } = DateTimeOffset.Now;
+  public DateTimeOffset SurveyCompletion { get; set; } = DateTimeOffset.UtcNow;
   
   #region Applies to 24hrs post-surgery AND days 3, 5 7 and 14)
   

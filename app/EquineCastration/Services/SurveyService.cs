@@ -132,7 +132,7 @@ public class SurveyService
   {
     var surveyTypes = await _db.SurveyTypes.AsNoTracking().OrderByDescending(x => x.DaysAfterCase).ToListAsync();
 
-    var numberOfDays = (int)(DateTimeOffset.Now - dischargeDate).TotalDays;
+    var numberOfDays = (int)(DateTimeOffset.UtcNow - dischargeDate).TotalDays;
     var surveyType = surveyTypes.FirstOrDefault(x => x.DaysAfterCase <= numberOfDays);
 
     return surveyType is not null 

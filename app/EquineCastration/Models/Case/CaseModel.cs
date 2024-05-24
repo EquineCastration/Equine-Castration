@@ -48,12 +48,12 @@ public class BaseCaseModel
   public List<string>? AnyPostoperativeComplicationsYes { get; set; }
   public string? AnyPostoperativeComplicationsYesOther { get; set; }
   public string? DischargeNote { get; set; } = string.Empty;
-  public string DischargeDate { get; set; } = string.Empty;
 }
 public class CaseModel : BaseCaseModel
 {
   public int Id { get; set; }
   public HorseModel Horse { get; set; }
+  public DateTimeOffset DischargeDate { get; set; }
   public CaseModel(Data.Entities.Case entity)
   {
     Id = entity.Id;
@@ -106,7 +106,7 @@ public class CaseModel : BaseCaseModel
     AnyPostoperativeComplicationsYesOther = entity.AnyPostoperativeComplicationsYesOther;
     
     DischargeNote = entity.DischargeNote;
-    DischargeDate = entity.DischargeDate.ToString("dd/MM/yyyy");
+    DischargeDate = entity.DischargeDate;
   }
 }
 
