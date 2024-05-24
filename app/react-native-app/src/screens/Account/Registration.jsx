@@ -14,11 +14,11 @@ import { AccountLayout } from "layout/AccountLayout";
 import { Toast } from "react-native-toast-message/lib/src/Toast";
 
 import { FixedStepButton } from "components/FixedStepButton";
-import { InputField } from "components/InputField";
-import { validationSchemaRegRules as emailSchema } from "components/EmailField";
-import { validationSchema as pwdSchema } from "components/PasswordField";
-import { EmailField } from "components/EmailField";
-import { PasswordField } from "components/PasswordField";
+import { InputField } from "components/forms";
+import { validationSchema as emailSchema } from "components/forms/EmailField";
+import { validationSchema as pwdSchema } from "components/forms/PasswordField";
+import { EmailField } from "components/forms";
+import { PasswordField } from "components/forms";
 import { useUser } from "contexts/User";
 import { ToggleField } from "components/forms";
 import { Text } from "components/Text";

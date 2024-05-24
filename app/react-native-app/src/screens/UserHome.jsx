@@ -1,5 +1,5 @@
 import { Button } from "components/Button";
-import { SafeAreaView, View, Text } from "react-native";
+import { SafeAreaView, View } from "react-native";
 import { resetInitialConsultationStore } from "store/InitialConsultationStore";
 import { useUser } from "contexts/User";
 import { permissions } from "constants/site-permissions";
@@ -7,6 +7,7 @@ import { useStyle } from "contexts/StyleProvider";
 import { colors } from "style";
 import { spacing } from "style";
 import { Ionicons } from "@expo/vector-icons";
+import { Text } from "components/Text";
 
 export const UserHome = ({ navigation }) => {
   // should be loaded as screen to get navigation prop
