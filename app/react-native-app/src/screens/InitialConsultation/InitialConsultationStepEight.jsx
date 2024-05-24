@@ -4,7 +4,7 @@ import { initialConsultationStore as store } from "store/InitialConsultationStor
 import { initialConsultation } from "constants/initial-consultation";
 import { useInitialValues } from "./useInitialValues";
 import { Layout } from "./Layout";
-import { DatePickerField } from "components/DatePickerField";
+import { DatePickerField } from "components/forms";
 import { ToggleField } from "components/forms";
 import { mapValuesToStore } from "store/storeMapper";
 
