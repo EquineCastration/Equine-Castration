@@ -79,9 +79,11 @@ const CaseDetail = ({ navigation, caseData }) => {
           name="horse-head"
           size={16}
           marginRight={spacing.xxs}
-          color={colorScheme?.text}
+          color={colorScheme?.textLink}
         />
-        <Text preset="label">View Case Detail</Text>
+        <Text preset="label" style={{ color: colorScheme?.textLink }}>
+          View Case Detail
+        </Text>
       </View>
     </ListItem>
   );
@@ -105,7 +107,7 @@ const EligibleSurveyType = ({
         })
       }
       borderLeftWidth={spacing.xxs}
-      color={colors.palette.rebelGold400}
+      color={colors.palette.rebelGold}
     >
       <View
         style={{
@@ -116,16 +118,16 @@ const EligibleSurveyType = ({
         <View>
           <SurveyTitleLabel
             surveyTypeName={surveyType?.name}
-            colorScheme={colorScheme}
+            color={colors.palette.rebelGold}
           />
           <View style={{ flexDirection: "row", alignItems: "center" }}>
             <FontAwesome5
               name="clock"
-              size={16}
+              size={12}
               color={colorScheme?.text}
               marginRight={spacing.xxs}
             />
-            <Text>Discharge days - {postOpDays}</Text>
+            <Text size="xs">Discharge days - {postOpDays}</Text>
           </View>
         </View>
         <View
@@ -135,7 +137,13 @@ const EligibleSurveyType = ({
             marginRight: spacing.xxs,
           }}
         >
-          <Text>Start Survey</Text>
+          <Text
+            size="xs"
+            weight="semiBold"
+            style={{ color: colors.palette.rebelGold }}
+          >
+            Start Survey
+          </Text>
         </View>
       </View>
     </ListItem>
@@ -154,20 +162,20 @@ const CaseSurvey = ({ navigation, caseSurveyData }) => {
         })
       }
       borderLeftWidth={spacing.xxs}
-      borderColor={colors.palette?.forestGreen400}
+      color={colors.palette?.forestGreen400}
     >
       <SurveyTitleLabel
         surveyTypeName={caseSurveyData?.surveyType?.name}
-        colorScheme={colorScheme}
+        color={colors.palette?.forestGreen400}
       />
       <View style={{ flexDirection: "row", alignItems: "center" }}>
         <FontAwesome5
           name="calendar-day"
-          size={16}
+          size={12}
           color={colorScheme?.text}
           marginRight={spacing.xxs}
         />
-        <Text>
+        <Text size="xxs" weight="normal">
           {`Survey completion date: - ${formatDate(
             caseSurveyData?.surveyCompletion
           )}`}
@@ -177,16 +185,11 @@ const CaseSurvey = ({ navigation, caseSurveyData }) => {
   );
 };
 
-const SurveyTitleLabel = ({ surveyTypeName, colorScheme }) => (
+const SurveyTitleLabel = ({ surveyTypeName, color }) => (
   <View style={{ flexDirection: "row", alignItems: "center" }}>
-    <AntDesign
-      name="form"
-      size={16}
-      color={colorScheme?.text}
-      marginRight={spacing.xs}
-    />
+    <AntDesign name="form" size={16} color={color} marginRight={spacing.xs} />
 
-    <Text preset="label" weight="semiBold">
+    <Text preset="label" weight="semiBold" style={{ color }}>
       Survey - {surveyTypeName}
     </Text>
   </View>
