@@ -19,7 +19,7 @@ export const UserHome = ({ navigation }) => {
       title: "Create Case",
       navigateToParent: "InitialConsultation",
       navigate: "InitialConsultationStepOne", // screen name
-      icon: "ios-brush-outline", // only accepts ionicons
+      icon: "create-outline", // only accepts ionicons
       bgColor: colors.palette.trentTurquoise,
       visible: user?.permissions.includes(permissions.CreateCases),
     },
@@ -52,7 +52,12 @@ export const UserHome = ({ navigation }) => {
       >
         <View style={{ height: "20%", justifyContent: "center" }}>
           <Text size="xxl" weight="semiBold">
-            {getCurrentGreeting()}
+            <Ionicons
+              name={currentGreeting().icon}
+              size={28}
+              color={colorScheme?.text}
+            />
+            {` ${currentGreeting().text}`}
           </Text>
           <Text size="xl" weight="medium">
             {user.fullName}
@@ -103,15 +108,15 @@ export const UserHome = ({ navigation }) => {
   );
 };
 
-const getCurrentGreeting = () => {
+const currentGreeting = () => {
   const currentHour = new Date().getHours();
   switch (Math.floor(currentHour / 6)) {
     case 0:
     case 1:
-      return "Good Morning,";
+      return { text: "Good Morning,", icon: "sunny" };
     case 2:
-      return "Good Afternoon,";
+      return { text: "Good Afternoon,", icon: "partly-sunny" };
     default:
-      return "Good Evening,";
+      return { text: "Good Evening,", icon: "moon" };
   }
 };
