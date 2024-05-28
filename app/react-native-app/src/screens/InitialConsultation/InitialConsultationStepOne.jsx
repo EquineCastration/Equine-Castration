@@ -1,7 +1,7 @@
 import { useEffect } from "react";
 import { Formik } from "formik";
 import { object, string, number } from "yup";
-import { DatePickerField } from "components/DatePickerField";
+import { DatePickerField } from "components/forms";
 import { InputField } from "components/forms";
 import { validationSchema as emailSchema } from "components/EmailField";
 import { initialConsultation } from "constants/initial-consultation";

@@ -4,3 +4,4 @@ export * from "./InputField";
 export * from "./GroupCheckBoxField";
 export * from "./ToggleField";
 export * from "./SliderField";
+export { DatePickerField } from "./DatePickerField";

@@ -4,6 +4,7 @@ import { DefaultLayout } from "layout/DefaultLayout";
 import { useCaseList } from "api/case";
 import { useIsFocused } from "@react-navigation/native";
 import { FontAwesome5 } from "@expo/vector-icons";
+import { formatDate } from "components/forms/DatePickerField";
 import { useStyle } from "contexts/StyleProvider";
 import { spacing } from "style";
 import { Text } from "components/Text";
@@ -45,7 +46,7 @@ export const CaseList = ({ navigation }) => {
 
             <Text>
               <FontAwesome5 name="calendar-alt" size={16} /> Castration date:{" "}
-              {item.horse.dateOfCastration}
+              {formatDate(item.horse.dateOfCastration)}
             </Text>
             <Text
               weight="normal"
@@ -71,7 +72,7 @@ export const ListItem = ({ children, onPress }) => {
       <View
         style={{
           borderWidth: 1,
-          borderColor: colorScheme?.border,
+          borderColor: colorScheme?.textLink,
           borderRadius: 8,
           padding: spacing.sm,
         }}

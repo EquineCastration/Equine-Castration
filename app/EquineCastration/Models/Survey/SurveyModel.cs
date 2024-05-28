@@ -28,7 +28,7 @@ public class SurveyModel : BaseSurveyModel
   public int CaseId { get; set; }
   public int HorseId { get; set; }
   public SurveyTypeModel SurveyType { get; set; }
-  public string SurveyCompletion { get; set; } = string.Empty;
+  public DateTimeOffset SurveyCompletion { get; set; }
 
   public SurveyModel(Data.Entities.Survey entity)
   {
@@ -36,7 +36,7 @@ public class SurveyModel : BaseSurveyModel
     CaseId = entity.Case.Id;
     HorseId = entity.Case.Horse.Id;
     SurveyType = new SurveyTypeModel(entity.SurveyType.Id, entity.SurveyType.Name, entity.SurveyType.DaysAfterCase);
-    SurveyCompletion = entity.SurveyCompletion.ToString("dd/MM/yyyy");
+    SurveyCompletion = entity.SurveyCompletion;
     HasReturnedToNormalBehaviour = entity.HasReturnedToNormalBehaviour;
     IsStiffOrLame = entity.IsStiffOrLame;
     HasWoundDischarge = entity.HasWoundDischarge;

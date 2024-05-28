@@ -3,7 +3,6 @@ namespace EquineCastration.Models.Case;
 public class BaseHorseModel
 {
   public string Name { get; set; } = string.Empty;
-  public string DateOfCastration { get; set; } = string.Empty;
   public int Age { get; set; }
   public int Weight { get; set; }
   public string Breed { get; set; } = string.Empty;
@@ -20,12 +19,12 @@ public class BaseHorseModel
 public class HorseModel : BaseHorseModel
 {
   public int Id { get; set; }
-  
+  public DateTimeOffset DateOfCastration { get; set; }
   public HorseModel(Data.Entities.Horse entity)
   {
     Id = entity.Id;
     Name = entity.Name;
-    DateOfCastration = entity.DateOfCastration.ToString("dd/MM/yyyy");
+    DateOfCastration = entity.DateOfCastration;
     Age = entity.Age;
     Weight = entity.Weight;
     Breed = entity.Breed;
@@ -42,4 +41,5 @@ public class HorseModel : BaseHorseModel
 
 public class CreateHorseModel : BaseHorseModel
 {
+  public string DateOfCastration { get; set; } = string.Empty;
 }

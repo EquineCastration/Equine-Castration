@@ -2,9 +2,10 @@ import { View, TouchableOpacity } from "react-native";
 import { FontAwesome5, Ionicons, AntDesign } from "@expo/vector-icons";
 import { useEligibleSurveyType, useSurveyList } from "api/survey";
 import { Screen } from "components/Screen";
+import { formatDate } from "components/forms/DatePickerField";
 import { useStyle } from "contexts/StyleProvider";
 import { Text } from "components/Text";
-import { spacing } from "style";
+import { colors, spacing } from "style";
 
 export const CaseOverview = ({ navigation, route }) => {
   const { caseData } = route.params;
@@ -39,7 +40,7 @@ const ListItem = ({ children, onPress, ...p }) => {
       <View
         style={{
           borderWidth: 1,
-          borderColor: colorScheme?.border,
+          borderColor: colorScheme?.textLink,
           borderRadius: 8,
           padding: spacing.md,
           flexDirection: "row",
@@ -48,7 +49,11 @@ const ListItem = ({ children, onPress, ...p }) => {
         }}
       >
         <View style={{ flex: 1 }}>{children}</View>
-        <Ionicons name="arrow-forward-outline" size={20} />
+        <Ionicons
+          name="arrow-forward-outline"
+          size={20}
+          color={colorScheme?.textLink}
+        />
       </View>
     </TouchableOpacity>
   );
@@ -93,7 +98,7 @@ const EligibleSurveyType = ({
         })
       }
       borderLeftWidth={spacing.xxs}
-      borderColor={colorScheme?.palette?.rebelGold400}
+      borderColor={colors.palette.rebelGold400}
     >
       <View
         style={{
@@ -142,7 +147,7 @@ const CaseSurvey = ({ navigation, caseSurveyData }) => {
         })
       }
       borderLeftWidth={spacing.xxs}
-      borderColor={colorScheme?.palette?.forestGreen400}
+      borderColor={colors.palette?.forestGreen400}
     >
       <SurveyTitleLabel
         surveyTypeName={caseSurveyData?.surveyType?.name}
@@ -156,7 +161,7 @@ const CaseSurvey = ({ navigation, caseSurveyData }) => {
           marginRight={spacing.xxs}
         />
         <Text>
-          Survey completion date: - {caseSurveyData?.surveyCompletion}
+          Survey completion date: - {formatDate(caseSurveyData?.completedAt)}
         </Text>
       </View>
     </ListItem>

@@ -3,6 +3,7 @@ import { useStyle } from "contexts/StyleProvider";
 import { View } from "react-native";
 import { spacing } from "style";
 import { Text } from "./Text";
+import { formatDate } from "./forms/DatePickerField";
 
 const Field = ({ label, value }) => {
   const { colors: colorScheme } = useStyle();
@@ -40,7 +41,13 @@ const Field = ({ label, value }) => {
   );
 };
 
-const formatValue = (value) => {
+const formatValue = (value, fieldName) => {
+  switch (fieldName) {
+    case "dateOfCastration":
+    case "dischargeDate":
+      return formatDate(value);
+  }
+
   switch (typeof value) {
     case "boolean":
       return value ? "Yes" : "No";
@@ -69,7 +76,7 @@ export const CaseSummary = ({ data }) => {
             <Field
               key={key}
               label={fields.horse[key]?.label}
-              value={formatValue(value)}
+              value={formatValue(value, key)}
             />
           ) : null
         )
@@ -81,7 +88,7 @@ export const CaseSummary = ({ data }) => {
             <Field
               key={key}
               label={fields[key]?.label}
-              value={formatValue(value)}
+              value={formatValue(value, key)}
             />
           ) : null
         )

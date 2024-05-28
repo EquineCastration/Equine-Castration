@@ -40,7 +40,7 @@ public class SurveyService : ISurveyService
     //foreach case
     foreach (var c in cases)
     {
-      var numberOfDays = (int)(DateTimeOffset.Now - c.DischargeDate).TotalDays;
+      var numberOfDays = (int)(DateTimeOffset.UtcNow - c.DischargeDate).TotalDays;
       var surveyType = surveyTypes.FirstOrDefault(x => x.DaysAfterCase <= numberOfDays);
 
       var existingSurvey = await _db.Surveys.AsNoTracking()
