@@ -20,7 +20,7 @@ export const customFontsToLoad = {
   ralewayBold,
 };
 
-const fonts = {
+export const fonts = {
   raleway: {
     // Cross-platform Google font.
     light: "ralewayLight",

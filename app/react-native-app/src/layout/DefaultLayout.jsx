@@ -1,12 +1,13 @@
+import { useStyle } from "contexts/StyleProvider";
 import { SafeAreaView, View } from "react-native";
-import { colors } from "style/style";
 
 export const DefaultLayout = ({ children }) => {
+  const { colors: colorScheme } = useStyle();
   return (
     <SafeAreaView
       style={{
         flex: 1,
-        backgroundColor: colors.light,
+        backgroundColor: colorScheme?.background,
       }}
     >
       <View

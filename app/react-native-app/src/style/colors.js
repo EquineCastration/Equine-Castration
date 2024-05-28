@@ -27,9 +27,12 @@ const palette = {
   rebelGold500: "#E5C338",
   rebelGold: "#DEB406",
 
-  stone: "#FDFBF9",
+  white100: "#FFFFFF",
+  white300: "#F9F9F9",
+  white500: "#F3F3F3",
 
   error100: "#FFD6D0",
+  error400: "#d9462f",
   error500: "#d12608",
 
   success100: "#E9F7CC",
@@ -37,6 +40,8 @@ const palette = {
 
   skyBlue100: "#009BC1",
   skyBlue500: "#0086a7",
+
+  brand: "#32afb5",
 };
 
 /**
@@ -46,11 +51,11 @@ const palette = {
 export const colors = {
   palette, // The palette is available to use, but prefer using the name.
   transparent: "rgba(248, 248, 248, 0.7)", // transparent bg, // A helper for making something see-thru.
-  error: palette.error500, // The default text color in many components.
-  errorBackground: palette.error100, // Error background color.
+  stone: palette.white100,
   sucess: palette.success500, // The default text color in many components.
   successBackground: palette.success100, // Success background color.
   active: palette.forestGreen500, // Active color.
+  danger: palette.error500,
 };
 
 /**
@@ -65,8 +70,10 @@ export const darkColourScheme = {
   border: palette.primary500, // Default border color.
   tint: palette.primary300, // Main tinting color.
   separator: palette.primary500, // Subtle color used for lines.
-  textLink: palette.skyBlue100, // Link color.
-  button: palette.skyBlue100, // Default button color.
+  textLink: palette.brand, // Link color.
+  button: palette.brand, // Default button color.
+  error: palette.error100, // error text color.
+  errorBackground: palette.error400, // Error background color.
   ...colors,
 };
 
@@ -78,11 +85,13 @@ export const lightColourScheme = {
   textDim: palette.primary300, // Secondary text information.
   formLabel: palette.primary400, // Form label (primary) color.
   formOption: palette.primary300, // Form options/secondary label color.
-  background: palette.stone, // Default color of the screen background.
+  background: palette.white100, // Default color of the screen background.
   border: palette.primary200, // Default border color.
   tint: palette.primary400, // Main tinting color.
   separator: palette.primary200, // Subtle color used for lines.
-  textLink: palette.skyBlue500, // Link color.
-  button: palette.skyBlue500, // Default button color.
+  textLink: palette.brand, // Link color.
+  button: palette.brand, // Default button color.
+  error: palette.error500, // error text color.
+  errorBackground: palette.error100, // Error background color.
   ...colors,
 };

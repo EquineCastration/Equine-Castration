@@ -20,7 +20,7 @@ export const CaseStack = ({ navigation }) => {
             <Ionicons
               name="menu-outline"
               size={24}
-              color={colors.palette.primary100}
+              color={colors.stone}
               onPress={() => navigation.openDrawer()}
             />
           ),

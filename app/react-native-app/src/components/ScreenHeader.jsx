@@ -14,7 +14,7 @@ export const ScreenHeader = ({ title }) => (
         style={{
           alignSelf: "center",
           marginBottom: spacing.xs,
-          color: colors.palette.primary100,
+          color: colors.stone,
         }}
       >
         {title}

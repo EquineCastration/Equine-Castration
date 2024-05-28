@@ -10,6 +10,7 @@ import { spacing } from "style";
 import { Text } from "components/Text";
 
 export const CaseList = ({ navigation }) => {
+  const { colors: colorScheme } = useStyle();
   const { data: caseList, mutate } = useCaseList();
   const isFocused = useIsFocused(); // is screen focussed
   const [data, setData] = useState();
@@ -40,23 +41,29 @@ export const CaseList = ({ navigation }) => {
               })
             }
           >
-            <Text preset="label">
+            <Text
+              preset="label"
+              weight="semiBold"
+              style={{
+                color: colorScheme?.textLink,
+              }}
+            >
               <FontAwesome5 name="horse-head" size={16} /> {item.horse.name}
             </Text>
 
-            <Text>
-              <FontAwesome5 name="calendar-alt" size={16} /> Castration date:{" "}
-              {formatDate(item.horse.dateOfCastration)}
+            <Text size="xs">
+              <FontAwesome5 name="calendar-alt" size={12} />
+              {` Castration date: ${formatDate(item.horse.dateOfCastration)}`}
             </Text>
             <Text
               weight="normal"
-              size="xs"
+              size="xxs"
               style={{
                 textAlign: "right",
               }}
             >
-              <FontAwesome5 name="user-alt" size={16} /> Owner:{" "}
-              {item.clientEmail}
+              <FontAwesome5 name="user-alt" size={12} />
+              {` Owner: ${item.clientEmail}`}
             </Text>
           </ListItem>
         )}
