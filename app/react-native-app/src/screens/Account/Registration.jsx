@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { View, Text } from "react-native";
+import { View } from "react-native";
 
 import { Formik } from "formik";
 import { boolean, number, object, string } from "yup";
@@ -9,19 +9,20 @@ import {
   AccountRegistrationStore,
   resetAccountRegistrationStore,
 } from "store/AccountRegistrationStore";
-import { colors, font } from "style/style";
 import { useBackendApi } from "contexts/BackendApi";
 import { AccountLayout } from "layout/AccountLayout";
 import { Toast } from "react-native-toast-message/lib/src/Toast";
 
 import { FixedStepButton } from "components/FixedStepButton";
-import { InputField } from "components/InputField";
-import { validationSchemaRegRules as emailSchema } from "components/EmailField";
-import { validationSchema as pwdSchema } from "components/PasswordField";
-import { EmailField } from "components/EmailField";
-import { PasswordField } from "components/PasswordField";
-import { CheckBoxField } from "components/CheckBoxField";
+import { InputField } from "components/forms";
+import { validationSchema as emailSchema } from "components/forms/EmailField";
+import { validationSchema as pwdSchema } from "components/forms/PasswordField";
+import { EmailField } from "components/forms";
+import { PasswordField } from "components/forms";
 import { useUser } from "contexts/User";
+import { ToggleField } from "components/forms";
+import { Text } from "components/Text";
+import { Spinner } from "components/Spinner";
 
 const Layout = ({ children, onSubmit, current, steptitle, total = 3 }) => {
   return (
@@ -97,28 +98,25 @@ export const RegistrationStepOne = ({ navigation }) => {
                 gap: 20,
               }}
             >
-              <CheckBoxField
+              <ToggleField
+                variant="checkbox"
                 label={fields.isVeterinarian.label}
                 name="isVeterinarian"
-                bgColor={colors.light}
               />
               <InputField
                 label={fields.fullName.label}
                 name="fullName"
                 labelAlign="center"
-                bgColor={colors.light}
               />
               <EmailField
                 label={fields.email.label}
                 name="email"
                 labelAlign="center"
-                bgColor={colors.light}
               />
               <PasswordField
                 label={fields.password.label}
                 name="password"
                 labelAlign="center"
-                bgColor={colors.light}
               />
             </View>
           </Layout>
@@ -172,19 +170,16 @@ export const RegistrationStepTwo = ({ navigation }) => {
                 label={fields.institution.label}
                 name="institution"
                 labelAlign="center"
-                bgColor={colors.light}
               />
-              <CheckBoxField
+              <ToggleField
                 label={fields.isAmbulatory.label}
                 name="isAmbulatory"
-                bgColor={colors.light}
               />
               <InputField
                 label={fields.yearsQualified.label}
                 name="yearsQualified"
                 keyboardType="numeric"
                 labelAlign="center"
-                bgColor={colors.light}
               />
             </View>
           </Layout>
@@ -195,6 +190,7 @@ export const RegistrationStepTwo = ({ navigation }) => {
 };
 
 export const RegistrationStepGDPR = ({ navigation }) => {
+  const [isLoading, setIsLoading] = useState(false);
   const [feedback, setFeedback] = useState();
   const keysArr = ["gdprConfirmation", "isVeterinarian"];
   const { signIn } = useUser();
@@ -219,6 +215,7 @@ export const RegistrationStepGDPR = ({ navigation }) => {
   const data = AccountRegistrationStore.useState();
 
   const handleRegistrationSubmit = async () => {
+    setIsLoading(true);
     try {
       const res = await register(data);
       setFeedback({
@@ -252,98 +249,96 @@ export const RegistrationStepGDPR = ({ navigation }) => {
           });
       }
     }
+    setIsLoading(false);
   };
 
   const Heading = ({ children }) => (
-    <Text style={{ fontSize: font.size["lg"], fontWeight: 400 }}>
+    <Text size="lg" weight="semiBold">
       {children}
       {"\n"}
     </Text>
   );
 
   return (
-    <AccountLayout
-      primaryHeading="GDPR Consent Form"
-      secondaryHeading="Please carefully read the GDPR consent form"
-      backBtn
-    >
-      <Formik
-        initialValues={initialValues}
-        validationSchema={object().shape({
-          gdprConfirmation: boolean()
-            .required("GDPR consent form must be accepted.")
-            .oneOf([true], "GDPR consent form must be accepted."),
-        })}
-        onSubmit={async (values) => {
-          AccountRegistrationStore.update((s) => {
-            s.gdprConfirmation = values.gdprConfirmation;
-          });
-          await handleRegistrationSubmit();
-        }}
+    <>
+      {isLoading ? <Spinner text="Registering" /> : null}
+      <AccountLayout
+        primaryHeading="GDPR Consent Form"
+        secondaryHeading="Please carefully read the GDPR consent form"
+        backBtn
       >
-        {({ handleSubmit, values }) => (
-          <Layout
-            onSubmit={() => handleSubmit()}
-            current={values.isVeterinarian ? 3 : 2}
-            total={values.IsVeterinarian ? 3 : 3}
-            title="Complete registration"
-          >
-            <View
-              style={{
-                flex: 1,
-                paddingHorizontal: 10,
-                gap: 20,
-              }}
+        <Formik
+          initialValues={initialValues}
+          validationSchema={object().shape({
+            gdprConfirmation: boolean()
+              .required("GDPR consent form must be accepted.")
+              .oneOf([true], "GDPR consent form must be accepted."),
+          })}
+          onSubmit={async (values) => {
+            AccountRegistrationStore.update((s) => {
+              s.gdprConfirmation = values.gdprConfirmation;
+            });
+            await handleRegistrationSubmit();
+          }}
+        >
+          {({ handleSubmit, values }) => (
+            <Layout
+              onSubmit={() => handleSubmit()}
+              current={values.isVeterinarian ? 3 : 2}
+              total={values.isVeterinarian ? 3 : 2}
+              title="Complete registration"
             >
-              <Text
+              <View
                 style={{
-                  fontSize: font.size["md"],
-                  fontWeight: 300,
-                  lineHeight: 28,
-                  color: colors.primary[700],
+                  flex: 1,
+                  paddingHorizontal: 10,
+                  gap: 20,
                 }}
               >
-                We take your privacy seriously and want to ensure that you
-                understand how we use your personal data. Please read the
-                following information carefully before you provide your consent.
-                {"\n\n"}
-                <Heading>What data do we collect?</Heading>
-                We collect the following information from you: {"\n"}
-                [List of personal data collected, such as name, email address,
-                phone number, etc.]{"\n\n"}
-                <Heading>Why do we need your data?</Heading>
-                We collect your personal data to:{"\n"}
-                [List of purposes for which the data will be used, such as to
-                create and manage your account, to provide customer support, to
-                personalize your experience, etc.]{"\n\n"}
-                <Heading> Who will have access to your data?</Heading>
-                Your personal data will be accessible to: {"\n"}
-                [List of individuals or organizations that will have access to
-                your data, such as our employees, service providers, etc.]
-                {"\n\n"}
-                <Heading>How long do we keep your data?</Heading>
-                We will keep your personal data for as long as necessary to
-                fulfill the purposes for which it was collected, unless a longer
-                retention period is required by law. {"\n\n"}
-                <Heading>Your rights</Heading>
-                You have the right to: {"\n\n"}
-                Access and obtain a copy of your personal data {"\n"}
-                Correct any inaccuracies in your personal data {"\n"}
-                Object to the processing of your personal data{"\n"} Request the
-                deletion of your personal data {"\n"}Restrict the processing of
-                your personal data {"\n"}Data portability {"\n"}Withdraw your
-                consent at any time {"\n\n"}
-                By checking the box below, you consent to the processing of your
-                personal data as described in this form.
-              </Text>
-              <CheckBoxField
-                label="I have read and understood the information provided above and I consent to the processing of my personal data."
-                name="gdprConfirmation"
-              />
-            </View>
-          </Layout>
-        )}
-      </Formik>
-    </AccountLayout>
+                <Text size="md">
+                  We take your privacy seriously and want to ensure that you
+                  understand how we use your personal data. Please read the
+                  following information carefully before you provide your
+                  consent.
+                  {"\n\n"}
+                  <Heading>What data do we collect?</Heading>
+                  We collect the following information from you: {"\n"}
+                  [List of personal data collected, such as name, email address,
+                  phone number, etc.]{"\n\n"}
+                  <Heading>Why do we need your data?</Heading>
+                  We collect your personal data to:{"\n"}
+                  [List of purposes for which the data will be used, such as to
+                  create and manage your account, to provide customer support,
+                  to personalize your experience, etc.]{"\n\n"}
+                  <Heading> Who will have access to your data?</Heading>
+                  Your personal data will be accessible to: {"\n"}
+                  [List of individuals or organizations that will have access to
+                  your data, such as our employees, service providers, etc.]
+                  {"\n\n"}
+                  <Heading>How long do we keep your data?</Heading>
+                  We will keep your personal data for as long as necessary to
+                  fulfill the purposes for which it was collected, unless a
+                  longer retention period is required by law. {"\n\n"}
+                  <Heading>Your rights</Heading>
+                  You have the right to: {"\n\n"}
+                  Access and obtain a copy of your personal data {"\n"}
+                  Correct any inaccuracies in your personal data {"\n"}
+                  Object to the processing of your personal data{"\n"} Request
+                  the deletion of your personal data {"\n"}Restrict the
+                  processing of your personal data {"\n"}Data portability {"\n"}
+                  Withdraw your consent at any time {"\n\n"}
+                  By checking the box below, you consent to the processing of
+                  your personal data as described in this form.
+                </Text>
+                <ToggleField
+                  label="I have read and understood the information provided above and I consent to the processing of my personal data."
+                  name="gdprConfirmation"
+                />
+              </View>
+            </Layout>
+          )}
+        </Formik>
+      </AccountLayout>
+    </>
   );
 };

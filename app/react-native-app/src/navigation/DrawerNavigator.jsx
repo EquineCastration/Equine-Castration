@@ -1,4 +1,4 @@
-import { View, Text, StyleSheet, Alert } from "react-native";
+import { View, Alert } from "react-native";
 import {
   createDrawerNavigator,
   DrawerContentScrollView,
@@ -9,39 +9,39 @@ import { useUser } from "contexts/User";
 import Toast from "react-native-toast-message";
 
 import { HomeStack } from "./HomeStack";
-import { font, colors } from "style/style";
 import { InitialConsultationStack } from "./InitialConsultationStack";
 import { CaseStack } from "./CaseStack";
 import { useBackendApi } from "contexts/BackendApi";
 import { useState, useEffect } from "react";
 import { Spinner } from "components/Spinner";
-import { BasicTouchableOpacity } from "components/BasicTouchableOpacity";
 import { permissions } from "constants/site-permissions";
+import { useStyle } from "contexts/StyleProvider";
+import { Button } from "components/Button";
+import { Text } from "components/Text";
+import { Ionicons } from "@expo/vector-icons";
+import { spacing, fonts, colors } from "style";
 
 const Drawer = createDrawerNavigator();
 
-const styles = StyleSheet.create({
-  drawerLabel: {
-    fontSize: font.size["normal"],
-    color: colors.primary[700],
-    fontWeight: 300,
-  },
-});
-
-const AccountItem = ({ ...props }) => (
-  <BasicTouchableOpacity
-    iconSize={17}
-    color={colors.primary[800]}
-    fontSize={font.size["sm"]}
-    fontWeight={500}
-    transparent
-    justifyContent="flex-start"
-    paddingVertical={2}
-    {...props}
+const AccountItem = ({ title, icon, color, onPress }) => (
+  <Button
+    preset="ghost"
+    text={title}
+    style={{
+      justifyContent: "flex-start",
+    }}
+    LeftAccessory={() => <Ionicons name={icon} size={16} color={color} />}
+    textStyle={{
+      color,
+      paddingHorizontal: spacing.xs,
+      fontFamily: fonts?.raleway?.semiBold,
+    }}
+    onPress={onPress}
   />
 );
 
 export const DrawerNavigator = () => {
+  const { colors: colorScheme } = useStyle();
   const [isLoading, setIsLoading] = useState(false);
   const [loadingText, setIsLoadingText] = useState();
   const [feedback, setFeedback] = useState();
@@ -92,7 +92,7 @@ export const DrawerNavigator = () => {
     };
 
     return (
-      <View style={{ flex: 1 }}>
+      <View style={{ flex: 1, backgroundColor: colorScheme?.background }}>
         <DrawerContentScrollView {...props}>
           <View
             style={{
@@ -104,24 +104,8 @@ export const DrawerNavigator = () => {
             }}
           >
             <View>
-              <Text
-                style={{
-                  fontSize: font.size["sm"],
-                  color: colors.primary[800],
-                  fontWeight: 300,
-                }}
-              >
-                {user?.fullName?.toUpperCase()}
-              </Text>
-              <Text
-                style={{
-                  fontSize: font.size["xs"],
-                  color: colors.primary[800],
-                  fontWeight: 300,
-                }}
-              >
-                {user?.email}
-              </Text>
+              <Text>{user?.fullName?.toUpperCase()}</Text>
+              <Text>{user?.email}</Text>
             </View>
           </View>
           <DrawerItemList {...props} />
@@ -132,16 +116,16 @@ export const DrawerNavigator = () => {
             right: 0,
             left: 0,
             bottom: 5,
-            backgroundColor: colors.ui.bg,
             paddingVertical: 10,
             paddingHorizontal: 20,
-            gap: 5,
+            gap: spacing.md,
           }}
         >
           <AccountItem
             title="Sign Out"
             icon="log-out-outline"
-            fontSize={font.size["normal"]}
+            color={colorScheme?.textLink}
+            fontSize={16}
             onPress={() => {
               Alert.alert("Sign out confirmation", "Do you want to sign out?", [
                 {
@@ -166,7 +150,7 @@ export const DrawerNavigator = () => {
           <AccountItem
             title="Delete Account"
             icon="trash-outline"
-            color={colors.error}
+            color={colors.danger}
             onPress={() => {
               Alert.alert(
                 "Do you want to delete your account?",
@@ -201,7 +185,11 @@ export const DrawerNavigator = () => {
             shadowOpacity: 0,
           },
           headerTitle: "",
-          drawerLabelStyle: styles.drawerLabel,
+          drawerLabelStyle: {
+            fontSize: 16,
+            color: colorScheme?.text,
+            fontFamily: fonts?.raleway?.normal,
+          },
         }}
         drawerContent={(props) => <DrawerContent {...props} />}
       >

@@ -3,19 +3,21 @@ import { View } from "react-native";
 import { Formik } from "formik";
 import { object } from "yup";
 import { useBackendApi } from "contexts/BackendApi";
-import { colors } from "style/style";
 import { AccountLayout } from "layout/AccountLayout";
 import { Toast } from "react-native-toast-message/lib/src/Toast";
-import { BasicTouchableOpacity } from "components/BasicTouchableOpacity";
-import { validationSchema as emailSchema } from "components/EmailField";
-import { EmailField } from "components/EmailField";
+import { Button } from "components/Button";
+import { validationSchema as emailSchema } from "components/forms/EmailField";
+import { EmailField } from "components/forms";
 import { Spinner } from "components/Spinner";
+import { spacing } from "style";
+import { useStyle } from "contexts/StyleProvider";
 
 const validationSchema = object().shape({
   ...emailSchema("email"),
 });
 
 export const RequestPasswordReset = () => {
+  const { colors: colorScheme } = useStyle();
   const [isLoading, setIsLoading] = useState(false);
   const [feedback, setFeedback] = useState();
 
@@ -63,19 +65,20 @@ export const RequestPasswordReset = () => {
           onSubmit={async (values) => await handlePwdResetRequest(values)}
         >
           {({ handleSubmit }) => (
-            <View style={{ gap: 10 }}>
+            <View style={{ gap: spacing.xs }}>
               <EmailField
                 label="Email"
                 name="email"
                 labelAlign="center"
-                bgColor={colors.light}
+                bgColor={colorScheme?.background}
               />
 
               <View style={{ alignItems: "center" }}>
-                <BasicTouchableOpacity
-                  title="Send me a reset link"
-                  btnWidth="60%"
-                  paddingVertical={10}
+                <Button
+                  preset="filled"
+                  text="Send me a reset link"
+                  textStyle={{ textTransform: "none", fontSize: 16 }}
+                  style={{ paddingVertical: spacing.md }}
                   onPress={() => handleSubmit()}
                 />
               </View>

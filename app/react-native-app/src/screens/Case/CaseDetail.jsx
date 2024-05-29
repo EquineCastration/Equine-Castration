@@ -1,14 +1,15 @@
 import { DefaultLayout } from "layout/DefaultLayout";
 import { CaseSummary } from "components/CaseSummary";
-import { ActionButton } from "components/ActionButton";
 import { Spinner } from "components/Spinner";
 import { ScrollView, View, Alert } from "react-native";
 import { useState, useEffect } from "react";
-import { colors } from "style/style";
 import { useUser } from "contexts/User";
 import { useBackendApi } from "contexts/BackendApi";
 import { permissions } from "constants/site-permissions";
 import { Toast } from "react-native-toast-message/lib/src/Toast";
+import { spacing, colors } from "style";
+import { Ionicons } from "@expo/vector-icons";
+import { Button } from "components/Button";
 
 export const CaseDetail = ({ navigation, route }) => {
   const { caseData } = route.params;
@@ -75,15 +76,23 @@ export const CaseDetail = ({ navigation, route }) => {
   );
 
   const ButtonAction = ({ title, iconName, color, onPress }) => (
-    <ActionButton
-      title={title}
-      iconName={iconName}
-      color={color}
+    <Button
+      text={title}
+      textStyle={{
+        color,
+        fontSize: 10,
+        textTransform: "capitalize",
+      }}
+      style={{
+        flexDirection: "column",
+        borderColor: color,
+        paddingVertical: spacing.xxs,
+        marginVertical: spacing.xs,
+        marginHorizontal: spacing.xxs,
+        width: "20%",
+      }}
       onPress={onPress}
-      gap={5}
-      marginVertical={8}
-      marginHorizontal={5}
-      paddingVertical={5}
+      LeftAccessory={() => <Ionicons name={iconName} size={20} color={color} />}
     />
   );
 
@@ -95,15 +104,15 @@ export const CaseDetail = ({ navigation, route }) => {
           style={{
             flexDirection: "row",
             justifyContent: "flex-end",
-            margin: 5,
-            gap: 5,
+            margin: spacing.xxs,
+            gap: spacing.xxs,
           }}
         >
           {canEdit && (
             <ButtonAction
               title="Edit"
               iconName="create-outline"
-              color={colors.patra[900]}
+              color={colors.palette.forestGreen}
               onPress={() =>
                 navigation.navigate("EditInitialConsultation", {
                   editData: caseData,
@@ -116,16 +125,16 @@ export const CaseDetail = ({ navigation, route }) => {
             <ButtonAction
               title="Delete"
               iconName="trash-outline"
-              color={colors.error}
+              color={colors.danger}
               onPress={deleteAlert}
             />
           )}
         </View>
         <ScrollView
           style={{
-            marginVertical: 2,
-            marginHorizontal: 5,
-            paddingHorizontal: 5,
+            marginVertical: spacing.xxs,
+            marginHorizontal: spacing.xxs,
+            paddingHorizontal: spacing.xxs,
           }}
         >
           <CaseSummary data={caseData} />
