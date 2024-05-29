@@ -5,6 +5,7 @@ import Checkbox from "expo-checkbox";
 import { Switch, View } from "react-native";
 import { useState } from "react";
 import { Text } from "components/Text";
+import { FormError } from "./FormError";
 
 export const ToggleField = ({ variant, name, label, labelColor, ...props }) => {
   const { colors: colorScheme } = useStyle();
@@ -57,6 +58,7 @@ export const ToggleField = ({ variant, name, label, labelColor, ...props }) => {
           {label}
         </Text>
       </View>
+      {meta.touched && meta.error ? <FormError error={meta.error} /> : null}
     </View>
   );
 };
