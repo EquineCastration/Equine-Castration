@@ -10,7 +10,7 @@ on:
 
 env:
   # Configure these
-  CI_node-version: "16"
+  CI_node-version: "18"
   CI_package: react-native-app
   Profile: preview
 
@@ -46,6 +46,17 @@ jobs:
           eas-version: latest
 
       - run: pnpm i --frozen-lockfile --filter ${{ env.CI_package }}
+
+      - name: Set up JDK 17
+        if: matrix.platform == 'android'
+        uses: actions/setup-java@v3
+        with:
+          distribution: "temurin"
+          java-version: "17"
+
+      - name: Verify Java version
+        if: matrix.platform == 'android'
+        run: java -version
 
       - name: Build app preview
         working-directory: app/react-native-app
