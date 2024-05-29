@@ -33,7 +33,7 @@ export const AccountLayout = ({
         }}
       >
         {backBtn && (
-          <View style={{ position: "absolute", top: 50, left: 20 }}>
+          <View style={{ position: "absolute", top: 50, left: 20, zIndex: 1 }}>
             <Button
               preset="ghost"
               onPress={() => navigation.goBack()}
