@@ -32,6 +32,15 @@ public class CasesController : ControllerBase
     return Ok(await _cases.List(userId));
   }
   
+  [Authorize(nameof(AuthPolicies.CanListOwnCases))]
+  [HttpGet("owner")]
+  public async Task<ActionResult<List<CaseModel>>> ListByOwner()
+  {
+    var userId = _users.GetUserId(User);
+    if (userId is null) return Forbid();
+    return Ok(await _cases.ListByOwner(userId));
+  }
+  
   [Authorize(nameof(AuthPolicies.CanCreateCases))]
   [HttpPost]
   public async Task<ActionResult> Create(CreateCaseModel model)
