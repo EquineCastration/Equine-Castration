@@ -3,6 +3,7 @@ import useSWR from "swr";
 
 export const fetchKeys = {
   caseList: "cases",
+  ownerCaseList: "cases/owner",
   case: (id) => `cases/${id}`,
 };
 
@@ -17,10 +18,10 @@ export const getCaseApi = ({ api }) => ({
 /**
  * Get a list of Cases
  */
-export const useCaseList = () => {
+export const useCaseList = (isOwner) => {
   const { apiFetcher } = useBackendApi();
   return useSWR(
-    fetchKeys.caseList,
+    isOwner ? fetchKeys.ownerCaseList : fetchKeys.caseList,
     async (url) => {
       const data = await apiFetcher(url);
       return data;
@@ -42,14 +43,4 @@ export const useCase = (id) => {
     },
     { suspense: false }
   );
-};
-
-/**
- * Get a user's Team Id
- */
-export const getUserTeam = (userEmail) => {
-  const { apiFetcher } = useBackendApi();
-  return useSWR(fetchKeys.getUserTeam(userEmail), apiFetcher, {
-    suspense: true,
-  });
 };
