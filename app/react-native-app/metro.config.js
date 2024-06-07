@@ -10,7 +10,7 @@ const workspaceRoot = path.resolve(projectRoot, "../..");
 const config = getDefaultConfig(projectRoot);
 
 // 1. Watch all files within the monorepo
-config.watchFolders = [workspaceRoot];
+config.watchFolders = [workspaceRoot, path.resolve(projectRoot, "assets")];
 // 2. Let Metro know where to resolve packages and in what order
 config.resolver.nodeModulesPaths = [
   path.resolve(projectRoot, "node_modules"),
@@ -18,5 +18,14 @@ config.resolver.nodeModulesPaths = [
 ];
 // 3. Force Metro to resolve (sub)dependencies only from the `nodeModulesPaths`
 config.resolver.disableHierarchicalLookup = true;
+
+// 4. Include image extensions and other asset types
+config.resolver.assetExts = config.resolver.assetExts.concat([
+  "jpg",
+  "jpeg",
+  "png",
+  "gif",
+  "svg",
+]);
 
 module.exports = config;
