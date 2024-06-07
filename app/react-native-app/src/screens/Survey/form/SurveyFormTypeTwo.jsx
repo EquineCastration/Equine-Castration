@@ -1,13 +1,18 @@
-import { GroupCheckBoxField, InputField, ToggleField } from "components/forms";
-import { SliderField } from "components/forms/SliderField";
+import {
+  GroupCheckBoxField,
+  InputField,
+  ToggleField,
+  SliderField,
+} from "components/forms";
 import { View } from "react-native";
+import { PainScoreImage } from "./PainScoreImage";
 
 /**
  * This form is only applicable to the survey types:
  * - PostDayFourteen
  */
 
-export const SurveyFormTypeTwo = ({ values, disabled }) => {
+export const SurveyFormTypeTwo = ({ values, disabled, navigation }) => {
   return (
     <View>
       <ToggleField
@@ -57,6 +62,8 @@ export const SurveyFormTypeTwo = ({ values, disabled }) => {
         maxVal={12}
         disabled={disabled}
       />
+      <PainScoreImage navigation={navigation} />
+
       <GroupCheckBoxField
         label="Did your horse have any complications in the first two weeks postoperatively?"
         name="firstTwoWeeksComplications"

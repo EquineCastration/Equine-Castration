@@ -152,7 +152,11 @@ export const SurveyForm = ({ navigation, route }) => {
             {user?.permissions?.includes(permissions.CreateCaseSurveys) && (
               <Instruction />
             )}
-            <SurveyFormType values={values} disabled={!!surveyData} />
+            <SurveyFormType
+              values={values}
+              disabled={!!surveyData}
+              navigation={navigation}
+            />
             {!surveyData && <SubmitButton />}
           </Screen>
         )}
