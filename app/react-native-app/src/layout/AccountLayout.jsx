@@ -7,7 +7,7 @@ import { useStyle } from "contexts/StyleProvider";
 import { Text } from "components/Text";
 import { spacing } from "style";
 
-const LOGO_URL = "../../assets/eq_logo.jpg";
+const LOGO = require("assets/eq_logo.jpg");
 
 export const AccountLayout = ({
   children,
@@ -54,7 +54,7 @@ export const AccountLayout = ({
           }}
         >
           <Image
-            source={require(LOGO_URL)}
+            source={LOGO}
             style={{ width: 100, height: 100, marginBottom: spacing.sm }}
           />
 

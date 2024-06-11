@@ -110,3 +110,18 @@ public class CaseModel : BaseCaseModel
   }
 }
 
+/// <summary>
+/// Model that represents a case for an owner, which is limited in scope compared to the full case model.
+/// </summary>
+public class OwnerCaseModel
+{
+  public int Id { get; set; } // Case ID
+  public string ClientEmail { get; set; } = string.Empty; // Owner email
+  public HorseModel Horse { get; set; }
+  public OwnerCaseModel(Data.Entities.Case entity)
+  {
+    Id = entity.Id;
+    ClientEmail = entity.Owner.Email;
+    Horse = new HorseModel(entity.Horse);
+  }
+}

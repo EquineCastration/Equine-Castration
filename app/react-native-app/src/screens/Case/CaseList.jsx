@@ -8,10 +8,16 @@ import { formatDate } from "components/forms/DatePickerField";
 import { useStyle } from "contexts/StyleProvider";
 import { spacing } from "style";
 import { Text } from "components/Text";
+import { useUser } from "contexts/User";
+import { roles } from "constants/site-roles";
 
 export const CaseList = ({ navigation }) => {
   const { colors: colorScheme } = useStyle();
-  const { data: caseList, mutate } = useCaseList();
+
+  const { user } = useUser();
+  const isOwner = user?.roles.includes(roles.HorseOwner);
+  const { data: caseList, mutate } = useCaseList(isOwner);
+
   const isFocused = useIsFocused(); // is screen focussed
   const [data, setData] = useState();
 

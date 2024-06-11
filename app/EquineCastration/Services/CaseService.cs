@@ -34,6 +34,23 @@ public class CaseService
       .ToListAsync();
     return list.ConvertAll<CaseModel>(x => new CaseModel(x));
   }
+  
+  /// <summary>
+  /// List all cases related to the horse owner but with limited information
+  /// </summary>
+  /// <param name="userId">Horse owner's user id</param>
+  /// <returns>Cases</returns>
+  public async Task<List<OwnerCaseModel>> ListByOwner(string userId)
+  {
+    var list = await _db.Cases
+      .AsNoTracking()
+      .Include(x => x.Horse)
+      .Include(x => x.Owner)
+      .ThenInclude(x => x.ApplicationUser)
+      .Where(x => x.Owner.ApplicationUserId == userId)
+      .ToListAsync();
+    return list.ConvertAll<OwnerCaseModel>(x => new OwnerCaseModel(x));
+  }
 
   public async Task<CaseModel> Get(int caseId)
   {
