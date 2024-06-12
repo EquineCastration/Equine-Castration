@@ -5,6 +5,7 @@ import {
   SliderField,
 } from "components/forms";
 import { View } from "react-native";
+import { PainScoreImage } from "./PainScoreImage";
 
 /**
  * This form is only applicable to the survey types:
@@ -14,7 +15,7 @@ import { View } from "react-native";
  * - PostDaySeven
  */
 
-export const SurveyFormTypeOne = ({ values, disabled }) => {
+export const SurveyFormTypeOne = ({ values, disabled, navigation }) => {
   return (
     <View>
       <ToggleField
@@ -85,6 +86,7 @@ export const SurveyFormTypeOne = ({ values, disabled }) => {
         maxVal={12}
         disabled={disabled}
       />
+      <PainScoreImage navigation={navigation} />
       <InputField
         label="If your horse required veterinary attention for any complications, please provide the practice name."
         name="requiredVetOrComplications"

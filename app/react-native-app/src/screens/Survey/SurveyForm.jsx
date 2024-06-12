@@ -15,8 +15,21 @@ import {
   evaluateValidationSchema,
 } from "./form";
 import { Spinner } from "components/Spinner";
+import { Text } from "components/Text";
+import { useStyle } from "contexts/StyleProvider";
+import { Ionicons } from "@expo/vector-icons";
+import { useUser } from "contexts/User";
+import { permissions } from "constants/site-permissions";
+
+const INSTRUCTIONS = `Please be careful when examining the surgical area. All of these questions can be done by observation so there is no need to directly touch the surgical site.
+
+**If you notice anything abnormal protruding from the surgery site or discharge that is running in a steady stream (you are unable to count the drips), please call your own vet immediately.
+
+Thank you very much for your participation in this study.`;
 
 export const SurveyForm = ({ navigation, route }) => {
+  const { user } = useUser();
+  const { colors: colorScheme } = useStyle();
   const { caseId, surveyType, surveyData } = route.params;
   const {
     survey: { create },
@@ -102,6 +115,28 @@ export const SurveyForm = ({ navigation, route }) => {
     </View>
   );
 
+  const Instruction = () => (
+    <View
+      style={{
+        padding: spacing.md,
+        borderBottomWidth: 1,
+        borderColor: colorScheme.border,
+        display: "flex",
+        flexDirection: "row",
+        justifyContent: "center",
+        alignItems: "center",
+        gap: spacing.xxs,
+      }}
+    >
+      <Ionicons
+        name="information-circle-outline"
+        size={20}
+        color={colorScheme?.text}
+      />
+      <Text size="xxs">{INSTRUCTIONS}</Text>
+    </View>
+  );
+
   return (
     <>
       {isLoading ? <Spinner text={"Submitting"} /> : null}
@@ -114,7 +149,14 @@ export const SurveyForm = ({ navigation, route }) => {
       >
         {({ values }) => (
           <Screen>
-            <SurveyFormType values={values} disabled={!!surveyData} />
+            {user?.permissions?.includes(permissions.CreateCaseSurveys) && (
+              <Instruction />
+            )}
+            <SurveyFormType
+              values={values}
+              disabled={!!surveyData}
+              navigation={navigation}
+            />
             {!surveyData && <SubmitButton />}
           </Screen>
         )}
