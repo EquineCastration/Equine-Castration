@@ -1,3 +1,5 @@
+import { Ionicons } from "@expo/vector-icons";
+import { Button } from "components/Button";
 import { Text } from "components/Text";
 import { View } from "react-native";
 import ImageView from "react-native-image-zoom-viewer";
@@ -11,7 +13,7 @@ import { spacing } from "style";
  *  caption: string; the caption to display for the image
  * Defaults to an empty array if not provided.
  */
-export const ZoomableImageScreen = ({ route }) => {
+export const ZoomableImageScreen = ({ route, navigation }) => {
   const { imageSet = [] } = route.params;
 
   const images = imageSet.map((item) => ({
@@ -21,11 +23,28 @@ export const ZoomableImageScreen = ({ route }) => {
 
   const captions = imageSet?.map((item) => item?.source && item?.caption);
 
+  const renderHeader = () => (
+    <View style={{ position: "absolute", top: 50, right: 20, zIndex: 1 }}>
+      <Button
+        preset="ghost"
+        onPress={() => navigation.goBack()}
+        LeftAccessory={() => <Ionicons name="close" size={20} color="white" />}
+        pressedStyle={{ opacity: 0.5 }}
+      />
+    </View>
+  );
+
   const renderFooter = (currentIndex) => (
     <View style={{ padding: spacing.md }}>
       <Text style={{ color: "white" }}>{captions[currentIndex]}</Text>
     </View>
   );
 
-  return <ImageView imageUrls={images} renderFooter={renderFooter} />;
+  return (
+    <ImageView
+      imageUrls={images}
+      renderHeader={renderHeader}
+      renderFooter={renderFooter}
+    />
+  );
 };
