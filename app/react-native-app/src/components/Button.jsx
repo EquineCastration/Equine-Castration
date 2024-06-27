@@ -50,7 +50,7 @@ export const Button = (props) => {
       baseViewStyle,
       {
         backgroundColor: "transparent",
-        padding: 0,
+        padding: 4,
       },
     ],
   };
