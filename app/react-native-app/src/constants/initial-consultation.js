@@ -16,7 +16,7 @@ const horseInformation = {
       defaultValue: "",
     },
     age: {
-      label: "Age of horse",
+      label: "Age of horse (years)",
       defaultValue: 0,
     },
     weight: {
