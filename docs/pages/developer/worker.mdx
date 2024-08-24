@@ -1,0 +1,17 @@
+This project contains the Azure functions for Equine Castration.
+
+Currently, these are:
+
+- `SendSurveyNotification`
+
+## `SendSurveyNotification`
+
+This job runs once a day at 11am in order to check which non deceased cases are due an owner survey.
+This is done by iterating through every case, taking the discharge date and adding on the number of days provided by each survey type.
+If the current date matches the sum of the days and discharge date, then we send an email to the owner of the horse.
+
+### Running the functions
+
+Your IDE should recognise the functions, and be able to run them.
+
+If you're using the command line, run `func start`.

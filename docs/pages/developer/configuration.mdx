@@ -1,0 +1,85 @@
+## Backend Configuration
+
+Notes on configuration values that can be provided, and their defaults.
+
+The backend app can be configured in any standard way an ASP.NET Core application can. Typically from the Azure Portal (Environment variables) or an `appsettings.json`.
+
+```yaml
+OutboundEmail:
+  ServiceName: Equine Castration
+  FromName: No Reply
+  FromAddress: noreply@example.com
+  ReplyToAddress: ""
+  Provider: local
+
+  # If Provider == "local"
+  LocalPath: /temp
+
+  # If Provider == "sendgrid"
+  SendGridApiKey: ""
+
+  # If Provider == "smtp"
+  SmtpHost: "" # SMTP host name
+  SmtpPort: # SMTP port
+  SmtpUsername: "" # SMTP username
+  SmtpPassword: "" # SMTP password
+  SmtpSecureSocketEnum: # for example, assign 2 to implement SslOnConnect
+  # Secure socket options
+  # 1 - Auto
+  # 2 - SslOnConnect
+  # 3 - StartTls
+  # 4 - StartTlsWhenAvailable
+
+  # More information can be found here
+  # http://www.mimekit.net/docs/html/T_MailKit_Security_SecureSocketOptions.htm
+
+Registration:
+  UseRules: # Bool. If set to 'true', the registration rules is applied.
+
+# URL to download app from app store.
+AppDownloadUrl:
+  Android: ""
+  iOS: ""
+
+AppRequestHeader:
+  CheckHeader: # Boolean. If set to 'true', the backend checks the request header for a specific app identifier during API calls that originate from a different host. This is to restrict API calls to either the mobile app or the same host where the backend is deployed.
+  Name: "" # The name of the request header to check, e.g. 'X-App-Identifier'.
+  Value: "" # The expected value of the header. Incoming requests must have this value in the specified header to be accepted.
+
+Worker:
+  ApiKey: "" # The unique key used to authenticate the worker.
+```
+
+## React Native Configuration
+
+The React Native app can be configured via `.env` or an `.env.development.local`.
+
+```bash
+EXPO_PUBLIC_BACKEND_URL= # Backend URL that the app would connect to, e.g., 'http://localhost:5735'.
+EXPO_PUBLIC_APP_IDENTIFIER_NAME= # The name of the request header used to identify the app, e.g., 'X-App-Identifier'. This header will be included in all API requests made by the app.
+EXPO_PUBLIC_APP_IDENTIFIER= # The value of the app identifier header. This is used to verify that API requests are coming from the app.
+```
+
+**Note**: The EAS CLI adheres to the same rules as the Expo CLI when it comes to env variables. Therefore, only variables prefixed with `EXPO_PUBLIC` are recognised and read. This is particularly useful when building the app locally using the EAS CLI. For other cases, environment variables must be defined in the `eas.json` file. For more information, refer to the [Expo documentation on environment variables](https://docs.expo.dev/guides/environment-variables/).
+
+## Worker Configuration
+
+The following values are needed to configure the application, in Azure Portal these are the environment variables.
+In local development a `local.settings.json` file is required, with the following values.
+
+```json
+{
+  "IsEncrypted": false,
+  "Values": {
+    "AzureWebJobsStorage": "UseDevelopmentStorage=true",
+    "FUNCTIONS_WORKER_RUNTIME": "dotnet-isolated"
+  },
+  "Backend": {
+    "ApiUrl": "http://localhost:5735/api/",
+    "ApiKey": "__DEV__"
+  },
+  "ConnectionStrings": {
+    "Default": "Host=localhost;Username=postgres;Port=5432;Password=example;Database=equine-castration"
+  }
+}
+```
